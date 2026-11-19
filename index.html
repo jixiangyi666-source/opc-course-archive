@@ -211,5 +211,19 @@ var io = new IntersectionObserver(function(es){
 },{threshold:.12});
 document.querySelectorAll(".reveal").forEach(function(el,i){ el.style.transitionDelay=(i%4)*80+"ms"; io.observe(el); });
 </script>
+<script>
+// 模块子域兜底：m1-m8.jixiangyi.cn 目前命中带 SPA 回落的主机，所有路径都返回本首页。
+// 若检测到子域 + 首页结构，则整页 iframe 载入对应模块页；域名修正/中间件生效后自动不再触发。
+document.addEventListener("DOMContentLoaded", function(){
+  var m = /^m([1-8])\.jixiangyi\.cn$/.exec(location.hostname.toLowerCase());
+  if (!m) return;
+  if (!document.querySelector("#modules")) return;
+  var d = document.createElement("iframe");
+  d.src = "https://www.jixiangyi.cn/m" + m[1] + "/";
+  d.style.cssText = "position:fixed;inset:0;width:100%;height:100%;border:0;z-index:99999;background:#f4f1ea";
+  d.title = "M" + m[1] + " 模块报告";
+  document.body.appendChild(d);
+});
+</script>
 </body>
 </html>

@@ -1,43 +1,282 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 02 · M2 问题定义 | 无障碍智慧出行服务</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2 问题定义｜AI 无障碍智能导航系统</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
+  --bg:#f4f1ea; --card:#ffffff; --ink:#182225; --dim:#5c6d72;
+  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">02</div>
-<h1>M2 问题定义</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>HMW 问题卡 · 真实用户痛点科学筛选<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;line-height:1.8;overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.45;pointer-events:none;z-index:0}
+.grain{position:fixed;inset:0;background:radial-gradient(circle at 18% 8%,rgba(13,106,124,.08),transparent 42%),radial-gradient(circle at 84% 26%,rgba(217,123,63,.08),transparent 46%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:9;backdrop-filter:blur(10px);background:rgba(244,241,234,.86);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;letter-spacing:.08em;color:var(--accent);display:flex;align-items:center;gap:8px;font-size:15px}
+.nav-links{display:flex;gap:20px;font-size:13px;color:var(--dim)}
+.nav-links a{color:var(--dim);text-decoration:none;transition:color .25s}
+.nav-links a:hover{color:var(--accent)}
+.hero{padding:96px 0 64px}
+.kicker{font-size:13px;letter-spacing:.35em;color:var(--accent-2);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.kicker i{width:16px;height:16px}
+h1{font-size:clamp(46px,9vw,104px);line-height:1.05;font-weight:900;letter-spacing:.01em}
+h1 .hollow{color:transparent;-webkit-text-stroke:2px var(--accent)}
+.hero-sub{margin-top:22px;font-size:clamp(16px,2.2vw,22px);color:var(--dim);max-width:780px}
+.hero-sub b{color:var(--accent-2)}
+.meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+.chip{font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;display:inline-flex;align-items:center;gap:6px}
+.chip i{width:14px;height:14px;color:var(--accent)}
+.notice{margin-top:30px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:10px;padding:16px 20px;font-size:14px;color:var(--dim)}
+.notice b{color:var(--ink)}
+.stats{margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.stat .n{font-size:clamp(26px,4vw,40px);font-weight:900;color:var(--accent);font-family:Georgia,serif}
+.stat .t{font-size:13px;color:var(--dim);margin-top:4px}
+section{padding:70px 0 20px;position:relative}
+.sec-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:34px}
+.sec-num{font-size:clamp(60px,9vw,110px);font-weight:900;line-height:.85;color:transparent;-webkit-text-stroke:2px var(--accent);font-family:Georgia,serif;opacity:.85}
+.sec-title h2{font-size:clamp(24px,3.6vw,38px);font-weight:900;line-height:1.2}
+.sec-title p{color:var(--dim);font-size:14px;margin-top:6px}
+h3{font-size:clamp(18px,2.4vw,24px);font-weight:800;margin:34px 0 12px;color:var(--accent)}
+.prose{font-size:15.5px;color:#2a3a3f}
+.prose p{margin-bottom:12px}
+.etag{display:inline-block;font-family:Consolas,monospace;font-size:.72em;font-weight:700;padding:1px 8px;border-radius:999px;vertical-align:middle;margin-left:3px;border:1px solid transparent}
+.e1{color:#0d6a7c;border-color:rgba(13,106,124,.5);background:rgba(13,106,124,.08)}
+.e2{color:#8a6d1f;border-color:rgba(138,109,31,.5);background:rgba(217,179,74,.15)}
+.e3{color:#b05a2a;border-color:rgba(176,90,42,.5);background:rgba(217,123,63,.12)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1)}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(13,106,124,.12)}
+.wall{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card .tag{font-size:12px;letter-spacing:.2em;color:var(--accent-2);font-weight:800}
+.card h4{font-size:clamp(17px,2.2vw,21px);font-weight:900;margin:8px 0 10px;display:flex;align-items:center;gap:8px}
+.card h4 i{width:17px;height:17px;color:var(--accent)}
+.card .body{font-size:14px;color:#2a3a3f}
+.card .src{margin-top:12px;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:10px}
+.card .src b{color:var(--accent)}
+.idx{font-family:Georgia,serif;font-size:clamp(26px,3.4vw,36px);font-weight:900;color:transparent;-webkit-text-stroke:1.5px var(--accent-2);line-height:1;margin-right:4px}
+.pain-picked{border:1.5px solid var(--accent-2);border-top:5px solid var(--accent-2);background:linear-gradient(180deg,rgba(217,123,63,.07),var(--card) 40%)}
+.stamp{display:inline-block;font-size:11px;letter-spacing:.2em;color:#fff;background:var(--accent-2);border-radius:999px;padding:3px 12px;font-weight:800;vertical-align:middle;margin-left:8px}
+.stamp.teal{background:var(--accent)}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;border-top:4px solid var(--accent-2)}
+.qcard.teal-top{border-top-color:var(--accent)}
+.qcard h4{font-size:17px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.qcard h4 i{width:17px;height:17px;color:var(--accent-2)}
+.qcard.teal-top h4 i{color:var(--accent)}
+.qcard .body{font-size:13.5px;color:#2a3a3f}
+.inner-quote{margin:12px 0;padding:12px 16px;border-left:3px solid var(--accent-2);background:rgba(217,123,63,.06);border-radius:0 10px 10px 0;font-size:13.5px;color:#2a3a3f}
+.inner-quote b{color:var(--accent)}
+.inner-quote .who{display:block;margin-top:6px;font-size:12px;color:var(--dim)}
+.quote-wrap{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(28px,5vw,54px);overflow:hidden}
+.quote-wrap::before{content:"\201C";position:absolute;top:-30px;left:18px;font-family:Georgia,serif;font-size:220px;color:rgba(13,106,124,.10);line-height:1}
+.quote{font-family:Georgia,"STZhongsong","SimSun",serif;font-size:clamp(19px,2.6vw,28px);line-height:2;position:relative}
+.quote b{color:var(--accent-2)}
+.quote-note{margin-top:22px;font-size:13px;color:var(--dim)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+@media(max-width:860px){.two-col{grid-template-columns:1fr}}
+.hmw{border:1.5px solid var(--accent);border-radius:16px;padding:clamp(26px,4vw,44px);background:linear-gradient(160deg,rgba(13,106,124,.06),var(--card) 45%);position:relative;margin-top:18px}
+.hmw .badge{position:absolute;top:-14px;left:28px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;letter-spacing:.2em;padding:5px 16px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.hmw .badge i{width:14px;height:14px}
+.field{margin-top:24px}
+.fl{font-size:12px;letter-spacing:.25em;color:var(--accent);font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.fl i{width:15px;height:15px}
+.fv{font-size:15px;color:#2a3a3f;line-height:1.95}
+.field.final .fv{font-family:Georgia,"STZhongsong","SimSun",serif;font-size:clamp(19px,2.8vw,26px);line-height:1.9;color:var(--ink);font-weight:700}
+.field.final .fv b{color:var(--accent-2)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+.vcard{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--dim)}
+.vcard b{display:block;color:var(--accent);font-size:12px;letter-spacing:.15em;margin-bottom:6px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:14px}
+th{background:var(--accent);color:#fff;text-align:left;padding:12px 16px;font-size:13.5px;letter-spacing:.05em}
+td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top;color:#2a3a3f}
+tr:hover td{background:rgba(13,106,124,.05)}
+.log-list{margin-top:14px;font-size:13.5px;color:#2a3a3f}
+.log-list li{margin-bottom:8px;margin-left:20px}
+.log-list b{color:var(--accent)}
+a.ext{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+footer{padding:56px 0 64px;text-align:center}
+.footer{font-size:12px;color:var(--dim);letter-spacing:.25em}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:720px){
+  .nav-links{display:none}
+  section{padding:52px 0 12px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+<nav><div class="nav-in">
+  <div class="brand"><i data-lucide="accessibility"></i>OPC M2 问题定义</div>
+  <div class="nav-links">
+    <a href="#track">赛道深度分析</a><a href="#pains">12 条痛点</a><a href="#deep">深挖版</a><a href="#pick">选定与理由</a><a href="#hmw">HMW 问题卡</a><a href="#appendix">数据附录</a>
+  </div>
+</div></nav>
+<div class="wrap">
+
+<section class="hero">
+  <div class="kicker"><i data-lucide="milestone"></i>OPC 创业基础 · M2 · 问题定义全过程报告</div>
+  <h1>无障碍出行的<span class="hollow">最后一米</span></h1>
+  <p class="hero-sub">从 M1《无障碍智慧出行服务》赛道画像出发，经<b>真实用户语料采集、科学筛选、人机圈选定稿</b>，收敛为一张《HMW问题卡》——M3 方案设计的起点。项目基线：以景区为首个落地场景。</p>
+  <div class="meta">
+    <span class="chip"><i data-lucide="users"></i>戢祥毅 · 李茂槐 · 张博然</span>
+    <span class="chip"><i data-lucide="graduation-cap"></i>南京工业职业技术大学 艺术设计学院 工业设计</span>
+    <span class="chip"><i data-lucide="calendar"></i>2026-11-19</span>
+  </div>
+  <div class="notice"><b>数据说明：</b>本次 M2 累计完成 <b>10 次联网检索（24 组查询词）与 7 次页面原文核读</b>，覆盖携程问答、知乎、小红书、新华每日电讯、黑猫投诉、宁波民生e点通等 <b>10 个以上独立来源</b>；采集真实用户语料 <b>29 条</b>（含 2 条项目成员亲历，来源标注"人补充"）。12 条痛点全部可追溯语料编号，<b>无来源推断条数为 0</b>。</div>
+  <div class="stats">
+    <div class="stat reveal"><div class="n">29 条</div><div class="t">真实用户语料（求助 / 吐槽 / 投诉 / 亲历）</div></div>
+    <div class="stat reveal"><div class="n">12 条</div><div class="t">痛点摘要定稿，用户覆盖 8 类、母题 6 种</div></div>
+    <div class="stat reveal"><div class="n">2 / 9</div><div class="t">人圈选条目，最终选定条目 2（成员亲历互证）</div></div>
+    <div class="stat reveal"><div class="n">1 句</div><div class="t">HMW 定稿——人手写落笔，非 AI 代写</div></div>
+  </div>
+</section>
+
+<section id="track">
+  <div class="sec-head reveal">
+    <div class="sec-num">01</div>
+    <div class="sec-title"><h2>赛道深度分析报告</h2><p>无障碍智慧出行服务（赛道）· M2 赛道深度分析 · 五板块带数据</p></div>
+  </div>
+  <div class="prose reveal">
+    <h3>（一）总览与规模</h3>
+    <p>无障碍智慧出行 = 无障碍地图数据 + 无障碍路线导航 + 设施信息查询反馈，服务轮椅使用者、老人、视障人士与陪护人员。据行业研究，2025 年中国无障碍产业规模约 <b>1400 亿元</b><span class="etag e2">E2</span>（第三方产业报告），处政策驱动扩张期；需求真实性已有硬证据——高德轮椅导航上线 2 年累计规划无障碍路线超 <b>1.5 亿次</b><span class="etag e1">E1</span>（新华网 2024-11-29，见附录链接）。</p>
+    <h3>（二）人群规模与画像</h3>
+    <p>60 岁及以上人口约 <b>3.1 亿、占 22.0%</b><span class="etag e1">E1</span>（2024 年统计公报口径）；失能半失能老年人超 <b>4400 万</b><span class="etag e2">E2</span>；残疾人总数 <b>8296 万</b><span class="etag e1">E1</span>（2006 年抽样调查，通行口径"约 8500 万"为 2010 年末推算<span class="etag e2">E2</span>）。直接用户是轮椅使用者本人与陪护者，且惠及面外溢——高德官方称轮椅导航同时服务腿脚不便老人、推婴儿车家长、行李游客<span class="etag e1">E1</span>，潜在用户池远大于残障基数。</p>
+    <h3>（三）消费结构与行为</h3>
+    <p>行为呈<b>"低频高痛、查了才去"</b>特征：出行前先查"能不能去"，查不到就放弃<span class="etag e3">E3</span>（推断）。供给侧刚起步：高德 2 年覆盖仅 <b>58 城</b>、累计 1.5 亿次规划<span class="etag e1">E1</span>，相对全国城市与景区总量渗透率低；银泰 60 家商场刚接入设施信息<span class="etag e1">E1</span>——需求被满足的比例极低，大量封闭场景仍无数据可查。</p>
+    <h3>（四）竞争格局与现有方案不足</h3>
+    <p>三层格局：商业系高德/百度（无障碍为功能点，覆盖 58 城、偏交通设施）、官方系（上海/北京政府背书免费地图，待核）、公益系 Wheelmap 等（十余年未商业化）。结构性缺口 = <b>封闭场景（景区/校园/医院）的建筑入口级细粒度属性 + 设施实时状态运营</b><span class="etag e3">E3</span>：静态点位巨头能做，单场景深度运营 ROI 低没人做。</p>
+    <h3>（五）需求环节拆解与个人匹配</h3>
+    <p>全链路六环节：出行前规划（不知哪有无障碍设施）、到达找入口、垂直通行、场内找路找人、设施查找、异常反馈，每环节都有痛点方向。项目成员两条亲历正踩中最深环节：陪轮椅同学按导航走到楼梯口推行不了（垂直通行）、景区首次去找不到在另一出口等的朋友（场内找人）——最有体感、最能拿到一手语料的切入位置。</p>
+  </div>
+</section>
+
+<section id="pains">
+  <div class="sec-head reveal">
+    <div class="sec-num">02</div>
+    <div class="sec-title"><h2>12 条痛点摘要</h2><p>痛度三因子筛选（频次 / 单次损失 / 无解程度，≥5 分保留）· 每条附真实语料，可追溯编号</p></div>
+  </div>
+  <div class="wall">
+    <div class="card reveal"><div class="tag">母题 A · 出行前信息缺失 · 8 分</div><h4><span class="idx">1</span><i data-lucide="search"></i>出行前查不到"能不能去"</h4><div class="body">轮椅使用者，出行前规划：查不到目标景区能否无障碍通行，只能发帖求"实测"，查不到就干脆不去；现有方案无标准化无障碍信息源。</div><div class="src">「<b>老人可以坐轮椅游玩吗</b>」携程问答｜「<b>轮椅去宜宾两日游可行吗？无障碍实测如何？</b>」知乎｜「<b>不建议，安全第一</b>」携程回答（语料 1/5/6/8）</div></div>
+    <div class="card pain-picked reveal"><div class="tag">母题 B · 路线与通行能力脱节 · 8 分<span class="stamp">已选定</span></div><h4><span class="idx">2</span><i data-lucide="triangle-alert"></i>导航路线推不动</h4><div class="body">陪护家属/轮椅使用者，景区行进中：按导航走的路实际推不动，多处不得不把人扶起来走，导航毫无提示——路线信息与实际通行能力脱节，项目核心痛点。</div><div class="src">「<b>我就是用轮椅推着母亲的，但很多地方不得不起来扶着走</b>」携程回答｜成员亲历：陪骨折同学按导航走到楼梯口（语料 4/21）</div></div>
+    <div class="card reveal"><div class="tag">母题 B · 路线脱节 · 7 分</div><h4><span class="idx">3</span><i data-lucide="stairs"></i>路段混着台阶与拱桥</h4><div class="body">轮椅使用者，景区内路段：路线混着台阶、拱桥、青石板路，走一半被卡住，没有绕行信息。</div><div class="src">「<b>景区里面是青石板路为主，轮椅不是太方便</b>」「<b>有上桥下桥</b>」「<b>有的地方都有台阶</b>」携程回答（语料 2/3/7）</div></div>
+    <div class="card reveal"><div class="tag">母题 C · 设施状态失效 · 8 分</div><h4><span class="idx">4</span><i data-lucide="train-front"></i>无障碍电梯被困</h4><div class="body">轮椅使用者，交通枢纽出入口：无障碍电梯停用或找不到，被困出口成"孤岛"，设施状态没人更新。</div><div class="src">「<b>被困在地铁口的孤岛｜一个轮椅男生求救</b>」小红书（语料 9）</div></div>
+    <div class="card reveal"><div class="tag">母题 A/B · 7 分</div><h4><span class="idx">5</span><i data-lucide="baby"></i>攻略与实际不符</h4><div class="body">推婴儿车家庭，景区/城市游玩：网上攻略说"适合推车"，到了全是台阶，只能硬抬或折返，攻略不可验证。</div><div class="src">「<b>救命，到底谁建议去北京推车的，不要租车</b>」小红书（语料 11）</div></div>
+    <div class="card reveal"><div class="tag">母题 A · 出行前信息缺失 · 5 分</div><h4><span class="idx">6</span><i data-lucide="mountain"></i>到山顶才发现限制</h4><div class="body">老年游客（含子女陪护），山地景区：爬到山顶才发现缆车有乘坐限制，体力耗尽白爬一趟，使用条件事先不透明。</div><div class="src">「<b>老人爬上山没坐成缆车，游客认为应明确年龄限制</b>」青岛新闻网（语料 13）</div></div>
+    <div class="card reveal"><div class="tag">母题 B/C · 9 分（最高痛度）</div><h4><span class="idx">7</span><i data-lucide="eye-off"></i>盲道断档无提示</h4><div class="body">视障人士，日常步行：盲道断档、开裂无任何提示，险些摔倒，环境障碍信息为零。</div><div class="src">「<b>20 多米盲道断档、路面严重开裂，视障老伯险些摔倒</b>」东方网（语料 14）</div></div>
+    <div class="card reveal"><div class="tag">母题 E · 规则不透明 · 6 分</div><h4><span class="idx">8</span><i data-lucide="dog"></i>导盲犬入园被拦</h4><div class="body">视障游客（用导盲犬），景区入园：准入规则不透明，到了门口被拦，白跑一趟。</div><div class="src">「<b>导盲犬进景区不该再有疑问</b>」（被拒入园事件）腾讯新闻（语料 15）</div></div>
+    <div class="card pain-picked reveal"><div class="tag">母题 D · 场内导航失效 · 7 分<span class="stamp teal">已圈选</span></div><h4><span class="idx">9</span><i data-lucide="map-pin-off"></i>场内找不到出口和人</h4><div class="body">普通游客，大型景区场内：进来后找不到出口和集合点，指示牌缺失或混乱，朋友在另一个门只能靠电话碰头，耗时极长。</div><div class="src">「<b>台儿庄古城内游客只能进不知道怎么出</b>」黑猫投诉｜成员亲历：朋友在另一出口等，找了很久（语料 16/20/22）</div></div>
+    <div class="card reveal"><div class="tag">母题 C · 设施状态失效 · 6 分</div><h4><span class="idx">10</span><i data-lucide="door-closed"></i>无障碍厕所状态不明</h4><div class="body">特殊需求儿童家庭，公园/景区如厕：无障碍厕所锁着、坏了或找不到，状态不明，应急需求落空。</div><div class="src">「<b>北仑儿童公园无障碍厕所［投诉］</b>」宁波民生e点通（语料 17）</div></div>
+    <div class="card reveal"><div class="tag">母题 F · 反馈闭环缺失 · 7 分</div><h4><span class="idx">11</span><i data-lucide="wrench"></i>设施坏了反馈无门</h4><div class="body">残障人士，设施损坏后：遇到无障碍设施老化失修不知道找谁、反馈无门，坏了长期没人修。</div><div class="src">「<b>残疾人出行遇到无障碍设施老化失修该找谁？</b>」微信公众号求助文（语料 18）</div></div>
+    <div class="card reveal"><div class="tag">母题 A/B · 6 分</div><h4><span class="idx">12</span><i data-lucide="map"></i>现有导航覆盖太浅</h4><div class="body">现有无障碍导航用户：现有方案仅覆盖约 58 城、偏交通设施，封闭场景（景区/园区内部）无细粒度数据，体验与宣传预期有落差。</div><div class="src">「<b>关于高德地图无障碍导航使用</b>」小红书｜58 城数据：新华网 <span class="etag e1">E1</span>（语料 19）</div></div>
+  </div>
+</section>
+
+<section id="deep">
+  <div class="sec-head reveal">
+    <div class="sec-num">03</div>
+    <div class="sec-title"><h2>深挖版</h2><p>人圈选条目 2 与 9 · 补抓语料 7 条，语料池扩至 29 条 · 关键证据来自新华每日电讯调查报道</p></div>
+  </div>
+  <div class="qgrid">
+    <div class="qcard teal-top reveal"><h4><i data-lucide="key-round"></i>条目 2 · 路线与实际通行能力脱节</h4>
+      <div class="body">用户比预想更广：90 后轮椅夫妻、轮友群、临时伤者（骨折/崴脚康复期）、推婴儿车家长，全是同一痛点的变体。场景沿行程逐级展开——出发前订酒店要「打十几个电话」逐家问门宽坡度；到入口遇隔离墩，「是绕路找下一个入口，还是求助他人把我们抬进去」；被抬时「感谢与窘迫交织」；终点是放弃出行。
+      <div class="inner-quote">「地图软件的无障碍导航已经能清晰规划路线、避开连续台阶陡坡，但导航无法告诉我们眼前景区<b>哪一个入口没有隔离墩——这最后一米的信息，多是空白</b>。」<span class="who">新华每日电讯 2026-05-18，轮椅使用者祁昌阳原话 <span class="etag e1">E1</span>——路线级信息巨头已做，入口级/最后一米是空白，与项目基线"建筑入口级数据"严丝合缝。</span></div>
+      <div class="inner-quote">「物品可以网购，电影可以下载，美食可以外卖，<b>不出门，没人觉得我们是负担</b>。」<span class="who">轮友群发言 <span class="etag e1">E1</span>——痛点最深后果：因出行摩擦过大而系统性放弃出行。</span></div>
+      关键判断：痛点真实、有 E1 权威背书、直指项目核心能力（入口级无障碍数据），且现有方案明确未覆盖。</div></div>
+    <div class="qcard reveal"><h4><i data-lucide="split"></i>条目 9 · 场内找路找人失效</h4>
+      <div class="body">用户变化：家庭游、朋友结伴、跟团走散、独自游客——几乎每个去过大型景区的人都中过招（高频）。场景细分：找不到出口（台儿庄投诉、「阴间出口设计」成高赞话题）；场内步行失控；找人靠碰（成员亲历，阿勒泰景区走散已严重到导游要教「5 条无信号集合法则」）；信息载体仍是纸质地图、立式指示牌、广播找人。
+      <div class="inner-quote">「对国内的很多景区很无语，把个景区搞得特别大……结束后再重新走一遍。这一圈下来<b>快累傻了</b>。啥都没看到呢，人先累啥了。」<span class="who">小红书用户长文 <span class="etag e2">E2</span></span></div>
+      关键判断：频次极高、人人共鸣、演示最直观；但头部景区场内地图巨头已有布局（深度与实时性待验证），差异化同样要落在「细粒度 + 实时 + 无障碍叠加」。</div></div>
+  </div>
+</section>
+
+<section id="pick">
+  <div class="sec-head reveal">
+    <div class="sec-num">04</div>
+    <div class="sec-title"><h2>选定条目与理由</h2><p>成员原话，AI 仅存档未改写 · 圈选轨迹：先圈 1、2，后改 2、9，最终选定 2——全部由人作出</p></div>
+  </div>
+  <div class="two-col">
+    <div class="card reveal"><div class="tag">选定结果</div><h4><i data-lucide="crosshair"></i>条目 2 · 路线与通行能力脱节</h4>
+      <div class="body">细分领域定位（由选定条目导出）：<b>轮椅使用者及其陪护者 × 景区/公共空间出行 × 通行能力信息缺失</b>。<br><br>条目 9 未废弃：进 M4 需求文档 P1 档 / V2 演进路线。产品双模式不变——无障碍模式为核心灵魂，场内导航为搭载能力。</div></div>
+    <div class="quote-wrap reveal">
+      <div class="quote">轮椅使用者面临的不只是找路问题，而是地图规划的路线与现实通行能力脱节，尤其是<b>景区入口、道路障碍和最后一米的信息缺失</b>，痛点更真实、社会价值更突出。相比普通景区寻路，它更能体现 AI 在视觉识别、通行能力分析和智能路线规划上的实际价值，也更容易形成有差异化、有商业拓展空间的比赛项目。</div>
+      <div class="quote-note">项目成员口述定稿理由 · 2026-11-19 · AI 仅做文字存档，未代写、未修改。</div>
+    </div>
+  </div>
+</section>
+
+<section id="hmw">
+  <div class="sec-head reveal">
+    <div class="sec-num">05</div>
+    <div class="sec-title"><h2>HMW 问题卡</h2><p>人手写定稿 · 已通过与 AI 变体逐字比对校验（均不相同，非复制粘贴）</p></div>
+  </div>
+  <div class="hmw reveal">
+    <span class="badge"><i data-lucide="badge-check"></i>人手写定稿</span>
+    <div class="field"><div class="fl"><i data-lucide="user"></i>01 目标用户</div><div class="fv">以使用轮椅出行的人群为核心，尤其是前往陌生景区、对周边道路及无障碍设施不熟悉，需要依赖外部信息判断通行条件的轮椅使用者。</div></div>
+    <div class="field"><div class="fl"><i data-lucide="map-pin"></i>02 特定场景</div><div class="fv">一位轮椅使用者第一次来到大型景区，准备进入景区游览。景区设有多个出入口，但不同入口的道路结构、坡道、台阶及隔离设施存在差异。用户虽然能够通过地图找到景区位置，却无法提前判断哪个入口真正适合轮椅通行。</div></div>
+    <div class="field"><div class="fl"><i data-lucide="zap"></i>03 核心痛点</div><div class="fv">现有地图提供的信息主要集中在地理位置和路线规划，对景区具体入口及道路实际通行条件的描述不够细致。用户无法在出发前准确了解入口是否存在台阶、坡道是否符合自身通行条件、是否有隔离设施等关键信息，导致地图规划结果与现场实际情况可能不一致，增加了绕行、等待他人协助和无法顺利进入景区的风险。</div></div>
+    <div class="field final"><div class="fl"><i data-lucide="milestone"></i>04 HMW 问题完整表述</div><div class="fv">我们如何帮助轮椅使用者在前往陌生景区时，<b>提前了解并判断不同入口及沿途道路的真实通行条件</b>，减少因无障碍信息缺失而产生的不确定性，让他们能够<b>更加自主、顺畅地完成景区出行</b>？</div></div>
+  </div>
+  <div class="vgrid reveal">
+    <div class="vcard"><b>AI 参考变体一 · 出发前视角</b>让轮椅使用者和陪护者在出发前就知道每条路线的真实通行能力——台阶、坡度、路面材质一目了然，而不是到了才发现推不动。</div>
+    <div class="vcard"><b>AI 参考变体二 · 最后一米视角</b>在到达景区/公共建筑入口的那一刻，指明哪个入口有坡道、无隔离墩、电梯可用，不用绕路十几分钟、不用被抬着进门。</div>
+    <div class="vcard"><b>AI 参考变体三 · 全程实时视角</b>出行全程实时掌握道路与无障碍设施的真实状态（故障、封闭、被占），把未知的风险变成可验证的把握。</div>
+  </div>
+  <p class="reveal" style="font-size:13px;color:var(--dim);margin-top:16px">AI 变体仅作参考；定稿句与三个变体措辞、句式、重心均不相同，校验通过。三个变体的角度（出发前 / 到达时 / 全程实时）均已被定稿句吸收为「提前了解并判断不同入口及沿途道路」。</p>
+</section>
+
+<section id="appendix">
+  <div class="sec-head reveal">
+    <div class="sec-num">06</div>
+    <div class="sec-title"><h2>数据来源附录</h2><p>关键数字可追溯 · 检索记录公开 · 人机分工留痕</p></div>
+  </div>
+  <table class="reveal">
+    <tr><th>数据点</th><th>等级</th><th>来源</th></tr>
+    <tr><td>高德轮椅导航 2 年、58 城、路线规划超 1.5 亿次；银泰 60 家商场接入</td><td><span class="etag e1">E1</span></td><td><a class="ext" href="https://www.news.cn/tech/20241129/9105db5dc0ff49cb9faa4556c0dccc0f/c.html" target="_blank" rel="noopener">新华网 2024-11-29</a></td></tr>
+    <tr><td>「最后一米信息空白」「打十几个电话订一间房」等轮椅用户原话</td><td><span class="etag e1">E1</span></td><td><a class="ext" href="http://www.xinhuanet.com/local/20260518/193cb1f386314cf98c5726f7cdee69e5/c.html" target="_blank" rel="noopener">新华每日电讯 2026-05-18《「轮椅朋友」出行，到底难在哪儿？》</a></td></tr>
+    <tr><td>60 岁及以上人口约 3.1 亿、占 22.0%</td><td><span class="etag e1">E1</span></td><td>国家统计局 2024 年统计公报口径（2023 年公报全文链接见 M1 附录）</td></tr>
+    <tr><td>残疾人总数 8296 万（肢体残疾 2412 万）</td><td><span class="etag e1">E1</span></td><td>第二次全国残疾人抽样调查（全国人大网，见 M1 附录）</td></tr>
+    <tr><td>2025 年中国无障碍产业规模约 1400 亿元</td><td><span class="etag e2">E2</span></td><td><a class="ext" href="https://www.gonyn.com/industry/1877102.html" target="_blank" rel="noopener">第三方产业研究报告（共研网）</a></td></tr>
+    <tr><td>失能半失能老年人超 4400 万</td><td><span class="etag e2">E2</span></td><td>民政部老龄事业公报流传口径（年份待核）</td></tr>
+    <tr><td>29 条真实用户语料（携程问答/知乎/小红书/黑猫投诉/宁波民生e点通/东方网/青岛新闻网/腾讯新闻/微信公众号/搜狐）</td><td><span class="etag e2">E2</span></td><td>M2 语料库 V1（07_M2交付物，逐条含来源、情绪、指向）</td></tr>
+  </table>
+  <div class="prose reveal" style="margin-top:26px">
+    <h3>过程与校验记录</h3>
+    <ul class="log-list">
+      <li><b>检索强度</b>：Step 2 赛道分析 4 次检索 + 1 次原文核读；Step 3 语料采集 4 批 12 组查询词 + 4 次页面核读；Step 6 深挖 2 批 + 2 次原文核读——合计 10 次检索、24 组查询词，达 standard 档。</li>
+      <li><b>语料规模</b>：29 条（要求 ≥15，达标），其中携程问答逐字引用 7 条、项目成员亲历 2 条（来源标"人补充"）、新华每日电讯用户原话 3 条，其余为用户发布内容标题原文并如实标注。</li>
+      <li><b>痛点校验</b>：恰好 12 条；用户覆盖 8 类（轮椅本人/陪护家属/推车家庭/老年游客/视障人士/视障导盲犬用户/普通游客/特殊需求儿童家庭）；母题 6 种（信息缺失/路线脱节/状态失效/场内导航失效/规则不透明/反馈闭环缺失）；不含方案表述；无来源推断条数 0；逐条附语料编号。</li>
+      <li><b>人机分工</b>：圈选（先 1、2 后改 2、9）、选定条目 2、定稿理由、HMW 手写落稿均由人作出；AI 仅负责检索、赛道分析、语料采集、痛点筛选、变体生成与重复性校验。</li>
+      <li><b>基线裁决（2026-11-19）</b>：首发场景以景区为准（M1"校园优先"顺序作废）；保留多 Agent 协作架构（AI 只做分类粗筛 + 人工复核约束不变）；路演 PPT 以活动通知为准不超过 6 页，按 8 页内容结构组织后压缩。</li>
+      <li><b>模块衔接</b>：上游 = M1 赛道画像 V2 + 项目基线 V1；下游 = HMW 问题卡交 M3 方案设计；条目 9 转 M4 需求文档 P1 档。</li>
+    </ul>
+  </div>
+</section>
+
+<footer><div class="footer">子谦国际 OPC 创业基础</div></footer>
+</div>
+<script>
+(function(){
+  var reveals=document.querySelectorAll('.reveal');
+  try{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.08});
+    reveals.forEach(function(el,i){ el.style.transitionDelay=(i%4)*60+'ms'; io.observe(el); });
+  }catch(err){
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  }
+  setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); },1500);
+  try{ lucide.createIcons(); }catch(err){ }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1 赛道分析｜无障碍智慧出行服务</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#f4f1ea; --card:#ffffff; --ink:#182225; --dim:#5c6d72;
+  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;line-height:1.8;overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.45;pointer-events:none;z-index:0}
+.grain{position:fixed;inset:0;background:radial-gradient(circle at 18% 8%,rgba(13,106,124,.08),transparent 42%),radial-gradient(circle at 84% 26%,rgba(217,123,63,.08),transparent 46%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:9;backdrop-filter:blur(10px);background:rgba(244,241,234,.86);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;letter-spacing:.08em;color:var(--accent);display:flex;align-items:center;gap:8px;font-size:15px}
+.nav-links{display:flex;gap:20px;font-size:13px;color:var(--dim)}
+.nav-links a{color:var(--dim);text-decoration:none;transition:color .25s}
+.nav-links a:hover{color:var(--accent)}
+.hero{padding:96px 0 64px}
+.kicker{font-size:13px;letter-spacing:.35em;color:var(--accent-2);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.kicker i{width:16px;height:16px}
+h1{font-size:clamp(46px,9vw,104px);line-height:1.05;font-weight:900;letter-spacing:.01em}
+h1 .hollow{color:transparent;-webkit-text-stroke:2px var(--accent)}
+.hero-sub{margin-top:22px;font-size:clamp(16px,2.2vw,22px);color:var(--dim);max-width:760px}
+.hero-sub b{color:var(--accent-2)}
+.meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+.chip{font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;display:inline-flex;align-items:center;gap:6px}
+.chip i{width:14px;height:14px;color:var(--accent)}
+.notice{margin-top:30px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:10px;padding:16px 20px;font-size:14px;color:var(--dim)}
+.notice b{color:var(--ink)}
+.stats{margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.stat .n{font-size:clamp(26px,4vw,40px);font-weight:900;color:var(--accent);font-family:Georgia,serif}
+.stat .t{font-size:13px;color:var(--dim);margin-top:4px}
+section{padding:70px 0 20px;position:relative}
+.sec-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:34px}
+.sec-num{font-size:clamp(60px,9vw,110px);font-weight:900;line-height:.85;color:transparent;-webkit-text-stroke:2px var(--accent);font-family:Georgia,serif;opacity:.85}
+.sec-title h2{font-size:clamp(24px,3.6vw,38px);font-weight:900;line-height:1.2}
+.sec-title p{color:var(--dim);font-size:14px;margin-top:6px}
+h3{font-size:clamp(18px,2.4vw,24px);font-weight:800;margin:34px 0 12px;color:var(--accent)}
+.prose{font-size:15.5px;color:#2a3a3f}
+.prose p{margin-bottom:12px}
+.etag{display:inline-block;font-family:Consolas,monospace;font-size:.72em;font-weight:700;padding:1px 8px;border-radius:999px;vertical-align:middle;margin-left:3px;border:1px solid transparent}
+.e1{color:#0d6a7c;border-color:rgba(13,106,124,.5);background:rgba(13,106,124,.08)}
+.e2{color:#8a6d1f;border-color:rgba(138,109,31,.5);background:rgba(217,179,74,.15)}
+.e3{color:#b05a2a;border-color:rgba(176,90,42,.5);background:rgba(217,123,63,.12)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1)}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(13,106,124,.12)}
+.wall{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card .tag{font-size:12px;letter-spacing:.2em;color:var(--accent-2);font-weight:800}
+.card h4{font-size:clamp(17px,2.2vw,21px);font-weight:900;margin:8px 0 10px}
+.card .body{font-size:14px;color:#2a3a3f}
+.card .src{margin-top:12px;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:10px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;border-top:4px solid var(--accent-2)}
+.qcard h4{font-size:17px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.qcard h4 i{width:17px;height:17px;color:var(--accent-2)}
+.qcard .body{font-size:13.5px;color:#2a3a3f}
+.quote-wrap{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(28px,5vw,54px);overflow:hidden}
+.quote-wrap::before{content:"\201C";position:absolute;top:-30px;left:18px;font-family:Georgia,serif;font-size:220px;color:rgba(13,106,124,.10);line-height:1}
+.quote{font-family:Georgia,"STZhongsong","SimSun",serif;font-size:clamp(19px,2.6vw,28px);line-height:2;position:relative}
+.quote b{color:var(--accent-2)}
+.quote-note{margin-top:22px;font-size:13px;color:var(--dim)}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:14px}
+th{background:var(--accent);color:#fff;text-align:left;padding:12px 16px;font-size:13.5px;letter-spacing:.05em}
+td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top}
+tr:hover td{background:rgba(13,106,124,.05)}
+ol.src-list{margin:14px 0 0 22px;font-size:14px;color:#2a3a3f}
+ol.src-list li{margin-bottom:6px}
+.log-list{margin-top:14px;font-size:13.5px;color:#2a3a3f}
+.log-list li{margin-bottom:8px}
+.log-list b{color:var(--accent)}
+a.ext{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+footer{padding:56px 0 64px;text-align:center}
+.footer{font-size:12px;color:var(--dim);letter-spacing:.25em}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:720px){
+  .nav-links{display:none}
+  section{padding:52px 0 12px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+<nav><div class="nav-in">
+  <div class="brand"><i data-lucide="accessibility"></i>OPC M1 赛道分析</div>
+  <div class="nav-links">
+    <a href="#report">赛道分析报告</a><a href="#profile">赛道画像五要素</a><a href="#reason">定稿理由</a><a href="#appendix">数据来源附录</a>
+  </div>
+</div></nav>
+<div class="wrap">
+
+<section class="hero">
+  <div class="kicker"><i data-lucide="map-pin"></i>OPC 创业基础 · M1 · 赛道分析全过程报告（数据核实版）</div>
+  <h1>无障碍<span class="hollow">智慧出行</span>服务</h1>
+  <p class="hero-sub">AI 无障碍智能导航项目 · 赛道画像 V2 —— 智能导航与<b>无障碍模式</b>双轨，先做校园封闭场景的<b>实时状态运营</b>。</p>
+  <div class="meta">
+    <span class="chip"><i data-lucide="users"></i>戢祥毅 · 李茂槐 · 张博然</span>
+    <span class="chip"><i data-lucide="graduation-cap"></i>南京工业职业技术大学 艺术设计学院 工业设计</span>
+    <span class="chip"><i data-lucide="calendar"></i>2026-11-18</span>
+  </div>
+  <div class="notice"><b>数据说明：</b>本次完成 <b>8 次联网检索</b>（2026-11-18），覆盖 6 个独立来源；<b>6 项核心数字已核实并升级为 E1 并附来源链接</b>（法条施行日期、2006 年残疾人调查、普通高校名单、A 级景区、高德无障碍导航、家庭无障碍改造）；<b>2026-11-19 补充复核</b>：补齐 2023 年统计公报全文链接、卫健委 2035 年人口预测由 E2 升级 E1 并附来源，E1 附链接项增至 <b>8</b>。其余数字维持 E2（知识库/流传口径待核）与 E3（团队推断/假设）标注，赛前继续复核。E1 记忆口径未经本次复核的，逐条标注待补。</div>
+  <div class="stats">
+    <div class="stat reveal"><div class="n">8296 万</div><div class="t">残疾人（2006 年抽样调查，肢体残疾 2412 万）<span class="etag e1">E1</span></div></div>
+    <div class="stat reveal"><div class="n">2.97 亿</div><div class="t">60 岁及以上人口，占 21.1%（2023 年统计公报）<span class="etag e1">E1</span></div></div>
+    <div class="stat reveal"><div class="n">1.5 亿次</div><div class="t">高德无障碍导航 2 年路线规划量，覆盖 58 城<span class="etag e1">E1</span></div></div>
+    <div class="stat reveal"><div class="n">1–4 亿/年</div><div class="t">本细分自下而上假设推算的可服务空间<span class="etag e3">E3</span></div></div>
+  </div>
+</section>
+
+<section id="report">
+  <div class="sec-head reveal">
+    <div class="sec-num">01</div>
+    <div class="sec-title"><h2>赛道分析报告</h2><p>无障碍智慧出行服务（赛道）· M1 赛道分析 · 四节带数据</p></div>
+  </div>
+  <div class="prose reveal">
+    <h3>（一）总览与规模</h3>
+    <p>无障碍智慧出行服务 = 无障碍地图数据 + 无障碍路线导航 + 设施信息查询反馈，服务轮椅使用者、老人与陪护人员。银发经济大盘目前约 7 万亿元、占 GDP 约 5%–6%<span class="etag e2">E2</span>（发改委 2024 年 1 月发布会口径，仅作背景，不与细分直接换算）。本细分无公开规模统计，自下而上假设推算：全国普通高校 <b>2868 所</b><span class="etag e1">E1</span>（教育部 2024 年 6 月名单，全国高校合计 3117 所）+ A 级景区 <b>1.49 万家</b><span class="etag e1">E1</span>（文旅部），单客户年费假设 0.5–3 万元<span class="etag e3">E3</span>，可服务空间约 <b>1–4 亿元/年</b><span class="etag e3">E3</span>（假设，推导见附录）。</p>
+    <h3>（二）增长与结构</h3>
+    <p>60 岁及以上人口 2.97 亿、占 21.1%<span class="etag e1">E1</span>（国家统计局 2023 年统计公报），2035 年预计突破 4 亿、占比超 30%<span class="etag e1">E1</span>（国家卫健委 2022-09-20 新闻发布会，见附录链接）；残疾人 <b>8296 万</b><span class="etag e1">E1</span>（2006 年 4 月 1 日第二次全国残疾人抽样调查，全国人大网资料），其中肢体残疾 <b>2412 万</b><span class="etag e1">E1</span>；通行口径"约 8500 万"为 2010 年末推算<span class="etag e2">E2</span>（央广网 2024 年报道仍引用）；失能半失能老年人约 4400 万<span class="etag e2">E2</span>（民政部流传口径，年份待核）。政策强周期证据：困难重度残疾人家庭无障碍改造完成 <b>122.5 万户</b>，提前完成"十四五"110 万户目标<span class="etag e1">E1</span>（国家统计局报告，新华社 2025 年 10 月）。大盘增速：7 万亿（目前）至 2035 年 30 万亿<span class="etag e2">E2</span>（预测），推算 CAGR 约 14%（式见附录），不外推至细分；细分增速无公开数据<span class="etag e3">E3</span>（定性）：设施改造受《无障碍环境建设法》（2023-09-01 施行）驱动进入政策强周期，信息服务处 0 到 1 期、基数近零，以覆盖机构数为增长指标<span class="etag e3">E3</span>（假设）。</p>
+    <h3>（三）竞争格局与门槛</h3>
+    <p>三层格局：<b>商业系</b>——高德地图无障碍轮椅导航 <b>2022 年 11 月 25 日上线</b>（中国残联、浙江省残联支持指导），截至 2024 年 11 月累计提供超 <b>1.5 亿次</b>路线规划、覆盖 <b>58 个城市</b>、日均近 18 万次<span class="etag e1">E1</span>（央广网 2024-11-29）；百度地图有无障碍功能<span class="etag e2">E2</span>（待核）；两家合计手机地图份额约八成量级<span class="etag e3">E3</span>（推断待复核），无障碍仅为功能点但投入持续加大。<b>官方系</b>——上海、北京已有政府背书的免费无障碍地图/平台<span class="etag e2">E2</span>（记忆待核）。<b>公益系</b>——Wheelmap、AccessNow 运营十余年均未商业化<span class="etag e2">E2</span>，空白既可能是机会，也可能是"无人愿付费"的负面证据（待验证假设）。高德 1.5 亿次数据带来双向判断：需求真实存在（利好），巨头持续投入（风险面），差异化必须钉在封闭场景实时状态运营。真正空白 = 封闭场景细粒度属性（坡度数值/净宽/高差）与设施实时状态运营<span class="etag e3">E3</span>（判断，赛前以 OSM 标签密度实测回填）。门槛：资质低但含测绘合规边界——用合规底图 + 自有设施标注规避，不自绘地图<span class="etag e2">E2</span>（法规常识）；技术中（AI 识别降本，E3 估算）；资本低（服务器数百元/年量级，E3 估算）；数据采集需授权 + 人力（单校园核心区约 30 人·天，E3 假设）。</p>
+    <h3>（四）趋势与切入点（AI 候选，供逐条保留/删/改）</h3>
+    <p>趋势一：政策强制化——首部《无障碍环境建设法》（2023-09-01 施行）确立机构信息无障碍义务；趋势二：老龄化刚性需求<span class="etag e2">E2</span>；趋势三：多模态视觉大模型使识别成本从人工标注（约几元/条）降至 API 调用（约几元/千次）量级<span class="etag e3">E3</span>（估算，定价赛前核实回填）。AI 候选切入点：本校校园 MVP——室外路网 + 建筑入口级 + 核心教学区 1 条示范动线，采集 SOP + 视觉模型分类粗筛（准确率待 100 张标注 POC，不预置任何数值）+ 小程序交付；路径 = 校园置换试点，再到景区付费验证；机构付费为待验证假设 H1。</p>
+  </div>
+  <h3 class="reveal">对评委三个尖锐质疑的正面回应</h3>
+  <div class="qgrid">
+    <div class="qcard reveal"><h4><i data-lucide="help-circle"></i>机构为什么付费？</h4><div class="body">这是待验证假设，不是已成立结论。《无障碍环境建设法》只规定信息无障碍义务，机构用标识牌、纸质导览即可合规——我们承认这一缺口。验证动作：两周内访谈不少于 3 家真实决策人（本校后勤处设施科、任一景区运营方、1 所校外高校对标），确认付费科目与触发事件；检索政府采购网真实中标公告作先例。同时给机构一个可验证的付费理由：代建无障碍数字台账 + 巡查报告 + "已尽提示义务"留痕凭证。若访谈拿不到付费证据，机构付费列为项目第一大风险，用单楼栋/单动线微型试点做最低成本证伪。政策面新增佐证：家庭无障碍改造 122.5 万户已完成"十四五"目标（E1），说明机构侧无障碍支出真实存在——但需验证该预算流向设施改造还是信息服务。</div></div>
+    <div class="qcard reveal"><h4><i data-lucide="shield-alert"></i>巨头会不会碾压？</h4><div class="body">高德 2022 年 11 月起已做轮椅导航且免费，2 年 1.5 亿次、58 城（E1），我们不猜"巨头不愿做"，改用结构性论证：园区级细粒度采集必须获得场地方授权配合，单场景规模小、巨头 ROI 低；我们不做城市级 C 端导航竞争，只做机构授权场景的深度数据与实时状态运营（电梯检修、施工封闭的当日反馈闭环）——静态点位谁都能做，实时运营没人替单个学校做。若巨头补齐封闭场景，备选定位是场景级数据运营服务商：校方排他合作 + 机构私有数据授权 + 合规留痕。</div></div>
+    <div class="qcard reveal"><h4><i data-lucide="database"></i>数据从哪来？</h4><div class="body">四层来源：其一，公开合规底图（腾讯/微信地图 SDK 或天地图承载），不自绘全国地图、不测地形，规避测绘资质与审图号风险；其二，实地采集——前置依赖是场地方授权，第一个具体动作是赛前取得本校后勤处采集授权，以"校园无障碍摸底报告 + 电子地图"置换采集许可与校内推广（零现金，置换不等于收入）；其三，用户众包上报 + 管理员复核，按 confirmed/pending/unverified 置信度分级展示，原型用模拟数据并显著标注"模拟"；其四，视觉大模型只做"分类 + 粗筛"，人工复核入库。错误引导风险由"AI 结果人工复核 + 风险路段强提示与降级路线 + 免责边界与协议条款"三件套兜底，准确率在 POC 完成前不做任何数字承诺。</div></div>
+  </div>
+</section>
+
+<section id="profile">
+  <div class="sec-head reveal">
+    <div class="sec-num">02</div>
+    <div class="sec-title"><h2>《OPC 赛道画像》五要素</h2><p>每要素带数据支撑与证据级别标注（已核实项升级 E1）</p></div>
+  </div>
+  <div class="wall">
+    <div class="card reveal"><div class="tag">要素 1 · NAME</div><h4>赛道名称</h4><div class="body">无障碍智慧出行服务：无障碍地图数据、无障碍路线导航、设施信息查询反馈。MVP 锁定本校校园 1 个封闭场景，景区为第二验证目标，医院/商场降为远期假设（E3）；目标用户明确为"轮椅使用者本人 + 陪护人员"两类（E3 判断，待 M2 访谈细化）。</div><div class="src">一句话可指认，避免"8500 万残疾人"泛基数论证。</div></div>
+    <div class="card reveal"><div class="tag">要素 2 · SIZE</div><h4>市场规模</h4><div class="body">本细分自下而上假设推算约 1–4 亿元/年（E3 假设）；银发经济大盘约 7 万亿元（E2，仅作趋势背景，不作付费论证依据）。</div><div class="src">推算链：普通高校 2868 所<span class="etag e1">E1</span> + A 级景区 1.49 万家<span class="etag e1">E1</span> × 年费假设 0.5–3 万元<span class="etag e3">E3</span> 至约 1–4 亿元/年；三级漏斗：银发大盘、无障碍出行细分、本校 1 个灯塔客户 + 同城 1 个景区<span class="etag e3">E3</span>（假设）。</div></div>
+    <div class="card reveal"><div class="tag">要素 3 · SPEED</div><h4>增长速度</h4><div class="body">大盘推算 CAGR 约 14%（7 万亿至 2035 年 30 万亿，E2 预测，推算式见附录），不外推至细分；细分增速无公开数据——设施改造政策强驱动、信息服务 0 到 1 期以覆盖机构数为增长指标（E3 假设）。</div><div class="src">《无障碍环境建设法》2023-09-01 施行<span class="etag e1">E1</span>；家庭无障碍改造 122.5 万户提前完成"十四五"目标<span class="etag e1">E1</span>；60+ 约 2.97 亿<span class="etag e1">E1</span> 至 2035 年超 4 亿、占比超 30%<span class="etag e1">E1</span>（卫健委发布会，见附录）；佐证路径：政府采购网"无障碍改造"招标数量变化。</div></div>
+    <div class="card reveal"><div class="tag">要素 4 · RIVAL</div><h4>竞争格局</h4><div class="body">三层格局中封闭场景均未占据：商业系高德/百度（无障碍仅为功能点）、官方系上海/北京（免费官方地图，待核证）、公益系 Wheelmap/AccessNow（十余年未商业化，同时构成"付费意愿存疑"的负面证据）。</div><div class="src">高德无障碍导航 2022-11-25 上线，2 年 1.5 亿次、58 城<span class="etag e1">E1</span>；两家份额约八成量级<span class="etag e3">E3</span>（推断）；需求真实但巨头持续投入——差异化钉在封闭场景实时运营；空白点 = 细粒度属性 + 实时状态<span class="etag e3">E3</span>（判断，Overpass 实测回填）。</div></div>
+    <div class="card reveal"><div class="tag">要素 5 · MOAT</div><h4>进入门槛</h4><div class="body">低至中（含测绘合规风险；综合自评约 2–3/5，评级口径见附录）。资质：小程序仅需主体资质 + ICP 备案（E2），测绘风险用合规底图 + 自有标注规避；技术：中，视觉模型仅分类粗筛 + 人工复核；资本：低，赛季现金成本约数百元服务器 + API 费；数据：采集需授权 + 约 30 人·天/校园核心区。</div><div class="src">全部量化为估算或假设<span class="etag e3">E3</span>，赛前以真实报价与实测回填。</div></div>
+  </div>
+</section>
+
+<section id="reason">
+  <div class="sec-head reveal">
+    <div class="sec-num">03</div>
+    <div class="sec-title"><h2>你的定稿理由</h2><p>戢祥毅口述，AI 仅做文字整理与分段，内容为本人原话，未代写、未添加本人未提及的经历</p></div>
+  </div>
+  <div class="quote-wrap reveal">
+    <div class="quote">我选这条赛道，是因为它解决的是我自己见过的真实问题：第一次去景区、或者去得少的地方，根本不熟悉路；进了商场、医院，很多科室找不到，连卫生间都找不到。普通人在陌生场所都会迷路，更别说坐轮椅的人。所以这个产品有两个模式：第一个是普通智能导航——帮在陌生场所里的人找路、找卫生间；第二个是无障碍模式——专门给坐轮椅的残障人士规划他们能走的路，<b>这一块是最重要的核心</b>。<br><br>这件事是真实的民生福祉，不是编出来的概念。</div>
+    <div class="quote-note">注：能力匹配与验证承诺两句留白，戢祥毅可随时自行补充；AI 不代写。</div>
+  </div>
+</section>
+
+<section id="appendix">
+  <div class="sec-head reveal">
+    <div class="sec-num">04</div>
+    <div class="sec-title"><h2>数据来源附录</h2><p>E1 已核实附链接 · E2 流传口径待核 · E3 团队假设 · 复核清单 · 处理记录</p></div>
+  </div>
+  <div class="prose reveal">
+    <p><span class="etag e1">E1</span> 本次联网核实、附来源链接　<span class="etag e2">E2</span> 知识库流传的权威机构/企业口径，未经核实　<span class="etag e3">E3</span> 团队推断/估算/假设</p>
+    <h3>E1 清单（已核实）</h3>
+    <p>《中华人民共和国无障碍环境建设法》2023 年 6 月 28 日通过、2023 年 9 月 1 日施行（<a class="ext" href="http://paper.people.com.cn/rmrbwap/html/2023-06/29/nw.D110000renmrb_20230629_1-11.htm" target="_blank" rel="noopener">人民日报刊登主席令全文</a>）；第二次全国残疾人抽样调查：至 2006 年 4 月 1 日残疾人 8296 万、肢体残疾 2412 万（<a class="ext" href="http://www.npc.gov.cn/zgrdw/npc/zt/2008-02/27/content_1400288.htm" target="_blank" rel="noopener">全国人大网</a>）；全国普通高校 2868 所、高校合计 3117 所（<a class="ext" href="http://www.centv.cn/jylbct/p/513378.html" target="_blank" rel="noopener">中国教育电视台·教育部名单</a>）；A 级景区 1.49 万家（<a class="ext" href="https://vs.cns.com.cn/video/detailTemp/490736.html?id=490736" target="_blank" rel="noopener">文旅部数据</a>）；高德无障碍导航 2022-11-25 上线，截至 2024-11 累计 1.5 亿次、覆盖 58 城、日均近 18 万次（<a class="ext" href="https://tech.cnr.cn/techph/20241129/t20241129_526993161.shtml" target="_blank" rel="noopener">央广网 2024-11-29</a>）；"十四五"以来困难重度残疾人家庭无障碍改造完成 122.5 万户，提前完成 110 万户目标（<a class="ext" href="http://zw.china.com.cn/2025-10/09/content_118113762.shtml" target="_blank" rel="noopener">国家统计局报告，中国网转载</a>）；60 岁及以上人口 2.97 亿、占 21.1%（<a class="ext" href="https://m.gmw.cn/2024-02/29/content_1303674995.htm" target="_blank" rel="noopener">国家统计局 2023 年国民经济和社会发展统计公报全文，光明网转载</a>）；国家卫健委 2022-09-20 新闻发布会：2035 年左右 60 岁及以上老年人口将突破 4 亿、占比将超 30%（<a class="ext" href="http://www.crca.cn/index.php/13-agednews/765-2035-60-4-30.html" target="_blank" rel="noopener">中国老龄科学研究中心转载</a>，另见<a class="ext" href="https://m.gmw.cn/2022-09/21/content_1303148976.htm" target="_blank" rel="noopener">光明网报道</a>）。</p>
+    <h3>E2 清单（待核）</h3>
+    <p>银发经济目前约 7 万亿元、占 GDP 约 5%–6%（发改委 2024 年 1 月发布会"目前"口径；复旦老龄研究院报告另列，两处表述不同、分列复核）；银发经济 2035 年预计达 30 万亿元（预测口径，弱来源为专家会议报道，待正式报告）；CAGR = (30/7)^(1/11) − 1 约 14%，为大盘推算、非细分增速；民政部流传口径：失能半失能老年人超 4400 万（年份待核）；通行口径"残疾人约 8500 万"为 2010 年末推算数（央广网 2024 报道引用），本文正文优先使用 E1 原始数；百度地图无障碍功能（复核官方新闻稿）；官方系产品：上海、北京免费无障碍地图/平台（逐案核证）；Wheelmap、AccessNow 公益定位、十余年未商业化（复核官网）；法规常识：小程序仅需主体资质 + ICP 备案，自绘/商用地图受《测绘法》约束，OSM 国内商用存疑。</p>
+    <h3>E3 清单（假设）</h3>
+    <p>细分规模推算约 1–4 亿元/年：普通高校 2868 所 × 1–3 万元/年 约 0.3–0.9 亿 + A 级景区 1.49 万家 × 0.5–2 万元/年 约 0.7–3.0 亿（机构数为 E1、单价为假设，渗透率与收费模式未验证）；竞品体量推断：高德 + 百度合计份额约八成量级、Wheelmap 标记点十余万至数十万量级、AccessNow 无可靠计数；成本量级估算：人工标注每条 POI 约几元 vs 视觉 API 每千次约几元，单点成本降约两个数量级（赛前以智谱公开定价页核实回填），MVP 赛季现金成本约数百元（2 核 2G 服务器）+ API 调用费；采集工作量假设：单校园核心教学区 + 1 条示范动线约 30 人·天（3 人 × 10 人天，覆盖上限如实标注）；增长指标假设：0 到 1 期以"覆盖机构数"为增长指标，无障碍旅游为衍生场景、方向性判断；门槛评级口径：1 = 极低至 5 = 极高，综合自评 2–3 分。</p>
+    <h3>需复核信源清单（剩余待办）</h3>
+    <ol class="src-list">
+      <li>发改委 2024 年 1 月国新办发布会实录</li>
+      <li>复旦老龄研究院银发经济正式报告</li>
+      <li>民政部"失能半失能约 4400 万"原始口径与年份</li>
+      <li>百度地图无障碍官方新闻稿</li>
+      <li>上海残联/北京无障碍平台官方页面</li>
+      <li>Wheelmap、AccessNow 官网</li>
+      <li>第三方地图市场份额报告（易观/QuestMobile 等）</li>
+      <li>智谱开放平台公开定价页</li>
+      <li>政府采购网"无障碍 + 导览/信息化"中标公告检索</li>
+      <li>OSM Overpass API 实测目标校园 wheelchair/incline/kerb 标签密度</li>
+    </ol>
+    <p style="margin-top:12px;font-size:13.5px;color:#b05a2a;display:flex;align-items:center;gap:8px"><i data-lucide="alert-triangle" style="width:16px;height:16px"></i>剩余待核项赛前必须逐条补链接；找不到信源的当场降级为待验证假设。</p>
+    <h3>审核与评委意见处理记录（多智能体协同 76 条意见，择要 11 条）</h3>
+    <ol class="log-list">
+      <li><b>数据核查 + 规范合规</b>：重建 E 级体系，明确"0 次检索、无本次检索 E1"，E1 重定义为"记忆中的官方口径待复核"，消除声明与标注自相矛盾。</li>
+      <li><b>数据核查 + 企业评委 + 规范合规</b>：清除无源承重数字（信息服务"亿级"、"设施改造千亿级"、"旅游百亿级"、"轮椅人群千万级"、"约 10 类信源口径"自我计数），细分规模改机构数 × 单价自下而上推算，肢体残疾按 2006 年口径修正为约 2412 万。</li>
+      <li><b>数据核查</b>：7 万亿修正为"目前口径、占 GDP 约 5%–6%"，发改委发布会与复旦老龄研究院分列署名。</li>
+      <li><b>技术评委 + 高校教师评委</b>："设施底层数据基本空白"降格为"封闭场景细粒度属性与实时状态运营的结构性空白"，删除"巨头不愿做脏活"论断。</li>
+      <li><b>数据核查 + 规范合规</b>：资质门槛补测绘合规边界，规避路径 = 合规底图 + 自有标注、不测地形。</li>
+      <li><b>商业逻辑 + 企业评委 + 技术评委</b>："机构付费"全文降级为待验证假设 H1，给验证动作（不少于 3 次真实访谈 + 政采网中标公告检索），冷启动改"阶段 0 置换、阶段 1 景区付费验证、阶段 2 复制"。</li>
+      <li><b>高校教师评委 + 企业评委 + 商业逻辑</b>：竞争格局补官方系（上海/北京无障碍地图），差异化钉在封闭场景实时状态运营。</li>
+      <li><b>技术评委 + 规范合规</b>：AI 识别降格为"分类 + 粗筛"，准确率待 100 张标注 POC；多 Agent 删除、技术栈收敛单链路；小程序承载形态列为 24–48 小时技术穿刺事项。</li>
+      <li><b>技术评委 + 高校教师评委 + 企业评委 + 商业逻辑</b>：MVP 收敛至本校校园一个场景、室外路网 + 建筑入口级、1 条示范动线；医院/商场降为远期；硬件延展删除。</li>
+      <li><b>四方联审</b>：新增安全与责任段落（人工复核、强提示与降级路线、免责留痕）与隐私合规（出行轨迹属敏感个人信息、照片人脸/车牌脱敏）。</li>
+      <li><b>数据核查 + 联网复核（2026-11-18）</b>：web_search 恢复后完成 8 次检索——法条施行日期、2006 年残疾人调查（8296 万/肢体 2412 万）、普通高校 2868 所、A 级景区 1.49 万家、高德无障碍导航 2022-11-25 上线/2 年 1.5 亿次/58 城、家庭无障碍改造 122.5 万户，6 项升级 E1 并附链接，细分规模推算基数同步更新（结果维持约 1–4 亿元/年）。</li>
+    </ol>
+  </div>
+</section>
+
+<footer><div class="footer">子谦国际 OPC 创业基础</div></footer>
+</div>
+<script>
+lucide.createIcons();
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay=(i%4)*70+'ms'; io.observe(el); });
+</script>
+</body>
+</html>

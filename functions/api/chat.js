@@ -51,6 +51,20 @@ function json(obj, status) {
   });
 }
 
+// 浮窗是纯文本渲染，这里把模型偶尔带出的 Markdown 符号洗掉（确定性处理，不依赖模型听话）
+function plainify(s) {
+  return String(s)
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/^\s*[-*+]\s+/gm, "· ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*/g, "")
+    .replace(/^\s*>\s?/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export async function onRequestGet() {
   return json({ ok: true, hint: "POST {messages:[{role,content}], context:{page,note}}" });
 }
@@ -112,7 +126,8 @@ export async function onRequestPost(context) {
 
   const choice = (d.choices && d.choices[0]) || {};
   const msg = choice.message || {};
-  const reply = (msg.content || msg.reasoning_content || "").trim();
+  const raw = (msg.content || msg.reasoning_content || "").trim();
+  const reply = plainify(raw);
   if (!reply) return json({ error: "模型返回空内容" }, 502);
 
   return json({ reply: reply, model: payload.model });

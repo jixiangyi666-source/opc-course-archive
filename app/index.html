@@ -57,6 +57,7 @@ nav a.on{color:var(--accent);background:var(--accent-soft);font-weight:700}
 .t-review{background:rgba(232,179,75,.12);color:var(--warn)}.t-review i{background:var(--warn)}
 .t-ok{background:rgba(62,207,142,.12);color:var(--ok)}.t-ok i{background:var(--ok)}
 .t-probe{background:var(--accent-soft);color:var(--accent)}.t-probe i{background:var(--accent)}
+.t-reject{background:rgba(239,106,90,.12);color:var(--danger)}.t-reject i{background:var(--danger)}
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#14100b;border:none;font-weight:800;font-size:13.5px;padding:11px 22px;border-radius:10px;cursor:pointer;transition:all .2s;letter-spacing:.02em}
 .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -10px rgba(242,128,30,.7)}
 .btn.steel{background:var(--steel);color:#eaf4fa}
@@ -300,11 +301,12 @@ function vDash(w){
     if(st==="probe"){location.hash="#/history";}
     else if(st==="parse"){CUR.sample=part.includes("支架")?"bracket":part.includes("带孔板")?"plate":"block";location.hash="#/upload";}
     else if(st==="review"){loadTaskByPart(part);location.hash="#/review";}
+    else if(st==="reject"){loadTaskByPart(part);CUR.calc=null;location.hash="#/compare";}
     else{location.hash="#/history";}
   }));
 }
 function stat(v,l){const s=h("div","stat");s.append(h("div","v",String(v)),h("div","l",l));return s;}
-function tag(st){const map={parse:["t-parse","解析中"],review:["t-review","待终审"],done:["t-ok","已确认"],probe:["t-probe","探价"]};const m=map[st];
+function tag(st){const map={parse:["t-parse","解析中"],review:["t-review","待终审"],done:["t-ok","已确认"],probe:["t-probe","探价"],reject:["t-reject","已驳回"]};const m=map[st];
   return '<span class="tagchip '+m[0]+'"><i></i>'+m[1]+'</span>';}
 function pageHead(t,en,d){const p=h("div","page-head");p.append(h("h1",null,t),h("span","en",en));if(d)p.appendChild(h("div","desc",d));return p;}
 function tbl(heads,rows,onRow){
@@ -461,7 +463,17 @@ function vReview(w){
   const c=CUR.calc[CUR.scheme];
   const box=h("div","panel");box.appendChild(h("h3",null,icon("clipboard-check")+"方案 "+CUR.scheme+" 报价依据单 · "+sk.label+"（每行可改价，总价实时重算）"));
   box.appendChild(costTable(c,true));
-  const b=h("button","btn","确认报价，生成报价单 "+icon("check-circle"));b.style.marginTop="16px";
+  const br=h("button","btn ghost","驳回重算 "+icon("rotate-ccw"));br.style.marginTop="16px";
+  br.onclick=()=>{
+    const bg=h("div","modal-bg");const m=h("div","modal");
+    m.innerHTML=`<h3>驳回本单？</h3><p>驳回后任务回到「已驳回」状态，可修改信息后重新报价。请填驳回原因（记入修改记录，留痕）。</p>`;
+    const inp=h("input");inp.placeholder="驳回原因，如：工时估低了、材料不对";inp.style.cssText="width:100%;background:var(--bg);border:1px solid var(--line-2);color:var(--ink);border-radius:9px;padding:10px 13px;font-size:13.5px;margin-top:12px";
+    const acts=h("div","acts");const ok=h("button","btn sm","确认驳回");const no=h("button","btn ghost sm","取消");
+    ok.onclick=()=>{const t=S.tasks.find(t=>t.part===sk.label&&t.status==="review");if(t){t.status="reject";t.rejectReason=inp.value||"未填原因";}
+      CUR.calc=null;save();bg.remove();toast("已驳回：点击该任务可重新修改报价");location.hash="#/dashboard";};
+    no.onclick=()=>bg.remove();acts.append(no,ok);m.append(inp,acts);bg.appendChild(m);document.body.appendChild(bg);lucide.createIcons();
+  };
+  const b=h("button","btn","确认报价，生成报价单 "+icon("check-circle"));b.style.marginTop="16px";b.style.marginLeft="10px";
   b.onclick=()=>{
     const bg=h("div","modal-bg");const m=h("div","modal");
     m.innerHTML=`<h3>确认报价？</h3><p>确认后本单从「建议价」转为「正式价」，假设项视为已人工接受。正式报价单只使用已确认数据。</p>`;
@@ -471,7 +483,7 @@ function vReview(w){
       if(c.mods)c.mods.forEach(m2=>{});save();location.hash="#/quote";};
     no.onclick=()=>bg.remove();acts.append(no,ok);m.appendChild(acts);bg.appendChild(m);document.body.appendChild(bg);lucide.createIcons();
   };
-  box.appendChild(b);w.appendChild(box);
+  box.append(br,b);w.appendChild(box);
 }
 
 /* ================= 6 报价单 ================= */

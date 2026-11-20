@@ -5,49 +5,17 @@ const ORIGIN = "https://opc-course-archive.pages.dev";
 
 // 报价后端（阿里云 ECS，HTTP 80；TLS 由 Cloudflare 边缘终结）
 // 注意：必须用域名不能用裸 IP——Cloudflare Function fetch 裸 IP 会被边缘 1003 拒绝
-const QUOTE_BACKEND = "http://8.136.0.202.nip.io";
+// 域名用 sslip.io 泛解析（nip.io 会被 Cloudflare 内部按代理站点处理返回 520，改用 sslip.io 实测 200）
+const QUOTE_BACKEND = "http://8.136.0.202.sslip.io";
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const host = url.hostname.toLowerCase();
   const path = url.pathname;
 
-  // ---- 诊断端点（临时）----
+  // 健康检查端点
   if (path === "/api/ping") {
     return new Response("pong-functions-ok", { headers: { "Content-Type": "text/plain; charset=utf-8" } });
-  }
-  if (path === "/api/debug") {
-    const out = { backend: QUOTE_BACKEND, at: new Date().toISOString() };
-    try {
-      const r = await fetch(QUOTE_BACKEND + "/api/v1/meta/capabilities", {
-        headers: { "X-Operator-Id": "debug" },
-        redirect: "manual",
-      });
-      out.status = r.status;
-      out.contentType = r.headers.get("content-type");
-      const txt = await r.text();
-      out.bodyLength = txt.length;
-      out.bodyStart = txt.slice(0, 180);
-    } catch (e) {
-      out.fetchError = String(e);
-    }
-    return new Response(JSON.stringify(out, null, 1), { headers: { "Content-Type": "application/json; charset=utf-8" } });
-  }
-
-  if (path === "/api/debug2") {
-    const out = { at: new Date().toISOString() };
-    const probe = async (name, url) => {
-      try {
-        const r = await fetch(url, { redirect: "manual", headers: { "X-Operator-Id": "debug" } });
-        const t = await r.text();
-        out[name] = { status: r.status, ct: r.headers.get("content-type"), len: t.length, head: t.slice(0, 160) };
-      } catch (e) {
-        out[name] = { error: String(e) };
-      }
-    };
-    await probe("sslip", "http://8.136.0.202.sslip.io/api/v1/meta/capabilities");
-    await probe("example", "https://example.com/");
-    return new Response(JSON.stringify(out, null, 1), { headers: { "Content-Type": "application/json; charset=utf-8" } });
   }
 
   // /api/v1/* -> 阿里云报价后端（2026-11-20 新增：产品页真实上传/解析）

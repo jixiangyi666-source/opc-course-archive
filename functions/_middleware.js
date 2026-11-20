@@ -12,11 +12,48 @@ export async function onRequest(context) {
   const host = url.hostname.toLowerCase();
   const path = url.pathname;
 
+  // ---- 诊断端点（临时）----
+  if (path === "/api/ping") {
+    return new Response("pong-functions-ok", { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  }
+  if (path === "/api/debug") {
+    const out = { backend: QUOTE_BACKEND, at: new Date().toISOString() };
+    try {
+      const r = await fetch(QUOTE_BACKEND + "/api/v1/meta/capabilities", {
+        headers: { "X-Operator-Id": "debug" },
+        redirect: "manual",
+      });
+      out.status = r.status;
+      out.contentType = r.headers.get("content-type");
+      const txt = await r.text();
+      out.bodyLength = txt.length;
+      out.bodyStart = txt.slice(0, 180);
+    } catch (e) {
+      out.fetchError = String(e);
+    }
+    return new Response(JSON.stringify(out, null, 1), { headers: { "Content-Type": "application/json; charset=utf-8" } });
+  }
+
   // /api/v1/* -> 阿里云报价后端（2026-11-20 新增：产品页真实上传/解析）
   if (path.startsWith("/api/v1/")) {
     try {
-      const backendReq = new Request(QUOTE_BACKEND + path + url.search, context.request);
-      return await fetch(backendReq);
+      const target = QUOTE_BACKEND + path + url.search;
+      const init = {
+        method: context.request.method,
+        headers: context.request.headers,
+        redirect: "manual",
+      };
+      const method = context.request.method.toUpperCase();
+      if (method !== "GET" && method !== "HEAD") {
+        init.body = context.request.body;
+      }
+      const upstream = await fetch(target, init);
+      const headers = new Headers(upstream.headers);
+      headers.delete("content-encoding");
+      headers.delete("content-length");
+      headers.delete("transfer-encoding");
+      headers.set("Access-Control-Allow-Origin", "*");
+      return new Response(upstream.body, { status: upstream.status, headers });
     } catch (err) {
       return new Response(
         JSON.stringify({ error: { code: "dependency_unavailable", message: "报价后端不可达: " + String(err).slice(0, 140) } }),

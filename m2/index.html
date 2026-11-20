@@ -3,280 +3,441 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M2 问题定义｜AI 无障碍智能导航系统</title>
+<title>M2 问题定义｜回价速度·HMW问题卡｜戢祥毅</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f4f1ea; --card:#ffffff; --ink:#182225; --dim:#5c6d72;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.12);
+  --bg:#f4f2ec; --card:#fffef9; --ink:#1c2226; --dim:#5d6970;
+  --accent:#2e6c86; --accent-2:#c1552b; --gold:#a8863c;
+  --line:rgba(28,34,38,.12); --soft:rgba(46,108,134,.08); --warn:rgba(193,85,43,.08);
+  --shadow:0 10px 30px rgba(28,34,38,.08), 0 2px 6px rgba(28,34,38,.05);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;line-height:1.8;overflow-x:hidden}
-.grid-bg{position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.45;pointer-events:none;z-index:0}
-.grain{position:fixed;inset:0;background:radial-gradient(circle at 18% 8%,rgba(13,106,124,.08),transparent 42%),radial-gradient(circle at 84% 26%,rgba(217,123,63,.08),transparent 46%);pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px}
-nav{position:sticky;top:0;z-index:9;backdrop-filter:blur(10px);background:rgba(244,241,234,.86);border-bottom:1px solid var(--line)}
-.nav-in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-weight:800;letter-spacing:.08em;color:var(--accent);display:flex;align-items:center;gap:8px;font-size:15px}
-.nav-links{display:flex;gap:20px;font-size:13px;color:var(--dim)}
-.nav-links a{color:var(--dim);text-decoration:none;transition:color .25s}
-.nav-links a:hover{color:var(--accent)}
-.hero{padding:96px 0 64px}
-.kicker{font-size:13px;letter-spacing:.35em;color:var(--accent-2);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.kicker i{width:16px;height:16px}
-h1{font-size:clamp(46px,9vw,104px);line-height:1.05;font-weight:900;letter-spacing:.01em}
-h1 .hollow{color:transparent;-webkit-text-stroke:2px var(--accent)}
-.hero-sub{margin-top:22px;font-size:clamp(16px,2.2vw,22px);color:var(--dim);max-width:780px}
-.hero-sub b{color:var(--accent-2)}
-.meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
-.chip{font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;display:inline-flex;align-items:center;gap:6px}
-.chip i{width:14px;height:14px;color:var(--accent)}
-.notice{margin-top:30px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:10px;padding:16px 20px;font-size:14px;color:var(--dim)}
-.notice b{color:var(--ink)}
-.stats{margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
-.stat .n{font-size:clamp(26px,4vw,40px);font-weight:900;color:var(--accent);font-family:Georgia,serif}
-.stat .t{font-size:13px;color:var(--dim);margin-top:4px}
-section{padding:70px 0 20px;position:relative}
-.sec-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:34px}
-.sec-num{font-size:clamp(60px,9vw,110px);font-weight:900;line-height:.85;color:transparent;-webkit-text-stroke:2px var(--accent);font-family:Georgia,serif;opacity:.85}
-.sec-title h2{font-size:clamp(24px,3.6vw,38px);font-weight:900;line-height:1.2}
-.sec-title p{color:var(--dim);font-size:14px;margin-top:6px}
-h3{font-size:clamp(18px,2.4vw,24px);font-weight:800;margin:34px 0 12px;color:var(--accent)}
-.prose{font-size:15.5px;color:#2a3a3f}
-.prose p{margin-bottom:12px}
-.etag{display:inline-block;font-family:Consolas,monospace;font-size:.72em;font-weight:700;padding:1px 8px;border-radius:999px;vertical-align:middle;margin-left:3px;border:1px solid transparent}
-.e1{color:#0d6a7c;border-color:rgba(13,106,124,.5);background:rgba(13,106,124,.08)}
-.e2{color:#8a6d1f;border-color:rgba(138,109,31,.5);background:rgba(217,179,74,.15)}
-.e3{color:#b05a2a;border-color:rgba(176,90,42,.5);background:rgba(217,123,63,.12)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1)}
-.card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(13,106,124,.12)}
-.wall{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-.card .tag{font-size:12px;letter-spacing:.2em;color:var(--accent-2);font-weight:800}
-.card h4{font-size:clamp(17px,2.2vw,21px);font-weight:900;margin:8px 0 10px;display:flex;align-items:center;gap:8px}
-.card h4 i{width:17px;height:17px;color:var(--accent)}
-.card .body{font-size:14px;color:#2a3a3f}
-.card .src{margin-top:12px;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:10px}
-.card .src b{color:var(--accent)}
-.idx{font-family:Georgia,serif;font-size:clamp(26px,3.4vw,36px);font-weight:900;color:transparent;-webkit-text-stroke:1.5px var(--accent-2);line-height:1;margin-right:4px}
-.pain-picked{border:1.5px solid var(--accent-2);border-top:5px solid var(--accent-2);background:linear-gradient(180deg,rgba(217,123,63,.07),var(--card) 40%)}
-.stamp{display:inline-block;font-size:11px;letter-spacing:.2em;color:#fff;background:var(--accent-2);border-radius:999px;padding:3px 12px;font-weight:800;vertical-align:middle;margin-left:8px}
-.stamp.teal{background:var(--accent)}
-.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
-.qcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;border-top:4px solid var(--accent-2)}
-.qcard.teal-top{border-top-color:var(--accent)}
-.qcard h4{font-size:17px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.qcard h4 i{width:17px;height:17px;color:var(--accent-2)}
-.qcard.teal-top h4 i{color:var(--accent)}
-.qcard .body{font-size:13.5px;color:#2a3a3f}
-.inner-quote{margin:12px 0;padding:12px 16px;border-left:3px solid var(--accent-2);background:rgba(217,123,63,.06);border-radius:0 10px 10px 0;font-size:13.5px;color:#2a3a3f}
-.inner-quote b{color:var(--accent)}
-.inner-quote .who{display:block;margin-top:6px;font-size:12px;color:var(--dim)}
-.quote-wrap{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(28px,5vw,54px);overflow:hidden}
-.quote-wrap::before{content:"\201C";position:absolute;top:-30px;left:18px;font-family:Georgia,serif;font-size:220px;color:rgba(13,106,124,.10);line-height:1}
-.quote{font-family:Georgia,"STZhongsong","SimSun",serif;font-size:clamp(19px,2.6vw,28px);line-height:2;position:relative}
-.quote b{color:var(--accent-2)}
-.quote-note{margin-top:22px;font-size:13px;color:var(--dim)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
-@media(max-width:860px){.two-col{grid-template-columns:1fr}}
-.hmw{border:1.5px solid var(--accent);border-radius:16px;padding:clamp(26px,4vw,44px);background:linear-gradient(160deg,rgba(13,106,124,.06),var(--card) 45%);position:relative;margin-top:18px}
-.hmw .badge{position:absolute;top:-14px;left:28px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;letter-spacing:.2em;padding:5px 16px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
-.hmw .badge i{width:14px;height:14px}
-.field{margin-top:24px}
-.fl{font-size:12px;letter-spacing:.25em;color:var(--accent);font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.fl i{width:15px;height:15px}
-.fv{font-size:15px;color:#2a3a3f;line-height:1.95}
-.field.final .fv{font-family:Georgia,"STZhongsong","SimSun",serif;font-size:clamp(19px,2.8vw,26px);line-height:1.9;color:var(--ink);font-weight:700}
-.field.final .fv b{color:var(--accent-2)}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
-.vcard{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--dim)}
-.vcard b{display:block;color:var(--accent);font-size:12px;letter-spacing:.15em;margin-bottom:6px}
-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:14px}
-th{background:var(--accent);color:#fff;text-align:left;padding:12px 16px;font-size:13.5px;letter-spacing:.05em}
-td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top;color:#2a3a3f}
-tr:hover td{background:rgba(13,106,124,.05)}
-.log-list{margin-top:14px;font-size:13.5px;color:#2a3a3f}
-.log-list li{margin-bottom:8px;margin-left:20px}
-.log-list b{color:var(--accent)}
-a.ext{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
-footer{padding:56px 0 64px;text-align:center}
-.footer{font-size:12px;color:var(--dim);letter-spacing:.25em}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-.reveal.in{opacity:1;transform:none}
-@media (max-width:720px){
-  .nav-links{display:none}
-  section{padding:52px 0 12px}
-  .sec-head{flex-direction:column;align-items:flex-start;gap:8px}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;line-height:1.75;overflow-x:hidden}
+::selection{background:rgba(46,108,134,.22)}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(46,108,134,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(46,108,134,.065) 1px,transparent 1px);
+  background-size:30px 30px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.95),rgba(0,0,0,.3) 65%,transparent)}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E")}
+#pbar{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .1s linear}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 28px}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(244,242,236,.78);border-bottom:1px solid var(--line)}
+nav .in{max-width:1100px;margin:0 auto;padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+nav .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;letter-spacing:1px}
+nav .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--accent);box-shadow:0 0 0 4px var(--soft)}
+.navlinks{display:flex;gap:4px;flex-wrap:nowrap;overflow:auto}
+.navlinks a{position:relative;font-size:13px;color:var(--dim);text-decoration:none;padding:7px 12px;border-radius:8px;white-space:nowrap;transition:color .25s,background .25s}
+.navlinks a:hover{color:var(--ink);background:var(--soft)}
+.navlinks a.act{color:var(--accent);font-weight:700}
+.navlinks a.act::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;border-radius:2px;background:var(--accent)}
+.hero{padding:140px 0 70px;position:relative}
+.plus{position:absolute;width:14px;height:14px;opacity:.4}
+.plus::before,.plus::after{content:"";position:absolute;background:var(--accent)}
+.plus::before{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.plus::after{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+.kicker{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:3px;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:rgba(255,254,249,.8);box-shadow:var(--shadow)}
+.hero h1{font-size:clamp(48px,9.5vw,104px);line-height:1.05;font-weight:800;letter-spacing:-2px;margin:26px 0 8px;
+  background:linear-gradient(120deg,var(--ink) 30%,var(--accent) 65%,var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .ghost{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(28,34,38,.32);background:none;font-size:.42em;letter-spacing:2px;margin-top:10px}
+.dim-line{display:flex;align-items:center;gap:12px;margin:16px 0 18px;max-width:520px}
+.dim-line .bar{flex:1;height:1px;background:var(--line);position:relative}
+.dim-line .bar::before,.dim-line .bar::after{content:"";position:absolute;top:-4px;width:1px;height:9px;background:var(--dim)}
+.dim-line .bar::before{left:0}.dim-line .bar::after{right:0}
+.dim-line span{font-size:11px;letter-spacing:2px;color:var(--dim)}
+.hero .sub{font-size:clamp(15px,1.8vw,18px);color:var(--dim);max-width:800px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:13px;border:1px solid var(--line);border-radius:10px;padding:8px 14px;background:var(--card);box-shadow:0 1px 3px rgba(28,34,38,.05);transition:transform .25s,box-shadow .25s;cursor:default}
+.chip:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.chip b{font-weight:700}
+.chip.e1{border-color:rgba(46,108,134,.45)}
+.chip.e2{border-color:rgba(193,85,43,.35)}
+.tip:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--ink);color:#f4f2ec;font-size:12px;line-height:1.5;padding:8px 12px;border-radius:10px;white-space:nowrap;z-index:40;box-shadow:0 8px 24px rgba(28,34,38,.25)}
+.tip:hover::before{content:"";position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink);z-index:40}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.stat{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;box-shadow:0 1px 3px rgba(28,34,38,.05);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.stat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.stat::after{content:"";position:absolute;right:-20px;bottom:-20px;width:80px;height:80px;border-radius:50%;background:var(--soft)}
+.stat .n{font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--dim);margin-top:6px}
+.stat .e{position:absolute;top:13px;right:13px;font-size:10px;letter-spacing:1px;color:var(--accent);border:1px solid rgba(46,108,134,.4);border-radius:999px;padding:1px 8px;background:var(--card)}
+.stat .e.e2{color:var(--accent-2);border-color:rgba(193,85,43,.4)}
+.scrolldown{margin-top:40px;display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:2px;color:var(--dim)}
+.scrolldown i{animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+section{padding:70px 0;border-top:1px solid var(--line);scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:30px}
+.sec-no{position:relative;font-size:13px;letter-spacing:2px;color:var(--accent);font-weight:800}
+.sec-no::after{content:"";position:absolute;left:0;bottom:-6px;width:26px;height:2px;border-radius:2px;background:var(--accent);opacity:.7}
+.sec-head h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;letter-spacing:-1px}
+.sec-head .en{font-size:12px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-left:auto}
+p.lead{font-size:clamp(15.5px,1.8vw,17.5px);max-width:880px}
+p.lead b{color:var(--accent);font-weight:700}
+p.lead + p.lead{margin-top:14px}
+.note{margin-top:18px;padding:16px 18px;border-left:3px solid var(--accent);background:var(--card);border-radius:0 12px 12px 0;font-size:14px;color:var(--dim);box-shadow:0 1px 3px rgba(28,34,38,.05)}
+.note b{color:var(--ink)}
+.board{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+.brow{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:0 1px 3px rgba(28,34,38,.05);transition:transform .3s,box-shadow .3s}
+.brow:hover{transform:translateX(6px);box-shadow:var(--shadow)}
+.brow h4{font-size:16px;display:flex;align-items:center;gap:10px}
+.brow h4 i{color:var(--accent)}
+.brow h4 .bn{font-size:11px;letter-spacing:2px;color:var(--accent);border:1px solid rgba(46,108,134,.4);border-radius:999px;padding:1px 10px;background:var(--soft);font-weight:800}
+.brow p{font-size:13.5px;color:var(--dim);margin-top:8px}
+.brow p b{color:var(--ink)}
+.lv{display:inline-block;font-size:11px;letter-spacing:1px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);font-weight:700}
+.lv.e1{color:var(--accent);border-color:rgba(46,108,134,.45);background:var(--soft)}
+.lv.e2{color:var(--accent-2);border-color:rgba(193,85,43,.4);background:var(--warn)}
+.lv.human{color:var(--gold);border-color:rgba(168,134,60,.5);background:rgba(168,134,60,.08)}
+table.src{width:100%;border-collapse:collapse;margin-top:16px;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(28,34,38,.05);font-size:13px}
+table.src th,table.src td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+table.src th{font-size:11.5px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;background:var(--soft)}
+table.src tr:last-child td{border-bottom:0}
+table.src tbody tr{transition:background .25s}
+table.src tbody tr:hover{background:var(--soft)}
+table.src a{color:var(--accent);text-decoration:none;border-bottom:1px dotted rgba(46,108,134,.5)}
+table.src a:hover{color:var(--accent-2)}
+table.src tr.grp td{background:rgba(46,108,134,.06);font-weight:800;font-size:12px;letter-spacing:2px;color:var(--accent)}
+.pains{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.pain{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 1px 3px rgba(28,34,38,.05);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.pain::before{content:"";position:absolute;inset:0;border-radius:16px;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(46,108,134,.10),transparent 65%);opacity:0;transition:opacity .35s;pointer-events:none}
+.pain:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.pain:hover::before{opacity:1}
+.pain .ph{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pain .pn{font-size:22px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.pain h4{font-size:15px;line-height:1.5}
+.pain p{font-size:13px;color:var(--dim);margin-top:8px}
+.pain p b{color:var(--ink)}
+.pain .ref{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;color:var(--dim);border-top:1px dashed var(--line);padding-top:9px;width:100%}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:1px;border-radius:999px;padding:2px 10px}
+.badge.pick{color:var(--gold);border:1px solid rgba(168,134,60,.5);background:rgba(168,134,60,.08)}
+.badge.final{color:#fff;background:var(--accent);border:1px solid var(--accent)}
+.digs{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:24px}
+.dig{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 1px 3px rgba(28,34,38,.05)}
+.dig.sel{border-color:rgba(46,108,134,.5);box-shadow:var(--shadow)}
+.dig h4{font-size:17px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dig h4 i{color:var(--accent)}
+.dig .sub{font-size:12px;color:var(--dim);letter-spacing:1px;margin-top:4px}
+.dig ul{margin:14px 0 0 0;list-style:none}
+.dig ul li{position:relative;padding:7px 0 7px 20px;font-size:13.5px;color:var(--dim);border-bottom:1px dashed var(--line)}
+.dig ul li:last-child{border-bottom:0}
+.dig ul li::before{content:"";position:absolute;left:2px;top:15px;width:7px;height:7px;border-radius:2px;background:var(--soft);border:1.5px solid var(--accent)}
+.dig ul li b{color:var(--ink)}
+.dig .kdata{margin-top:14px;padding:13px 15px;border-radius:12px;background:linear-gradient(135deg,var(--soft),rgba(193,85,43,.06));font-size:13px;color:var(--dim)}
+.dig .kdata b{color:var(--accent)}
+blockquote.reason{position:relative;margin:4px 0 0;padding:34px 34px 30px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+blockquote.reason::before{content:"\201C";font-family:Georgia,serif;font-size:120px;line-height:1;color:var(--accent);opacity:.22;position:absolute;top:2px;left:20px}
+blockquote.reason .q{position:relative;z-index:1}
+.rline{display:flex;gap:14px;padding:15px 0;border-bottom:1px dashed var(--line)}
+.rline:last-of-type{border-bottom:0}
+.rline .rk{flex:0 0 auto;align-self:flex-start;font-size:11px;letter-spacing:1px;color:var(--accent);border:1px solid rgba(46,108,134,.4);background:var(--soft);border-radius:999px;padding:3px 12px;margin-top:2px}
+.rline p{font-size:14.5px;line-height:1.85}
+.byline{margin-top:18px;font-size:13px;color:var(--dim);text-align:right}
+.hmwcard{position:relative;overflow:hidden;margin-top:24px;background:linear-gradient(135deg,rgba(46,108,134,.08),rgba(193,85,43,.06));border:1.5px solid rgba(46,108,134,.45);border-radius:22px;padding:34px 32px;box-shadow:var(--shadow)}
+.hmwcard::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,254,249,.65)}
+.hmwcard .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:3px;font-weight:800;color:var(--accent)}
+.hmwcard .hmw-sentence{position:relative;z-index:1;font-size:clamp(19px,2.6vw,26px);font-weight:800;line-height:1.7;margin:18px 0 6px;letter-spacing:-.3px}
+.hmwcard .hmw-sentence em{font-style:normal;color:var(--accent-2)}
+.hmwfields{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}
+.hf{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 3px rgba(28,34,38,.05)}
+.hf .fn{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:800}
+.hf p{font-size:14px;margin-top:6px}
+.hf.wide{grid-column:1 / -1;background:var(--card)}
+.checkline{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px;font-size:12.5px;color:var(--dim)}
+.checkline .ok{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-weight:700}
+.variants{margin-top:16px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;background:rgba(255,254,249,.7);font-size:12.5px;color:var(--dim)}
+.variants b{color:var(--ink)}
+.variants p{margin-top:8px;line-height:1.7}
+footer{border-top:1px solid var(--line);padding:36px 0 46px;text-align:center;font-size:12px;color:var(--dim);letter-spacing:1px;position:relative;z-index:1}
+#top{position:fixed;right:26px;bottom:26px;z-index:45;width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s,background .3s,color .3s}
+#top.show{opacity:1;pointer-events:auto;transform:none}
+#top:hover{background:var(--accent);color:#fff}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.on{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.stagger.on>*{opacity:1;transform:none}
+@media(max-width:920px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .pains,.digs,.hmwfields{grid-template-columns:1fr}
+  .navlinks{display:none}
+  .hero{padding-top:110px}
 }
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
+<div class="grid-bg" id="gridbg"></div>
 <div class="grain"></div>
-<nav><div class="nav-in">
-  <div class="brand"><i data-lucide="accessibility"></i>OPC M2 问题定义</div>
-  <div class="nav-links">
-    <a href="#track">赛道深度分析</a><a href="#pains">12 条痛点</a><a href="#deep">深挖版</a><a href="#pick">选定与理由</a><a href="#hmw">HMW 问题卡</a><a href="#appendix">数据附录</a>
+<div id="pbar"></div>
+
+<nav><div class="in">
+  <span class="brand"><span class="dot"></span>M2 · 图纸到报价</span>
+  <div class="navlinks" id="navlinks">
+    <a href="#s1">赛道分析</a><a href="#s2">语料库</a><a href="#s3">痛点 12</a><a href="#s4">深挖</a><a href="#s5">选定</a><a href="#s6">HMW</a><a href="#s7">来源</a>
   </div>
 </div></nav>
-<div class="wrap">
 
-<section class="hero">
-  <div class="kicker"><i data-lucide="milestone"></i>OPC 创业基础 · M2 · 问题定义全过程报告</div>
-  <h1>无障碍出行的<span class="hollow">最后一米</span></h1>
-  <p class="hero-sub">从 M1《无障碍智慧出行服务》赛道画像出发，经<b>真实用户语料采集、科学筛选、人机圈选定稿</b>，收敛为一张《HMW问题卡》——M3 方案设计的起点。项目基线：以景区为首个落地场景。</p>
+<header class="wrap hero">
+  <span class="plus" style="top:120px;right:8%"></span>
+  <span class="plus" style="top:420px;left:4%"></span>
+  <span class="kicker"><i data-lucide="timer" style="width:14px;height:14px"></i>OPC 创客马拉松 · M2 问题定义 · 2026-11-20</span>
+  <h1>报慢了，单就没了<span class="ghost">M2 问题定义 · HMW 问题卡 · 回价速度</span></h1>
+  <div class="dim-line"><span>M2 · PROBLEM DEFINITION</span><div class="bar"></div><span>SPEED 1:1</span></div>
+  <p class="sub">从 M1 赛道（AI＋智能制造·应用与软件层）出发：赛道深度分析、35 条语料（有效 23 条，另 12 条存疑隔离）、18 候选筛出 12 条痛点、人机圈选 2 条、深挖定 1 条，最终收敛为一张 HMW 问题卡。细分领域：小微机加工/模具厂 · 老板兼报价员 · 催单场景下的快速报价。</p>
   <div class="meta">
-    <span class="chip"><i data-lucide="users"></i>戢祥毅 · 李茂槐 · 张博然</span>
-    <span class="chip"><i data-lucide="graduation-cap"></i>南京工业职业技术大学 艺术设计学院 工业设计</span>
-    <span class="chip"><i data-lucide="calendar"></i>2026-11-19</span>
+    <span class="chip e1 tip" data-tip="E1 = 一手从业者访谈 9 条 + 财政部原文"><i data-lucide="file-check" style="width:14px;height:14px"></i>E1 证据 <b>10</b> 条</span>
+    <span class="chip e2 tip" data-tip="模具网论坛+行业文章真实语料与数据，14 条；另 12 条存疑语料已隔离不作依据"><i data-lucide="bar-chart-3" style="width:14px;height:14px"></i>E2 语料 <b>14</b> 条</span>
+    <span class="chip tip" data-tip="12 次检索 + 11 次页面抓取（知乎/贴吧被风控拦截已剔除）"><i data-lucide="search" style="width:14px;height:14px"></i>检索 <b>12</b> 次 · 抓取 <b>11</b> 页</span>
+    <span class="chip tip" data-tip="官方 H1 纯 C 端限制，本项目 B2B 定位已获主办方许可（沿用 M1）"><i data-lucide="shield-check" style="width:14px;height:14px"></i>H1：<b>B2B 已获许可</b></span>
   </div>
-  <div class="notice"><b>数据说明：</b>本次 M2 累计完成 <b>10 次联网检索（24 组查询词）与 7 次页面原文核读</b>，覆盖携程问答、知乎、小红书、新华每日电讯、黑猫投诉、宁波民生e点通等 <b>10 个以上独立来源</b>；采集真实用户语料 <b>29 条</b>（含 2 条项目成员亲历，来源标注"人补充"）。12 条痛点全部可追溯语料编号，<b>无来源推断条数为 0</b>。</div>
   <div class="stats">
-    <div class="stat reveal"><div class="n">29 条</div><div class="t">真实用户语料（求助 / 吐槽 / 投诉 / 亲历）</div></div>
-    <div class="stat reveal"><div class="n">12 条</div><div class="t">痛点摘要定稿，用户覆盖 8 类、母题 6 种</div></div>
-    <div class="stat reveal"><div class="n">2 / 9</div><div class="t">人圈选条目，最终选定条目 2（成员亲历互证）</div></div>
-    <div class="stat reveal"><div class="n">1 句</div><div class="t">HMW 定稿——人手写落笔，非 AI 代写</div></div>
+    <div class="stat"><span class="e e2">语料</span><div class="n"><span data-count="23">0</span> 条</div><div class="l">有效真实语料（线上 14 + 人补充 9；另 12 条存疑隔离）</div></div>
+    <div class="stat"><span class="e e2">耗时</span><div class="n">大半天</div><div class="l">传统一套模具报价周期（E2·摩杰斯）</div></div>
+    <div class="stat"><span class="e e2">离散</span><div class="n"><span data-count="30">0</span>% 左右</div><div class="l">同结构模具报价差异（E2）</div></div>
+    <div class="stat"><span class="e e1">跨度</span><div class="n"><span data-count="40">0</span>-1200</div><div class="l">工时单价 元/小时（E1·人补充 S27）</div></div>
+  </div>
+  <div class="scrolldown"><i data-lucide="chevrons-down" style="width:16px;height:16px"></i>往下看，七段走完</div>
+</header>
+
+<main class="wrap">
+
+<section id="s1" class="reveal">
+  <div class="sec-head"><span class="sec-no">01</span><h2>赛道深度分析报告</h2><span class="en">Deep Dive</span></div>
+  <div class="board stagger">
+    <div class="brow"><h4><span class="bn">一</span><i data-lucide="globe"></i>总览与规模</h4><p>赛道 = 小微机加工/模具厂的<b>报价环节</b>。全国模具企业 <b>3 万多家</b>、多数为中低端（E2·昆山基地引市经信委）；昆山基地注册 <b>951 家</b>、销售近 <b>100 亿元</b>、占全国约 <b>10%</b>，推算全国模具销售约千亿级（E2）。大盘：智能制造 <b>3.3 万亿、+15.2%</b>（E2·赛迪 2024）；工业软件 <b>1.6 万亿、+18%</b>（E2）；机械设备企业<b>超 16 万家</b>（E2·标题级）。政策：数字化试点 <b>30 城、80% 奖补中小微、小快轻准</b>（E1·财政部）——报价环节正是「小快轻准」最直接的落点。</p></div>
+    <div class="brow"><h4><span class="bn">二</span><i data-lucide="users"></i>人群规模与画像</h4><p>3 万多家企业以中小/小微为主，典型配置「三台 CNC 两台火花机」「两台慢走丝」「十几台快走丝」（E2·语料）。报价决策人高度集中在<b>老板本人</b>——「老板自己就是报价员」（E2·摩杰斯）；大厂才有报价工程师岗位（E2·猎聘在招）。新趋势：短视频获客进入传统厂，抖音询盘成新入口（E2·语料）。</p></div>
+    <div class="brow"><h4><span class="bn">三</span><i data-lucide="calculator"></i>消费结构与行为</h4><p>一套模具报价 = 六项成本（模架/型腔 CNC/EDM/抛光/装配/试模）+ 约 <b>15%</b> 间接成本常被漏算（E2·摩杰斯）。报价周期传统<b>「大半天」</b>，结构化后「十几分钟」（E2）；对标宣称「秒级、原需 6 小时」（E2·黑湖宣传口径）。价格离散：同结构差 <b>30%</b>（E2）；同一套模东莞 18 万 vs 浙江 12 万（E2·语料 S20）。压价频次：客户压 <b>25%–30%</b> 工时常见（E2·S1/S2）。</p></div>
+    <div class="brow"><h4><span class="bn">四</span><i data-lucide="scale"></i>竞争格局与方案不足</h4><p>识图报价供给已在<b>相邻行业</b>出现：电气成套的利驰「图晓晓」AI 识图到 BOM 到报价（E2·正文可核）；CNC 机加工场景<b>无已验证同类供给</b>（开源项目仅标题级未验证）。中大厂方案：黑湖报价 Agent（分项成本+负责人确认）、摩杰斯 PMS 报价模块（E2·厂商口径）。缺口：小微厂用不动重 ERP（月 10 单以下 Excel 够用，E2）；报价<b>可解释性</b>缺位——分项、依据、历史条件不可追溯；压价应对全靠老师傅话术；工时单价经验随人流失。</p></div>
+    <div class="brow"><h4><span class="bn">五</span><i data-lucide="route"></i>需求环节拆解与个人匹配</h4><p>链路：询价流入、读图、算成本、定价与压价博弈、成交生产、复盘。逐环节：获客 = 询盘十个九个比价；读图 = 公差标严单价翻倍没人提醒；算成本 = 漏项 15%；定价 = 工时被砍 30% 讲不出依据；复盘 = 报过就忘、下次重算。<b>个人匹配</b>：模具厂助理亲历「客户发图询价、老板当场算不出来、客户走了」；会 CAD/Creo/UG 读图；厂长、钳工师傅、表哥（机加工/模具从业者）为现成真实用户渠道；表哥两段访谈提供 E1 级工时报价表与行业判断。</p></div>
   </div>
 </section>
 
-<section id="track">
-  <div class="sec-head reveal">
-    <div class="sec-num">01</div>
-    <div class="sec-title"><h2>赛道深度分析报告</h2><p>无障碍智慧出行服务（赛道）· M2 赛道深度分析 · 五板块带数据</p></div>
-  </div>
-  <div class="prose reveal">
-    <h3>（一）总览与规模</h3>
-    <p>无障碍智慧出行 = 无障碍地图数据 + 无障碍路线导航 + 设施信息查询反馈，服务轮椅使用者、老人、视障人士与陪护人员。据行业研究，2025 年中国无障碍产业规模约 <b>1400 亿元</b><span class="etag e2">E2</span>（第三方产业报告），处政策驱动扩张期；需求真实性已有硬证据——高德轮椅导航上线 2 年累计规划无障碍路线超 <b>1.5 亿次</b><span class="etag e1">E1</span>（新华网 2024-11-29，见附录链接）。</p>
-    <h3>（二）人群规模与画像</h3>
-    <p>60 岁及以上人口约 <b>3.1 亿、占 22.0%</b><span class="etag e1">E1</span>（2024 年统计公报口径）；失能半失能老年人超 <b>4400 万</b><span class="etag e2">E2</span>；残疾人总数 <b>8296 万</b><span class="etag e1">E1</span>（2006 年抽样调查，通行口径"约 8500 万"为 2010 年末推算<span class="etag e2">E2</span>）。直接用户是轮椅使用者本人与陪护者，且惠及面外溢——高德官方称轮椅导航同时服务腿脚不便老人、推婴儿车家长、行李游客<span class="etag e1">E1</span>，潜在用户池远大于残障基数。</p>
-    <h3>（三）消费结构与行为</h3>
-    <p>行为呈<b>"低频高痛、查了才去"</b>特征：出行前先查"能不能去"，查不到就放弃<span class="etag e3">E3</span>（推断）。供给侧刚起步：高德 2 年覆盖仅 <b>58 城</b>、累计 1.5 亿次规划<span class="etag e1">E1</span>，相对全国城市与景区总量渗透率低；银泰 60 家商场刚接入设施信息<span class="etag e1">E1</span>——需求被满足的比例极低，大量封闭场景仍无数据可查。</p>
-    <h3>（四）竞争格局与现有方案不足</h3>
-    <p>三层格局：商业系高德/百度（无障碍为功能点，覆盖 58 城、偏交通设施）、官方系（上海/北京政府背书免费地图，待核）、公益系 Wheelmap 等（十余年未商业化）。结构性缺口 = <b>封闭场景（景区/校园/医院）的建筑入口级细粒度属性 + 设施实时状态运营</b><span class="etag e3">E3</span>：静态点位巨头能做，单场景深度运营 ROI 低没人做。</p>
-    <h3>（五）需求环节拆解与个人匹配</h3>
-    <p>全链路六环节：出行前规划（不知哪有无障碍设施）、到达找入口、垂直通行、场内找路找人、设施查找、异常反馈，每环节都有痛点方向。项目成员两条亲历正踩中最深环节：陪轮椅同学按导航走到楼梯口推行不了（垂直通行）、景区首次去找不到在另一出口等的朋友（场内找人）——最有体感、最能拿到一手语料的切入位置。</p>
+<section id="s2" class="reveal">
+  <div class="sec-head"><span class="sec-no">02</span><h2>真实用户反馈语料库</h2><span class="en">Corpus · 35</span></div>
+  <p class="lead">12 条痛点全部可追溯至下列语料编号，且支撑位只用有效语料。有效线上语料 S1–S14 来自模具网论坛与摩杰斯行业文章（2026 年 3–10 月）；人补充 S27–S35 来自表哥两段访谈录音整理（E1）与身边老板的多次抱怨（E1）。存疑语料区 S15–S26 来自模具报价家、模王网两个同源问答站（同平台搭建、同客服电话、提问后分钟级出现工整回答），真实性待核，<b>不作为 H7 依据，仅存档备查</b>。知乎、百度贴吧抓取被平台风控拦截，未采用。</p>
+  <table class="src">
+    <thead><tr><th style="width:52px">#</th><th>原话（节选）</th><th style="width:190px">来源</th><th style="width:90px">情绪</th></tr></thead>
+    <tbody>
+    <tr class="grp"><td colspan="4">有效线上语料 S1–S14（模具网论坛 · 摩杰斯行业文章）</td></tr>
+    <tr><td>S1</td><td>家电壳体模具自算 480 工时，客户称「市场 380 就能做」要压 30%……「压到 336 小时，工人那边工资都快包不住了」</td><td>模具网 2026-05</td><td>吐槽求助</td></tr>
+    <tr><td>S2</td><td>「前两年我也接过类似的单，压了 25% 左右……最后算下来还倒亏两万」</td><td>模具网回复</td><td>后悔</td></tr>
+    <tr><td>S3</td><td>「厂子小，就两台慢走丝……按快走丝那套路算肯定亏死……客户急着问价我心里没底」</td><td>模具网 2026-05</td><td>焦虑</td></tr>
+    <tr><td>S4</td><td>「按锥度角度和厚度阶梯报价……这行利润本来就薄，不算清楚就是给机器打工」</td><td>模具网回复</td><td>吐槽</td></tr>
+    <tr><td>S5</td><td>「锥度件起步价 80-150 元/件……厚度超过 30mm 的按每 mm 加 5-10 块」</td><td>模具网回复</td><td>经验</td></tr>
+    <tr><td>S6</td><td>「客户每次都嫌贵，非要按线长走……线长报低了等于白干，报高了直接跑单」</td><td>模具网 2026-03</td><td>求助</td></tr>
+    <tr><td>S7</td><td>「客户嫌贵你就让他把图发过来，你直接报个总分项列表让他看到底贵在哪儿」</td><td>模具网回复</td><td>经验</td></tr>
+    <tr><td>S8</td><td>「先把每台机器的固定成本摊清楚……反推出线长保底价」</td><td>模具网回复</td><td>经验</td></tr>
+    <tr><td>S9</td><td>「客户开口就是按一百万模次算寿命，动不动就拿这个压价或者要求摊销进模具费」</td><td>模具网 2026-05</td><td>吐槽</td></tr>
+    <tr><td>S10</td><td>「百万模次那是忽悠人的……PP 加玻纤 40 万次就该考虑保养了」</td><td>模具网回复</td><td>吐槽</td></tr>
+    <tr><td>S11</td><td>「热处理单价贵了 30%，但寿命确实顶」</td><td>模具网回复</td><td>经验</td></tr>
+    <tr><td>S12</td><td>「老板自己就是报价员……一套模具报下来少说大半天，急了凭经验拍个数，要么报高丢单，要么报低赔钱」「同类结构报价差异能差到 30%」「老师傅离职了，他脑子里的工时数据就带走了」「数据散在不同人手里，光沟通就要花掉大半天」</td><td>摩杰斯 2026-10</td><td>观察</td></tr>
+    <tr><td>S13</td><td>「刀具损耗、设备折旧、管理费用……累积起来能占到总成本的 15% 左右，很多厂只算直接材料和人工」</td><td>摩杰斯</td><td>观察</td></tr>
+    <tr><td>S14</td><td>「每月报价不超过 10 单，Excel 模板就够用；超过 20 单，建议上系统」</td><td>摩杰斯 FAQ</td><td>观察</td></tr>
+    <tr class="grp"><td colspan="4">存疑语料区 S15–S26（模具报价家 · 模王网问答——同源营销平台特征：tuize.com 同模板、同客服电话、提问后分钟级工整回答；真实性待核，不作 H7 依据，仅存档）</td></tr>
+    <tr><td>S15</td><td>「发了几个高速铣视频来了十几个询盘，聊下来都是各种砍价先报超低价的」</td><td>模具报价家 2026-09</td><td>焦虑</td></tr>
+    <tr><td>S16</td><td>「抖音来的客户十个有九个是来比价的，上来就问最低多少钱，其实连图纸都没有」</td><td>模具报价家</td><td>吐槽</td></tr>
+    <tr><td>S17</td><td>「压价是常态，但真正能做成的单子不是靠低价，是让客户觉得你有底」</td><td>模具报价家</td><td>经验</td></tr>
+    <tr><td>S18</td><td>「最怕的不是压价，是客户不懂行还拿别人乱报价来砍」</td><td>模具报价家</td><td>吐槽</td></tr>
+    <tr><td>S19</td><td>「抖音是流量入口，不是价格战场……靠专业定位筛选客户」</td><td>模具报价家</td><td>经验</td></tr>
+    <tr><td>S20</td><td>「同样一套家电外壳模，东莞报 18 万浙江报 12 万，除了价格还要比什么，怕便宜没好货」</td><td>模具报价家 2026-08</td><td>焦虑</td></tr>
+    <tr><td>S21</td><td>「报价低三成，但要看模具钢材和热处理工艺有没有缩水……怕省在关键尺寸上」</td><td>模具报价家</td><td>焦虑</td></tr>
+    <tr><td>S22</td><td>「我压价是想逼出真实底价，但更怕踩坑……你把为什么值这个价讲清楚，比降 5 个点还管用」</td><td>模王网 2026-08</td><td>焦虑</td></tr>
+    <tr><td>S23</td><td>「先探清底线，要对方明确具体目标价和订单量……千万别一降到底」</td><td>模王网</td><td>经验</td></tr>
+    <tr><td>S24</td><td>「隔壁厂报 8 万我报 12 万，客户为啥选贵的？人家含了试模费和两年免费修模，我的裸价反而显得没底气」</td><td>模具报价家</td><td>后悔</td></tr>
+    <tr><td>S25</td><td>「客户算的是整套供应链的隐性成本……含透明分项、明确试模次数和交付节点，他选你，是在买确定性」</td><td>模具报价家</td><td>洞察</td></tr>
+    <tr><td>S26</td><td>「8 万报价的厂，可能设备老旧、排产混乱，模具一拖就是半个月」</td><td>模具报价家</td><td>洞察</td></tr>
+    <tr class="grp"><td colspan="4">人补充语料 S27–S35（表哥两段访谈录音整理 + 身边老板抱怨 · E1）</td></tr>
+    <tr><td>S27</td><td>整套市场工时报价表（口述）：普通车床 40、大规格 80、数控车 80-120、磨床 60-80、三轴铣 80-300、五轴 300-1200（8 米五轴 1200）元/小时</td><td>人补充·访谈 2026-11</td><td>平实</td></tr>
+    <tr><td>S28</td><td>「这个价格要是你自己有机床，你是有挣的嘞哈」；按表接单不亏但利润微薄，难度高要上浮</td><td>人补充·访谈</td><td>经验</td></tr>
+    <tr><td>S29</td><td>「刀具成本不能直接并入机床工时费，需要单独作为成本项」「你编程，你才决定用哪把刀……刀具成本是好多」</td><td>人补充·访谈</td><td>强调</td></tr>
+    <tr><td>S30</td><td>异形零件返修二次找正：基准已去除，「很难找回原始加工基准坐标……目前没有成熟方案」</td><td>人补充·访谈</td><td>行业共识</td></tr>
+    <tr><td>S31</td><td>拉伸模具配模：软件设计间隙与实际不符，「只能依靠钳工人工配模，反复上机试模……非常依赖老师傅经验」</td><td>人补充·访谈</td><td>行业共识</td></tr>
+    <tr><td>S32</td><td>「机加工多属于小批量多品种生产，零件微小改动，整套加工工艺就会发生很大变化」——通用全品类报价数据积累周期极长</td><td>人补充·访谈</td><td>警告</td></tr>
+    <tr><td>S33</td><td>「系统输出结果不能直接作为最终成交价格，但是有很强参考价值」「实际情况那种根本说点都行不通嘛」</td><td>人补充·访谈</td><td>直言</td></tr>
+    <tr><td>S34</td><td>「痛点是根据自己需求的，要遇到了才有，又不是每一个都有那种」</td><td>人补充·访谈</td><td>直言</td></tr>
+    <tr><td>S35</td><td>「老板一般跟客户来报价；但如果报得慢的话，那单他可能就没了。有时候很多人来问价，有的不是诚心问价，但老板还是要思考很久，很浪费时间。之前还多次抱怨这个事。」</td><td>人补充·身边老板（多次抱怨）</td><td>抱怨</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s3" class="reveal">
+  <div class="sec-head"><span class="sec-no">03</span><h2>12 条痛点摘要</h2><span class="en">Pain Points</span></div>
+  <p class="lead">18 条候选按三因子（频次、单次损失、无解程度）评分，保留总分不低于 5 分者，母题去重后定稿 12 条；v1.1 复验将其中 4 条的支撑替换为有效语料。用户覆盖 4 类（老板/加工户/师傅/比价客户）、痛点母题 7 种、E3 为 0 条（每条均有有效语料支撑）、不含方案。</p>
+  <div class="pains stagger">
+    <div class="pain"><div class="ph"><span class="pn">01</span><h4>自营小厂老板 · 被客户压价 30%</h4></div><p>家电壳体模具自算 <b>480 工时</b>，客户称「市场 380」要求压到 336 工时，压到工人工资包不住，硬接一单<b>倒亏约 2 万</b>；只能口头解释工时，无分项依据可给客户看。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S1、S2 <span class="lv e2">E2</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">02</span><h4>快转慢加工户 · 报价无基准</h4></div><p>两台慢走丝的小加工户，客户急要镶件报价时，<b>按快走丝老套路算会亏、按面积算客户不认</b>，接单前心里没底；只能靠经验拍价，没有保底价模型。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S3、S5 <span class="lv e2">E2</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">03</span><h4>线切割加工户 · 计价方式被客户牵着走</h4></div><p>客户坚持「按线长收」：<b>线长报低等于白干、报高直接跑单</b>；缺少「分项列明贵在哪」的说明工具，工时逻辑讲不清。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S6、S7 <span class="lv e2">E2</span></span></div>
+    <div class="pain" style="border-color:rgba(46,108,134,.55)"><div class="ph"><span class="pn">04</span><h4>老板兼报价员 · 报价慢拍脑袋</h4><span class="badge final"><i data-lucide="check" style="width:12px;height:12px"></i>最终选定</span><span class="badge pick">圈选</span></div><p>客户催单当天要回价：<b>翻材料手册、查机床工时、算电极刀具损耗，一套模具少说大半天；急了凭经验拍数——报高丢单、报低赔钱</b>；数据散在采购/车间/编程多人手里，光沟通就大半天；Excel 报价无法沉淀复用。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S12、S29、S35 <span class="lv e2">E2</span><span class="lv e1">E1</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">05</span><h4>小厂老板 · 漏算 15% 隐性成本</h4></div><p>只算直接材料与人工，<b>漏掉刀具损耗、设备折旧、管理费等约 15% 间接成本</b>，看着有利润、做完实际亏损；现有 Excel 模板不含隐性成本项。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S13 <span class="lv e2">E2</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">06</span><h4>小厂老板 · 真假询价都耗时间</h4></div><p>询盘里混着大量非诚心比价，「有的不是诚心问价，但老板还是要思考很久」，每条都白白占掉大量思考时间；诚心的单又因回价慢而丢单——两头都是损失。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S35 <span class="lv e1">E1</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">07</span><h4>按基准表报价的老板 · 该上浮多少没依据</h4></div><p>市场基准价「按表接单不会亏损，但利润微薄」，难度高、工时久的件<b>必须上浮才有利润，但浮多少全凭经验、讲不出依据</b>；而刀具这类大头成本不先编程就算不准——照表报就是白干。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S28、S29 <span class="lv e1">E1</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">08</span><h4>比价客户 · 同图报价差 30% 无从判断</h4></div><p>同一张图纸，<b>报价的人不同、估算方式不同，报出的价能差 30%</b>；工时单价本身又随设备规格从 40 到 1200 元/小时不等——客户拿多家报价无从判断谁靠谱，比价只剩「谁低选谁」。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S12、S27 <span class="lv e2">E2</span><span class="lv e1">E1</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">09</span><h4>注塑模具老板 · 百万模次压价</h4></div><p>客户开口「按一百万模次算寿命」要求压价或摊销，实际<b>三四十万模次状态良好</b>；没有把寿命账算给客户看的工具，只能吃哑巴亏。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S9、S10、S11 <span class="lv e2">E2</span></span></div>
+    <div class="pain" style="border-color:rgba(168,134,60,.55)"><div class="ph"><span class="pn">10</span><h4>资深报价师傅 · 经验只在脑子里</h4><span class="badge pick">圈选</span></div><p>工时单价、起步价、保底规则<b>全在个人脑中，人一走数据就带走，新人从头摸索</b>；同图不同人报出差 30%；师傅带徒弟口头传、Excel 无标准数据。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S4、S5、S12、S27、S28 <span class="lv e2">E2</span><span class="lv e1">E1</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">11</span><h4>月 10 单小厂 · 工具两难</h4></div><p>报价软件要么是<b>重 ERP（贵、要人维护）、要么 Excel 手工算易错</b>，「不上系统慢、上了系统贵」；10-20 单区间没有轻量选择。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S14 <span class="lv e2">E2</span></span></div>
+    <div class="pain"><div class="ph"><span class="pn">12</span><h4>报价单裸价 · 贵在哪讲不清</h4></div><p>报价单只有一个总价，<b>材料、工时、外协分项缺失</b>，客户「嫌贵」时说不出贵在哪；行业老师傅的解法就是「分项列表让他看到底贵在哪儿」，但大多数厂没有工具做得出分项报价单。</p><span class="ref"><i data-lucide="quote" style="width:13px;height:13px"></i>语料 S7、S12 <span class="lv e2">E2</span></span></div>
   </div>
 </section>
 
-<section id="pains">
-  <div class="sec-head reveal">
-    <div class="sec-num">02</div>
-    <div class="sec-title"><h2>12 条痛点摘要</h2><p>痛度三因子筛选（频次 / 单次损失 / 无解程度，≥5 分保留）· 每条附真实语料，可追溯编号</p></div>
-  </div>
-  <div class="wall">
-    <div class="card reveal"><div class="tag">母题 A · 出行前信息缺失 · 8 分</div><h4><span class="idx">1</span><i data-lucide="search"></i>出行前查不到"能不能去"</h4><div class="body">轮椅使用者，出行前规划：查不到目标景区能否无障碍通行，只能发帖求"实测"，查不到就干脆不去；现有方案无标准化无障碍信息源。</div><div class="src">「<b>老人可以坐轮椅游玩吗</b>」携程问答｜「<b>轮椅去宜宾两日游可行吗？无障碍实测如何？</b>」知乎｜「<b>不建议，安全第一</b>」携程回答（语料 1/5/6/8）</div></div>
-    <div class="card pain-picked reveal"><div class="tag">母题 B · 路线与通行能力脱节 · 8 分<span class="stamp">已选定</span></div><h4><span class="idx">2</span><i data-lucide="triangle-alert"></i>导航路线推不动</h4><div class="body">陪护家属/轮椅使用者，景区行进中：按导航走的路实际推不动，多处不得不把人扶起来走，导航毫无提示——路线信息与实际通行能力脱节，项目核心痛点。</div><div class="src">「<b>我就是用轮椅推着母亲的，但很多地方不得不起来扶着走</b>」携程回答｜成员亲历：陪骨折同学按导航走到楼梯口（语料 4/21）</div></div>
-    <div class="card reveal"><div class="tag">母题 B · 路线脱节 · 7 分</div><h4><span class="idx">3</span><i data-lucide="stairs"></i>路段混着台阶与拱桥</h4><div class="body">轮椅使用者，景区内路段：路线混着台阶、拱桥、青石板路，走一半被卡住，没有绕行信息。</div><div class="src">「<b>景区里面是青石板路为主，轮椅不是太方便</b>」「<b>有上桥下桥</b>」「<b>有的地方都有台阶</b>」携程回答（语料 2/3/7）</div></div>
-    <div class="card reveal"><div class="tag">母题 C · 设施状态失效 · 8 分</div><h4><span class="idx">4</span><i data-lucide="train-front"></i>无障碍电梯被困</h4><div class="body">轮椅使用者，交通枢纽出入口：无障碍电梯停用或找不到，被困出口成"孤岛"，设施状态没人更新。</div><div class="src">「<b>被困在地铁口的孤岛｜一个轮椅男生求救</b>」小红书（语料 9）</div></div>
-    <div class="card reveal"><div class="tag">母题 A/B · 7 分</div><h4><span class="idx">5</span><i data-lucide="baby"></i>攻略与实际不符</h4><div class="body">推婴儿车家庭，景区/城市游玩：网上攻略说"适合推车"，到了全是台阶，只能硬抬或折返，攻略不可验证。</div><div class="src">「<b>救命，到底谁建议去北京推车的，不要租车</b>」小红书（语料 11）</div></div>
-    <div class="card reveal"><div class="tag">母题 A · 出行前信息缺失 · 5 分</div><h4><span class="idx">6</span><i data-lucide="mountain"></i>到山顶才发现限制</h4><div class="body">老年游客（含子女陪护），山地景区：爬到山顶才发现缆车有乘坐限制，体力耗尽白爬一趟，使用条件事先不透明。</div><div class="src">「<b>老人爬上山没坐成缆车，游客认为应明确年龄限制</b>」青岛新闻网（语料 13）</div></div>
-    <div class="card reveal"><div class="tag">母题 B/C · 9 分（最高痛度）</div><h4><span class="idx">7</span><i data-lucide="eye-off"></i>盲道断档无提示</h4><div class="body">视障人士，日常步行：盲道断档、开裂无任何提示，险些摔倒，环境障碍信息为零。</div><div class="src">「<b>20 多米盲道断档、路面严重开裂，视障老伯险些摔倒</b>」东方网（语料 14）</div></div>
-    <div class="card reveal"><div class="tag">母题 E · 规则不透明 · 6 分</div><h4><span class="idx">8</span><i data-lucide="dog"></i>导盲犬入园被拦</h4><div class="body">视障游客（用导盲犬），景区入园：准入规则不透明，到了门口被拦，白跑一趟。</div><div class="src">「<b>导盲犬进景区不该再有疑问</b>」（被拒入园事件）腾讯新闻（语料 15）</div></div>
-    <div class="card pain-picked reveal"><div class="tag">母题 D · 场内导航失效 · 7 分<span class="stamp teal">已圈选</span></div><h4><span class="idx">9</span><i data-lucide="map-pin-off"></i>场内找不到出口和人</h4><div class="body">普通游客，大型景区场内：进来后找不到出口和集合点，指示牌缺失或混乱，朋友在另一个门只能靠电话碰头，耗时极长。</div><div class="src">「<b>台儿庄古城内游客只能进不知道怎么出</b>」黑猫投诉｜成员亲历：朋友在另一出口等，找了很久（语料 16/20/22）</div></div>
-    <div class="card reveal"><div class="tag">母题 C · 设施状态失效 · 6 分</div><h4><span class="idx">10</span><i data-lucide="door-closed"></i>无障碍厕所状态不明</h4><div class="body">特殊需求儿童家庭，公园/景区如厕：无障碍厕所锁着、坏了或找不到，状态不明，应急需求落空。</div><div class="src">「<b>北仑儿童公园无障碍厕所［投诉］</b>」宁波民生e点通（语料 17）</div></div>
-    <div class="card reveal"><div class="tag">母题 F · 反馈闭环缺失 · 7 分</div><h4><span class="idx">11</span><i data-lucide="wrench"></i>设施坏了反馈无门</h4><div class="body">残障人士，设施损坏后：遇到无障碍设施老化失修不知道找谁、反馈无门，坏了长期没人修。</div><div class="src">「<b>残疾人出行遇到无障碍设施老化失修该找谁？</b>」微信公众号求助文（语料 18）</div></div>
-    <div class="card reveal"><div class="tag">母题 A/B · 6 分</div><h4><span class="idx">12</span><i data-lucide="map"></i>现有导航覆盖太浅</h4><div class="body">现有无障碍导航用户：现有方案仅覆盖约 58 城、偏交通设施，封闭场景（景区/园区内部）无细粒度数据，体验与宣传预期有落差。</div><div class="src">「<b>关于高德地图无障碍导航使用</b>」小红书｜58 城数据：新华网 <span class="etag e1">E1</span>（语料 19）</div></div>
-  </div>
-</section>
-
-<section id="deep">
-  <div class="sec-head reveal">
-    <div class="sec-num">03</div>
-    <div class="sec-title"><h2>深挖版</h2><p>人圈选条目 2 与 9 · 补抓语料 7 条，语料池扩至 29 条 · 关键证据来自新华每日电讯调查报道</p></div>
-  </div>
-  <div class="qgrid">
-    <div class="qcard teal-top reveal"><h4><i data-lucide="key-round"></i>条目 2 · 路线与实际通行能力脱节</h4>
-      <div class="body">用户比预想更广：90 后轮椅夫妻、轮友群、临时伤者（骨折/崴脚康复期）、推婴儿车家长，全是同一痛点的变体。场景沿行程逐级展开——出发前订酒店要「打十几个电话」逐家问门宽坡度；到入口遇隔离墩，「是绕路找下一个入口，还是求助他人把我们抬进去」；被抬时「感谢与窘迫交织」；终点是放弃出行。
-      <div class="inner-quote">「地图软件的无障碍导航已经能清晰规划路线、避开连续台阶陡坡，但导航无法告诉我们眼前景区<b>哪一个入口没有隔离墩——这最后一米的信息，多是空白</b>。」<span class="who">新华每日电讯 2026-05-18，轮椅使用者祁昌阳原话 <span class="etag e1">E1</span>——路线级信息巨头已做，入口级/最后一米是空白，与项目基线"建筑入口级数据"严丝合缝。</span></div>
-      <div class="inner-quote">「物品可以网购，电影可以下载，美食可以外卖，<b>不出门，没人觉得我们是负担</b>。」<span class="who">轮友群发言 <span class="etag e1">E1</span>——痛点最深后果：因出行摩擦过大而系统性放弃出行。</span></div>
-      关键判断：痛点真实、有 E1 权威背书、直指项目核心能力（入口级无障碍数据），且现有方案明确未覆盖。</div></div>
-    <div class="qcard reveal"><h4><i data-lucide="split"></i>条目 9 · 场内找路找人失效</h4>
-      <div class="body">用户变化：家庭游、朋友结伴、跟团走散、独自游客——几乎每个去过大型景区的人都中过招（高频）。场景细分：找不到出口（台儿庄投诉、「阴间出口设计」成高赞话题）；场内步行失控；找人靠碰（成员亲历，阿勒泰景区走散已严重到导游要教「5 条无信号集合法则」）；信息载体仍是纸质地图、立式指示牌、广播找人。
-      <div class="inner-quote">「对国内的很多景区很无语，把个景区搞得特别大……结束后再重新走一遍。这一圈下来<b>快累傻了</b>。啥都没看到呢，人先累啥了。」<span class="who">小红书用户长文 <span class="etag e2">E2</span></span></div>
-      关键判断：频次极高、人人共鸣、演示最直观；但头部景区场内地图巨头已有布局（深度与实时性待验证），差异化同样要落在「细粒度 + 实时 + 无障碍叠加」。</div></div>
-  </div>
-</section>
-
-<section id="pick">
-  <div class="sec-head reveal">
-    <div class="sec-num">04</div>
-    <div class="sec-title"><h2>选定条目与理由</h2><p>成员原话，AI 仅存档未改写 · 圈选轨迹：先圈 1、2，后改 2、9，最终选定 2——全部由人作出</p></div>
-  </div>
-  <div class="two-col">
-    <div class="card reveal"><div class="tag">选定结果</div><h4><i data-lucide="crosshair"></i>条目 2 · 路线与通行能力脱节</h4>
-      <div class="body">细分领域定位（由选定条目导出）：<b>轮椅使用者及其陪护者 × 景区/公共空间出行 × 通行能力信息缺失</b>。<br><br>条目 9 未废弃：进 M4 需求文档 P1 档 / V2 演进路线。产品双模式不变——无障碍模式为核心灵魂，场内导航为搭载能力。</div></div>
-    <div class="quote-wrap reveal">
-      <div class="quote">轮椅使用者面临的不只是找路问题，而是地图规划的路线与现实通行能力脱节，尤其是<b>景区入口、道路障碍和最后一米的信息缺失</b>，痛点更真实、社会价值更突出。相比普通景区寻路，它更能体现 AI 在视觉识别、通行能力分析和智能路线规划上的实际价值，也更容易形成有差异化、有商业拓展空间的比赛项目。</div>
-      <div class="quote-note">项目成员口述定稿理由 · 2026-11-19 · AI 仅做文字存档，未代写、未修改。</div>
+<section id="s4" class="reveal">
+  <div class="sec-head"><span class="sec-no">04</span><h2>深挖版（圈选 2 条）</h2><span class="en">Deep Dig</span></div>
+  <div class="digs stagger">
+    <div class="dig sel">
+      <h4><i data-lucide="target"></i>A · 老板兼报价员：报价要大半天，急了拍脑袋 <span class="badge final">人选定</span></h4>
+      <div class="sub">对应痛点 04 · 语料 S12、S29、S35</div>
+      <ul>
+        <li><b>用户变化</b>：小厂老板本人报价 / 中厂业务员挨个问采购、车间、编程（光沟通大半天）/ 半新手按老套路算会亏 / 报价工程师仅大厂有编制</li>
+        <li><b>场景细化</b>：客户发图催「今天能回价吗」，慢了客户转身找别家；想算准刀具成本必须先编程选刀——不编程算不准、编程又太慢，只能拍数；拍数代价二选一：报高丢单、报低赔钱；历史报价不归档，下次从零再算</li>
+        <li><b>身边活证据</b>：实习模具厂老板「多次抱怨」——报得慢单就没了；真假询价混杂，不诚心的比价也占掉老板大量思考时间（S35）</li>
+      </ul>
+      <div class="kdata"><b>量化锚点</b>：一套模具报价 = 大半天（E2）；同结构报价差 30%（E2）；工时单价跨度 40-1200 元/小时、差 30 倍（E1·S27）；间接成本漏算 15%（E2）。<b>边界（E1·S33）</b>：工具输出只能当参考价与依据，最终价必须人来定。</div>
+    </div>
+    <div class="dig">
+      <h4><i data-lucide="user"></i>B · 资深报价师傅：经验全在脑子里</h4>
+      <div class="sub">对应痛点 10 · 语料 S4、S5、S12、S27</div>
+      <ul>
+        <li><b>用户变化</b>：干七八年慢走丝师傅（口诀式起步价）/ 干十年注塑模老板 / 离职场景（数据清零）/ 表哥（整套市场工时表记在个人手里）</li>
+        <li><b>场景细化</b>：带新人靠口头教；师傅离职报价基准清零，同图不同人差 30%；换机型老经验失效；报过的单没沉淀，下次重算</li>
+        <li><b>经验资产</b>：工时单价表（40-1200 跨度）+ 阶梯规则 + 起步价 + 刀具-编程绑定规则，全在个人手里，流失一人丢一套基准</li>
+      </ul>
+      <div class="kdata">与 A 同根：经验不可沉淀正是报价慢的根源之一，两条痛点在「人」身上闭环。</div>
     </div>
   </div>
 </section>
 
-<section id="hmw">
-  <div class="sec-head reveal">
-    <div class="sec-num">05</div>
-    <div class="sec-title"><h2>HMW 问题卡</h2><p>人手写定稿 · 已通过与 AI 变体逐字比对校验（均不相同，非复制粘贴）</p></div>
-  </div>
-  <div class="hmw reveal">
-    <span class="badge"><i data-lucide="badge-check"></i>人手写定稿</span>
-    <div class="field"><div class="fl"><i data-lucide="user"></i>01 目标用户</div><div class="fv">以使用轮椅出行的人群为核心，尤其是前往陌生景区、对周边道路及无障碍设施不熟悉，需要依赖外部信息判断通行条件的轮椅使用者。</div></div>
-    <div class="field"><div class="fl"><i data-lucide="map-pin"></i>02 特定场景</div><div class="fv">一位轮椅使用者第一次来到大型景区，准备进入景区游览。景区设有多个出入口，但不同入口的道路结构、坡道、台阶及隔离设施存在差异。用户虽然能够通过地图找到景区位置，却无法提前判断哪个入口真正适合轮椅通行。</div></div>
-    <div class="field"><div class="fl"><i data-lucide="zap"></i>03 核心痛点</div><div class="fv">现有地图提供的信息主要集中在地理位置和路线规划，对景区具体入口及道路实际通行条件的描述不够细致。用户无法在出发前准确了解入口是否存在台阶、坡道是否符合自身通行条件、是否有隔离设施等关键信息，导致地图规划结果与现场实际情况可能不一致，增加了绕行、等待他人协助和无法顺利进入景区的风险。</div></div>
-    <div class="field final"><div class="fl"><i data-lucide="milestone"></i>04 HMW 问题完整表述</div><div class="fv">我们如何帮助轮椅使用者在前往陌生景区时，<b>提前了解并判断不同入口及沿途道路的真实通行条件</b>，减少因无障碍信息缺失而产生的不确定性，让他们能够<b>更加自主、顺畅地完成景区出行</b>？</div></div>
-  </div>
-  <div class="vgrid reveal">
-    <div class="vcard"><b>AI 参考变体一 · 出发前视角</b>让轮椅使用者和陪护者在出发前就知道每条路线的真实通行能力——台阶、坡度、路面材质一目了然，而不是到了才发现推不动。</div>
-    <div class="vcard"><b>AI 参考变体二 · 最后一米视角</b>在到达景区/公共建筑入口的那一刻，指明哪个入口有坡道、无隔离墩、电梯可用，不用绕路十几分钟、不用被抬着进门。</div>
-    <div class="vcard"><b>AI 参考变体三 · 全程实时视角</b>出行全程实时掌握道路与无障碍设施的真实状态（故障、封闭、被占），把未知的风险变成可验证的把握。</div>
-  </div>
-  <p class="reveal" style="font-size:13px;color:var(--dim);margin-top:16px">AI 变体仅作参考；定稿句与三个变体措辞、句式、重心均不相同，校验通过。三个变体的角度（出发前 / 到达时 / 全程实时）均已被定稿句吸收为「提前了解并判断不同入口及沿途道路」。</p>
+<section id="s5" class="reveal">
+  <div class="sec-head"><span class="sec-no">05</span><h2>选定条目与理由（人落笔）</h2><span class="en">Decision</span></div>
+  <blockquote class="reason"><div class="q">
+    <div class="rline"><span class="rk">选定</span><p><b>A · 老板兼报价员，在客户发图催单时，报价要大半天、急了只能凭经验拍数，报高丢单、报低赔钱。</b>细分领域就此锁定：小微机加工/模具厂 · 老板兼报价员 · 催单场景下的快速报价。</p></div>
+    <div class="rline"><span class="rk">理由 1</span><p>痛点更直接。报价慢直接影响客户响应速度，甚至可能影响订单成交。</p></div>
+    <div class="rline"><span class="rk">理由 2</span><p>解决方案更明确。上传图纸、分析零件、核算成本、辅助生成报价，与现在的项目方向高度一致。</p></div>
+    <div class="rline"><span class="rk">理由 3</span><p>效果更容易验证。可以比较使用系统前后的报价耗时、计算准确性和人工参与程度。</p></div>
+    <div class="rline"><span class="rk">理由 4</span><p>更容易形成商业价值。帮工厂缩短报价时间、减少重复劳动，老板更容易理解为什么需要付费。</p></div>
+    <div class="rline"><span class="rk">身边证据</span><p>实习模具厂老板多次抱怨：「报得慢的话，那单他可能就没了；很多人来问价，有的不是诚心问价，老板还是要思考很久，很浪费时间。」（语料 S35，E1）</p></div>
+    <div class="rline"><span class="rk">主线取舍</span><p>在「回价速度」与「真假询价甄别」之间，选定<b>回价速度（报慢了单就没了）</b>作为 HMW 主线。</p></div>
+    <div class="byline">—— 戢祥毅 · 2026-11-20 · 本人口述原话记录（AI 未代选、未改写）</div>
+  </div></blockquote>
 </section>
 
-<section id="appendix">
-  <div class="sec-head reveal">
-    <div class="sec-num">06</div>
-    <div class="sec-title"><h2>数据来源附录</h2><p>关键数字可追溯 · 检索记录公开 · 人机分工留痕</p></div>
+<section id="s6" class="reveal">
+  <div class="sec-head"><span class="sec-no">06</span><h2>HMW 问题卡（定稿）</h2><span class="en">How Might We</span></div>
+  <div class="hmwcard">
+    <span class="tag"><i data-lucide="pen-line" style="width:14px;height:14px"></i>HOW MIGHT WE · 人手写定稿</span>
+    <p class="hmw-sentence">我们如何帮助<em>小型机械加工厂的老板</em>，在客户发来图纸并催促报价时，减少手动查资料、核算成本和反复确认工艺的时间，更快地整理出材料、工时和加工成本等报价依据，给客户提供<em>及时、合理的报价参考</em>？</p>
+    <div class="hmwfields">
+      <div class="hf"><span class="fn">01 目标用户</span><p>小微机械加工厂/模具厂里负责报价的老板（及报价新手）</p></div>
+      <div class="hf"><span class="fn">02 特定场景</span><p>客户发来零件图纸并催促报价，当天甚至当场就要回价</p></div>
+      <div class="hf wide"><span class="fn">03 核心痛点</span><p>报价需要手动查资料、问车间、估算材料成本和加工工时，整个过程耗时较长，而且不同人员的报价可能存在差异</p></div>
+      <div class="hf wide"><span class="fn">04 HMW 完整表述（人定稿）</span><p>我们如何帮助小型机械加工厂的老板，在客户发来图纸并催促报价时，减少手动查资料、核算成本和反复确认工艺的时间，更快地整理出材料、工时和加工成本等报价依据，给客户提供及时、合理的报价参考？</p></div>
+    </div>
+    <div class="checkline">
+      <span class="ok"><i data-lucide="shield-check" style="width:14px;height:14px"></i>AI 校验：与三个 AI 变体均不重合，通过</span>
+      <span><i data-lucide="user" style="width:14px;height:14px"></i>圈选、选定、理由、HMW 全部由人落笔</span>
+      <span><i data-lucide="file-check" style="width:14px;height:14px"></i>输出经 M3 使用（方案设计）</span>
+    </div>
+    <div class="variants">
+      <b>AI 起草的三个参考变体（未采用，仅存档）：</b>
+      <p>一（速度）帮助兼做报价的老板，把翻手册、问车间、拍脑袋的大半天报价压缩成几分钟内有依据的参考报价；二（可解释）帮助小厂老板在压价比价谈判中快速生成材料、工时、刀具逐项列明的报价单；三（经验沉淀）把散落在老板和老师傅脑子里的工时单价与成本规则沉淀成可复用基准。</p>
+    </div>
   </div>
-  <table class="reveal">
-    <tr><th>数据点</th><th>等级</th><th>来源</th></tr>
-    <tr><td>高德轮椅导航 2 年、58 城、路线规划超 1.5 亿次；银泰 60 家商场接入</td><td><span class="etag e1">E1</span></td><td><a class="ext" href="https://www.news.cn/tech/20241129/9105db5dc0ff49cb9faa4556c0dccc0f/c.html" target="_blank" rel="noopener">新华网 2024-11-29</a></td></tr>
-    <tr><td>「最后一米信息空白」「打十几个电话订一间房」等轮椅用户原话</td><td><span class="etag e1">E1</span></td><td><a class="ext" href="http://www.xinhuanet.com/local/20260518/193cb1f386314cf98c5726f7cdee69e5/c.html" target="_blank" rel="noopener">新华每日电讯 2026-05-18《「轮椅朋友」出行，到底难在哪儿？》</a></td></tr>
-    <tr><td>60 岁及以上人口约 3.1 亿、占 22.0%</td><td><span class="etag e1">E1</span></td><td>国家统计局 2024 年统计公报口径（2023 年公报全文链接见 M1 附录）</td></tr>
-    <tr><td>残疾人总数 8296 万（肢体残疾 2412 万）</td><td><span class="etag e1">E1</span></td><td>第二次全国残疾人抽样调查（全国人大网，见 M1 附录）</td></tr>
-    <tr><td>2025 年中国无障碍产业规模约 1400 亿元</td><td><span class="etag e2">E2</span></td><td><a class="ext" href="https://www.gonyn.com/industry/1877102.html" target="_blank" rel="noopener">第三方产业研究报告（共研网）</a></td></tr>
-    <tr><td>失能半失能老年人超 4400 万</td><td><span class="etag e2">E2</span></td><td>民政部老龄事业公报流传口径（年份待核）</td></tr>
-    <tr><td>29 条真实用户语料（携程问答/知乎/小红书/黑猫投诉/宁波民生e点通/东方网/青岛新闻网/腾讯新闻/微信公众号/搜狐）</td><td><span class="etag e2">E2</span></td><td>M2 语料库 V1（07_M2交付物，逐条含来源、情绪、指向）</td></tr>
+</section>
+
+<section id="s7" class="reveal">
+  <div class="sec-head"><span class="sec-no">07</span><h2>数据来源附录</h2><span class="en">Sources</span></div>
+  <table class="src">
+    <thead><tr><th>#</th><th>来源</th><th>用途</th><th>级别</th></tr></thead>
+    <tbody>
+    <tr><td>R1</td><td><a href="https://zgmj.net/forum/post/707635143208136830">模具网论坛 · 压 30% 工时帖</a>（含 4 条回复）</td><td>语料 S1、S2</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R2</td><td><a href="https://zgmj.net/forum/post/711558408427335857">模具网论坛 · 慢走丝报价帖</a></td><td>语料 S3-S5</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R3</td><td><a href="https://zgmj.net/forum/post/692364592113840155">模具网论坛 · 线切割计价帖</a></td><td>语料 S6-S8</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R4</td><td><a href="https://zgmj.net/forum/post/711189361533710489">模具网论坛 · 百万模次帖</a></td><td>语料 S9-S11</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R5</td><td><a href="https://moges.cn/news-view-1325.html">摩杰斯 · 模具报价太慢（2026-10）</a></td><td>语料 S12-S14 及报价周期、15%、30% 数据</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R6</td><td><a href="https://www.mujubaojia.com/qa/1031">模具报价家问答 · 抖音询盘压价</a></td><td>语料 S15-S19（存疑区，不作依据）</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R7</td><td><a href="https://www.mujubaojia.com/qa/33">模具报价家问答 · 报价差 30% 怎么选</a></td><td>语料 S20、S21（存疑区，不作依据）</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R8</td><td><a href="https://www.mujubaojia.com/qa/65">模具报价家问答 · 8 万与 12 万谁中标</a></td><td>语料 S24-S26（存疑区，不作依据）</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R9</td><td><a href="https://www.moldw.com/qa/81">模王网问答 · 报价后客户一直压价</a></td><td>语料 S22、S23（存疑区，不作依据）</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R10</td><td><a href="https://www.blacklake.cn/agents/quotation">黑湖 · 报价 Agent 产品页</a></td><td>竞品（宣称秒级、原需 6 小时）</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R11</td><td><a href="http://www.001cndc.com/news/show.php?itemid=1325">中华压铸网 · 昆山模具产业基地</a></td><td>全国 3 万多家、昆山 951 家/100 亿/10%</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R12</td><td><a href="https://m.gmw.cn/gmsogh/202410/17/37620431.html">光明网 · 2024 机械设备行业报告（16 万家）</a></td><td>行业企业数</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R13</td><td><a href="https://metronq.com/zh/blog/cnc-quoting-in-excel">metronq · 用 Excel 做 CNC 报价的五个常见错误</a></td><td>现有工具不足</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R14</td><td>财政部 · 中小企业数字化转型城市试点通知（M1 R4）</td><td>30 城、80% 奖补、小快轻准</td><td><span class="lv e1">E1</span></td></tr>
+    <tr><td>R15</td><td>赛迪顾问 2024-2025 智能制造报告、先进制造 2024、蓝皮书转引（M1 R1-R3）</td><td>3.3 万亿、+15.2%、1.6 万亿、+18%</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R16</td><td>利驰「图晓晓」AI 识图报价（电气成套行业，M1 R6 更正后口径）</td><td>相邻行业竞品</td><td><span class="lv e2">E2</span></td></tr>
+    <tr><td>R17</td><td>表哥两段访谈录音整理（机加工行业访谈，2026-11-20）</td><td>语料 S27-S34：工时报价表、成本规则、可行性</td><td><span class="lv human">E1 人补充</span></td></tr>
+    <tr><td>R18</td><td>戢祥毅转述实习模具厂老板多次抱怨（2026-11-20）</td><td>语料 S35：回价速度丢单、无效询价耗时</td><td><span class="lv human">E1 人补充</span></td></tr>
+    </tbody>
   </table>
-  <div class="prose reveal" style="margin-top:26px">
-    <h3>过程与校验记录</h3>
-    <ul class="log-list">
-      <li><b>检索强度</b>：Step 2 赛道分析 4 次检索 + 1 次原文核读；Step 3 语料采集 4 批 12 组查询词 + 4 次页面核读；Step 6 深挖 2 批 + 2 次原文核读——合计 10 次检索、24 组查询词，达 standard 档。</li>
-      <li><b>语料规模</b>：29 条（要求 ≥15，达标），其中携程问答逐字引用 7 条、项目成员亲历 2 条（来源标"人补充"）、新华每日电讯用户原话 3 条，其余为用户发布内容标题原文并如实标注。</li>
-      <li><b>痛点校验</b>：恰好 12 条；用户覆盖 8 类（轮椅本人/陪护家属/推车家庭/老年游客/视障人士/视障导盲犬用户/普通游客/特殊需求儿童家庭）；母题 6 种（信息缺失/路线脱节/状态失效/场内导航失效/规则不透明/反馈闭环缺失）；不含方案表述；无来源推断条数 0；逐条附语料编号。</li>
-      <li><b>人机分工</b>：圈选（先 1、2 后改 2、9）、选定条目 2、定稿理由、HMW 手写落稿均由人作出；AI 仅负责检索、赛道分析、语料采集、痛点筛选、变体生成与重复性校验。</li>
-      <li><b>基线裁决（2026-11-19）</b>：首发场景以景区为准（M1"校园优先"顺序作废）；保留多 Agent 协作架构（AI 只做分类粗筛 + 人工复核约束不变）；路演 PPT 以活动通知为准不超过 6 页，按 8 页内容结构组织后压缩。</li>
-      <li><b>模块衔接</b>：上游 = M1 赛道画像 V2 + 项目基线 V1；下游 = HMW 问题卡交 M3 方案设计；条目 9 转 M4 需求文档 P1 档。</li>
-    </ul>
-  </div>
+  <div class="note"><b>证据更正说明（沿用 M1 审计）</b>：此前口径「阿里云已有现成图纸识别报价 API」经核为第三方云市场商品条目、详情页无法验证，<b>未采信</b>；正文统一为「识图报价供给已在相邻行业（电气成套·利驰图晓晓）验证，CNC 机加工场景无已验证同类供给」。GitHub 开源 CNC 报价项目仅标题级、未验证，只进附录。<br><b>检索统计</b>：本轮 4 组共 12 次检索 + 11 次页面抓取（成功 9 页），独立来源主体 7 个（有效：模具网、摩杰斯、中华压铸网、黑湖、metronq；隔离：模具报价家、模王网），另沿用 M1 来源 5 个；知乎与百度贴吧被风控拦截、未采用。语料 35 条 = 有效 23（线上 14 条 E2 + 人补充 9 条 E1）+ 存疑隔离 12 条（S15–S26，真实性待核，不作 H7 依据）。</div>
 </section>
 
-<footer><div class="footer">子谦国际 OPC 创业基础</div></footer>
-</div>
+</main>
+
+<footer>
+  <div class="wrap">子谦国际 OPC 创业基础</div>
+</footer>
+
+<button id="top" title="回到顶部"><i data-lucide="arrow-up" style="width:20px;height:20px"></i></button>
+
 <script>
-(function(){
-  var reveals=document.querySelectorAll('.reveal');
-  try{
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-    },{threshold:.08});
-    reveals.forEach(function(el,i){ el.style.transitionDelay=(i%4)*60+'ms'; io.observe(el); });
-  }catch(err){
-    reveals.forEach(function(el){ el.classList.add('in'); });
-  }
-  setTimeout(function(){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); },1500);
-  try{ lucide.createIcons(); }catch(err){ }
-})();
+lucide.createIcons();
+
+var pbar = document.getElementById('pbar');
+var topBtn = document.getElementById('top');
+addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var p = h.scrollTop / (h.scrollHeight - h.clientHeight);
+  pbar.style.width = (p * 100) + '%';
+  topBtn.classList.toggle('show', h.scrollTop > 600);
+}, {passive:true});
+topBtn.onclick = function(){ scrollTo({top:0, behavior:'smooth'}); };
+
+document.querySelectorAll('.stagger').forEach(function(box){
+  Array.prototype.forEach.call(box.children, function(c,i){ c.style.transitionDelay = (i*70) + 'ms'; });
+});
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+},{threshold:.1});
+document.querySelectorAll('.reveal,.stagger').forEach(function(el){ io.observe(el); });
+
+var cio = new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    var el = e.target, end = parseFloat(el.dataset.count), t0 = null;
+    cio.unobserve(el);
+    function step(ts){
+      if(!t0) t0 = ts;
+      var k = Math.min((ts - t0) / 1300, 1);
+      k = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(end * k);
+      if(k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
+
+var links = document.querySelectorAll('#navlinks a');
+var sio = new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    var id = e.target.id;
+    links.forEach(function(a){ a.classList.toggle('act', a.getAttribute('href') === '#' + id); });
+  });
+},{rootMargin:'-35% 0px -55% 0px'});
+document.querySelectorAll('main section').forEach(function(s){ sio.observe(s); });
+
+document.querySelectorAll('.pain,.dig,.brow').forEach(function(c){
+  c.addEventListener('mousemove', function(ev){
+    var r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+    c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+  });
+});
+
+addEventListener('mousemove', function(ev){
+  var g = document.getElementById('gridbg');
+  g.style.backgroundPosition = (ev.clientX * -0.012) + 'px ' + (ev.clientY * -0.012) + 'px';
+}, {passive:true});
 </script>
 </body>
 </html>

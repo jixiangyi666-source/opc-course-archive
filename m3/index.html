@@ -1,43 +1,326 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 03 · M3 方案设计 | 无障碍智慧出行服务</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 产品任务书｜AI 智能机械零件报价系统</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-:root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">03</div>
-<h1>M3 方案设计</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>候选方案 · Yes and 共创 · 产品任务书<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+  :root{
+    --bg:#f4f2ec; --card:#fffef9; --ink:#1c2226; --dim:#5d6970;
+    --accent:#a8863c; --accent-2:#2e6c86; --accent-3:#c1552b;
+    --line:rgba(28,34,38,.14); --line-soft:rgba(28,34,38,.08);
+    --accent-soft:rgba(168,134,60,.10); --blue-soft:rgba(46,108,134,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Han Serif SC","Noto Serif SC",Georgia,"Songti SC","SimSun",serif;line-height:1.75}
+  .grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(46,108,134,.055) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(46,108,134,.055) 1px,transparent 1px),
+      linear-gradient(rgba(46,108,134,.028) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(46,108,134,.028) 1px,transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+    background-image:radial-gradient(rgba(28,34,38,.028) 1px,transparent 1px);background-size:5px 5px}
+  .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 24px 8px}
+  nav{position:sticky;top:0;z-index:50;background:rgba(244,242,236,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:center;
+    padding:12px 24px;font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12.5px;letter-spacing:.06em}
+  nav .mark{font-weight:700;color:var(--accent);letter-spacing:.14em}
+  nav a{color:var(--dim);text-decoration:none;transition:color .25s}
+  nav a:hover{color:var(--accent)}
+  nav .sp{flex:1}
+  /* 图框式 Hero：工程图纸标题栏 */
+  .frame{margin:56px 0 0;border:2px solid var(--ink);position:relative;background:var(--card)}
+  .frame::before{content:"";position:absolute;inset:6px;border:1px dashed rgba(28,34,38,.35);pointer-events:none}
+  .frame-in{padding:64px 56px 56px}
+  .kicker{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12.5px;letter-spacing:.32em;color:var(--accent);margin-bottom:18px}
+  .kicker b{color:var(--ink);font-weight:700}
+  h1{font-size:clamp(38px,7vw,86px);line-height:1.14;font-weight:900;letter-spacing:.01em}
+  h1 .thin{display:block;font-size:clamp(16px,2.2vw,24px);font-weight:400;color:var(--dim);letter-spacing:.5em;margin-top:14px}
+  .hero-sub{margin-top:26px;font-size:15.5px;color:var(--dim);max-width:760px}
+  .hero-sub b{color:var(--ink)}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .tag{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.08em;
+    border:1px solid var(--line);padding:7px 14px;color:var(--dim);background:var(--bg)}
+  .tag.hot{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:700}
+  .titleblock{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);margin-top:48px;
+    font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px}
+  .titleblock div{padding:12px 14px;border-right:1px solid var(--line)}
+  .titleblock div:last-child{border-right:none}
+  .titleblock span{display:block;color:var(--dim);font-size:10.5px;letter-spacing:.2em;margin-bottom:4px}
+  .titleblock b{font-size:12.5px;color:var(--ink)}
+  /* 章节 */
+  .section{margin-top:96px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
+  .sec-no{font-family:Georgia,serif;font-size:clamp(30px,4vw,44px);font-weight:700;color:var(--accent);letter-spacing:.02em}
+  .sec-head h2{font-size:clamp(21px,3vw,30px);font-weight:900;letter-spacing:.06em}
+  .sec-head .en{margin-left:auto;font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.28em;color:var(--dim)}
+  .sec-note{font-size:13.5px;color:var(--dim);margin:10px 0 26px}
+  .sec-note i{width:15px;height:15px;vertical-align:-2px;margin-right:6px;color:var(--accent)}
+  /* 表格 */
+  .tbl-wrap{border:1px solid var(--line);background:var(--card);overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.1em;
+    text-align:left;padding:13px 16px;background:var(--ink);color:var(--bg);font-weight:700;white-space:nowrap}
+  td{padding:14px 16px;border-top:1px solid var(--line-soft);vertical-align:top}
+  tbody tr{transition:background .25s}
+  tbody tr:hover{background:var(--accent-soft)}
+  td .b{font-weight:700}
+  .mono{font-family:Verdana,"PingFang SC",sans-serif;font-size:12px;letter-spacing:.04em}
+  .dim{color:var(--dim)}
+  .pill{display:inline-block;font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.08em;
+    padding:3px 10px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);margin-bottom:8px;font-weight:700}
+  .pill.blue{border-color:var(--accent-2);color:var(--accent-2);background:var(--blue-soft)}
+  .pill.terra{border-color:var(--accent-3);color:var(--accent-3);background:rgba(193,85,43,.08)}
+  /* 数据卡 */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);padding:24px 22px;position:relative;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+  .card:hover{transform:translateY(-5px);box-shadow:0 18px 40px -18px rgba(28,34,38,.25)}
+  .card .num{font-family:Georgia,serif;font-size:40px;font-weight:700;color:var(--accent);line-height:1}
+  .card .lab{font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.22em;color:var(--dim);margin-top:10px}
+  .card .exp{font-size:13px;color:var(--dim);margin-top:8px;line-height:1.6}
+  .card.win{border:2px solid var(--accent)}
+  .card.win::after{content:"人选定";position:absolute;top:-13px;right:14px;background:var(--accent);color:var(--bg);
+    font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.2em;padding:4px 12px;font-weight:700}
+  /* 引用 */
+  .quote{background:var(--card);border-left:4px solid var(--accent);padding:28px 32px;margin:26px 0;
+    font-size:16.5px;line-height:2;position:relative}
+  .quote::before{content:"\201C";position:absolute;top:-30px;left:14px;font-family:Georgia,serif;font-size:96px;color:var(--accent);opacity:.28}
+  .quote .who{display:block;margin-top:14px;font-family:Verdana,"PingFang SC",sans-serif;font-size:12px;letter-spacing:.16em;color:var(--dim)}
+  /* 共创轮次 */
+  .round{background:var(--card);border:1px solid var(--line);padding:0;margin-bottom:26px}
+  .round-head{display:flex;align-items:center;gap:14px;padding:18px 26px;border-bottom:1px solid var(--line);background:var(--accent-soft)}
+  .round-head .rno{font-family:Georgia,serif;font-size:26px;font-weight:700;color:var(--accent)}
+  .round-head h3{font-size:17px;font-weight:900;letter-spacing:.05em}
+  .round-body{padding:24px 26px;display:grid;gap:18px}
+  .idea{display:grid;grid-template-columns:96px 1fr;gap:16px}
+  .idea .who-tag{font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.14em;font-weight:700;
+    padding:5px 0;text-align:center;border:1px solid var(--line)}
+  .idea.human .who-tag{color:var(--accent-2);border-color:var(--accent-2);background:var(--blue-soft)}
+  .idea.ai .who-tag{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+  .idea .txt{font-size:14.5px}
+  .idea .txt b{font-weight:700}
+  .idea .txt .sub{color:var(--dim);font-size:13px;margin-top:4px}
+  /* 任务书 */
+  .brief{border:2px solid var(--ink);background:var(--card);padding:10px}
+  .brief-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;padding:22px 24px 18px;border-bottom:1px dashed var(--line)}
+  .brief-name .k{font-family:Verdana,"PingFang SC",sans-serif;font-size:12px;letter-spacing:.24em;color:var(--dim)}
+  .brief-name .v{font-size:clamp(22px,3.4vw,34px);font-weight:900;color:var(--accent)}
+  /* 创新点 */
+  .innov{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .innov .card .src{font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.1em;color:var(--bg);
+    background:var(--accent-2);display:inline-block;padding:3px 10px;margin-bottom:12px}
+  .innov .card .src.human{background:var(--accent)}
+  .innov .card .src.gap{background:var(--accent-3)}
+  .innov .card h4{font-size:16.5px;font-weight:900;margin-bottom:8px}
+  .innov .card p{font-size:13.5px;color:var(--dim)}
+  footer{margin-top:110px;border-top:2px solid var(--ink);padding:34px 0 46px;text-align:center}
+  footer .brand{font-family:Verdana,"PingFang SC",sans-serif;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+  .footer{margin-top:10px;font-family:Verdana,"PingFang SC",sans-serif;font-size:11px;letter-spacing:.22em;color:var(--dim);opacity:.85}
+  /* 动效 */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+  @media(max-width:720px){
+    .frame-in{padding:44px 26px}
+    .titleblock{grid-template-columns:repeat(2,1fr)}
+    .titleblock div{border-bottom:1px solid var(--line)}
+    .idea{grid-template-columns:1fr}
+    nav{flex-wrap:wrap;gap:12px}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+
+<nav>
+  <span class="mark">M3 · 方案设计</span>
+  <a href="#s1">候选方案</a>
+  <a href="#s2">评分选定</a>
+  <a href="#s3">两轮共创</a>
+  <a href="#s4">产品任务书</a>
+  <a href="#s5">创新点</a>
+  <span class="sp"></span>
+  <span class="dim">AI 智能机械零件报价系统</span>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO：工程图纸标题栏样式 -->
+  <header class="frame reveal">
+    <div class="frame-in">
+      <div class="kicker"><b>M3 方案设计</b>｜从 HMW 问题到产品任务书</div>
+      <h1>AI 智能机械零件报价系统<span class="thin">产品任务书</span></h1>
+      <p class="hero-sub">从 M2 人手写定稿的 HMW 出发：帮助<b>小型机械加工厂的老板</b>，在<b>客户发图催价</b>时，减少手动查资料、核算成本与反复确认工艺的时间，更快整理出<b>可核对的报价依据</b>。经四候选评分选定、两轮 Yes and 共创，形成以下三个核心功能。</p>
+      <div class="tags">
+        <span class="tag hot">方案一 · 工具整合 AI（D 型）</span>
+        <span class="tag">网页产品</span>
+        <span class="tag">按月或按年订阅方向</span>
+        <span class="tag">CNC 三轴铣 · 铝钢块状件</span>
+        <span class="tag">参考价加人工确认</span>
+      </div>
+      <div class="titleblock">
+        <div><span>模块</span><b>M3 方案设计</b></div>
+        <div><span>定稿人</span><b>戢祥毅（人确认）</b></div>
+        <div><span>日期</span><b>2026-11-20</b></div>
+        <div><span>成果物</span><b>产品任务书（三核心功能）</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 候选方案 -->
+  <section class="section reveal" id="s1">
+    <div class="sec-head"><span class="sec-no">01</span><h2>候选方案（四个方向，不推荐不排序）</h2><span class="en">CANDIDATES</span></div>
+    <p class="sec-note"><i data-lucide="compass"></i>四个候选覆盖白名单 D、C、F、H 四种类型（含一个 D 型工具整合 AI、两个零开发型、一个专业视角候选），全部落在 CNC 三轴铣、铝钢块状件、参考价加人工确认的边界内。差异化经 D4 竞品检索核对。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>方案方向</th><th>一句话描述</th><th>一句话卖点</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono">01</td>
+            <td><span class="pill">D 型 · 工具整合 AI</span><br><span class="b">图纸到报价依据助手</span></td>
+            <td>上传 STEP（图片或 PDF 辅助），AI 提取材料、尺寸、加工特征，按企业自有费率表逐项核算，输出可逐行核对、可改价的报价依据单，人工确认后导出</td>
+            <td>不替代老师傅，只把报价依据整理成可核对的一页纸</td>
+          </tr>
+          <tr>
+            <td class="mono">02</td>
+            <td><span class="pill blue">C 型 · 轻量工具</span><br><span class="b">机加工报价计算器</span></td>
+            <td>不碰图纸解析，选材料、填关键尺寸、选三轴铣档位，按真实费率表一键算出成本区间</td>
+            <td>比 Excel 快、比 AI 识图 SaaS 轻，当天可出</td>
+          </tr>
+          <tr>
+            <td class="mono">03</td>
+            <td><span class="pill blue">F 型 · 模板素材</span><br><span class="b">报价依据模板包</span></td>
+            <td>从业者真实费率表加报价单模板加核对清单打包，行业群直接分发</td>
+            <td>零成本零门槛，内嵌真实从业者参数</td>
+          </tr>
+          <tr>
+            <td class="mono">04</td>
+            <td><span class="pill terra">H 型 · 轻服务</span><br><span class="b">人工代报轻服务</span></td>
+            <td>用本人 CAD 技能一对一帮厂主把图纸人工整理成报价依据，记录最费时环节</td>
+            <td>专业背景直接变成服务，交付即验证</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-note" style="margin-top:14px">D4 竞品核对要点：DeepMech（苏州朗道，2018 年起家，200 万张图纸，39 类工艺，桌面端加微信小程序，按月或按年订阅）与本候选 01 同型，故其独特性按两分从严计；黑湖面向中型厂、报价与工单系统强绑定；MetronQ 海外定价约每月 119 欧元。差异化依赖窄场景、依据可核对、人工确认三要素。</p>
+  </section>
+
+  <!-- 02 四维评分与选定 -->
+  <section class="section reveal" id="s2">
+    <div class="sec-head"><span class="sec-no">02</span><h2>四维评分与人的选定</h2><span class="en">DECISION</span></div>
+    <p class="sec-note"><i data-lucide="clipboard-check"></i>每维 1 至 3 分、满分 12。AI 先给参考分，人逐项确认并修改：候选 01 价值性由 3 下调为 2（总分 9 改 8）——人选定的并非分数最高项，判断在人。理由原话入档。</p>
+    <div class="cards">
+      <div class="card win"><div class="num">8<span style="font-size:18px;color:var(--dim)">/12</span></div><div class="lab">候选 01 · 图纸到报价依据助手</div><div class="exp">价值 2（人下调）｜可行 2｜独特 2（DeepMech 同型从严）｜验证 2</div></div>
+      <div class="card"><div class="num">10<span style="font-size:18px;color:var(--dim)">/12</span></div><div class="lab">候选 02 · 报价计算器</div><div class="exp">价值 2｜可行 3｜独特 2｜验证 3</div></div>
+      <div class="card"><div class="num">10<span style="font-size:18px;color:var(--dim)">/12</span></div><div class="lab">候选 03 · 模板包</div><div class="exp">价值 2｜可行 3｜独特 2｜验证 3</div></div>
+      <div class="card"><div class="num">11<span style="font-size:18px;color:var(--dim)">/12</span></div><div class="lab">候选 04 · 代报轻服务</div><div class="exp">价值 2｜可行 3｜独特 3｜验证 3</div></div>
+    </div>
+    <div class="quote">
+      它解决的是加工厂日常报价中的实际问题。传统报价需要人工看图纸、核算材料和加工费用，既花时间，也容易出现计算偏差。这个方案可以结合工厂自己的费率和加工标准，减少重复计算，同时保留人工核对和修改的空间。后续还可以做成按月或按年收费的网页产品，方便推广，也有一定的商业价值。
+      <span class="who">—— 人选定理由（戢祥毅原话，2026-11-20）</span>
+    </div>
+  </section>
+
+  <!-- 03 两轮共创 -->
+  <section class="section reveal" id="s3">
+    <div class="sec-head"><span class="sec-no">03</span><h2>两轮 Yes and 共创记录</h2><span class="en">CO-CREATION</span></div>
+    <p class="sec-note"><i data-lucide="messages-square"></i>人加点子、AI 受启发补想法，强制两轮全部完成；人的每条点子都进入最终任务书（见第 04 节溯源）。</p>
+
+    <div class="round">
+      <div class="round-head"><span class="rno">R1</span><h3>第 1 轮｜AI 模型包</h3></div>
+      <div class="round-body">
+        <div class="idea human">
+          <span class="who-tag">人的点子</span>
+          <div class="txt"><b>方案一要加上模型包的能力</b>——经三种读法确认，选 A：AI 模型包（多模态识图，团队已有视觉模型运行环境）。<div class="sub">落点：图片与 PDF 图纸由模型提取标题栏材料、关键尺寸、技术要求，补上没有 STEP 文件的路径。</div></div>
+        </div>
+        <div class="idea ai">
+          <span class="who-tag">AI 受启发</span>
+          <div class="txt"><b>能力分层暗线</b>——有 STEP 走规则引擎精确算，没有 STEP 走 AI 模型兜底；输出逐项标注依据来源与置信度，人工确认只盯低置信项。模型能力是规则引擎的互补层，与竞品用大数据替代人的叙事错开。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="round">
+      <div class="round-head"><span class="rno">R2</span><h3>第 2 轮｜探价、成本数据库、多方案报价</h3></div>
+      <div class="round-body">
+        <div class="idea human">
+          <span class="who-tag">人的点子</span>
+          <div class="txt">
+            <b>一次提出三条：</b>
+            <br>一、<b>探价模式</b>——不诚心问价的客户只想了解最低价，老板却被迫按精准要求算；需要能大致算价的 AI（M2 语料 S35 痛点 06 的功能化回收）。
+            <br>二、<b>企业成本数据库</b>——保存企业过去的报价记录和实际生产数据。
+            <br>三、<b>多方案报价</b>——客户上传图纸后，系统按企业实际能力生成方案 A 常规加工、方案 B 优化工艺、方案 C 不同材料，各出参考价；具体价格由系统结合企业数据计算，不提前编造；老板按客户预算选择。人的原话：很适合展示的功能。
+          </div>
+        </div>
+        <div class="idea ai">
+          <span class="who-tag">AI 受启发</span>
+          <div class="txt"><b>成本数据库反向用</b>——同图或同类件二次询价时自动识别，一键调出上次报价与实际成本：探价客户无所遁形、熟客秒回。配套口径：探价模式只给价格区间、不给底价，客户拿不到底数去压别家。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 产品任务书 -->
+  <section class="section reveal" id="s4">
+    <div class="sec-head"><span class="sec-no">04</span><h2>产品任务书（人定稿）</h2><span class="en">PRODUCT BRIEF</span></div>
+    <p class="sec-note"><i data-lucide="file-text"></i>人对三功能逐条确认：「这 3 个功能都可以存在，都很好。这个创新点可以。说清楚了的。」产品名称由人定：沿用项目名。</p>
+    <div class="brief">
+      <div class="brief-name"><span class="k">产品名称</span><span class="v">AI 智能机械零件报价系统</span></div>
+      <div class="tbl-wrap" style="border:none">
+        <table>
+          <thead><tr><th style="width:16%">功能</th><th style="width:34%">具体功能点（用户能做什么操作）</th><th style="width:24%">核心价值（解决什么问题）</th><th style="width:26%">创新点（与普通产品差异）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="b">功能一</span><br><span class="dim">智能图纸解析<br>（双路径）</span></td>
+              <td>上传 STEP 三维模型，或图片、PDF 图纸。STEP 走几何解析：尺寸、体积、材料、单位检查；图片与 PDF 走 AI 模型包提取：标题栏材料、关键尺寸、技术要求。每项标注依据来源与置信度</td>
+              <td>把读图环节自动化；客户只发一张照片也能进入报价流程</td>
+              <td>人的点子（AI 模型包）加竞品空白：竞品是 AI 替代人，本产品是 AI 提取加置信度标注，人工确认只盯低置信项，依据逐项可核对</td>
+            </tr>
+            <tr>
+              <td><span class="b">功能二</span><br><span class="dim">双速报价引擎<br>与多方案报价</span></td>
+              <td>探价模式：几十秒出价格区间，不给底价；正式模式：按企业自有费率逐项算材料费、工时费、刀具项，生成可逐行改价的报价依据单。一键生成方案 A 常规加工、方案 B 优化工艺、方案 C 换材料，三档参考价全部由企业数据算出，不提前编造</td>
+              <td>探价客户不再耗老板精算时间；真客户拿到可选方案，按预算和订单要求选</td>
+              <td>人的点子（多方案报价、探价模式）加共创口径「区间不给底价」防拿底数压价；与竞品单一自动报价输出错位</td>
+            </tr>
+            <tr>
+              <td><span class="b">功能三</span><br><span class="dim">企业成本数据库</span></td>
+              <td>每单报价依据自动存档；补录实际工时、实际成本；同图或同类件二次询价时自动识别、调出历史报价；历史数据反哺费率校准</td>
+              <td>报价经验沉淀为企业资产，不随师傅离职流失，越用越准</td>
+              <td>人的点子（企业成本数据库）加共创「二次询价识别」把不诚心比价变可防；竞品用行业大数据，本产品只用本厂自己的数据</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 创新点 -->
+  <section class="section reveal" id="s5">
+    <div class="sec-head"><span class="sec-no">05</span><h2>创新点与溯源</h2><span class="en">INNOVATION</span></div>
+    <p class="sec-note"><i data-lucide="lightbulb"></i>每条创新点可追溯到人的点子、共创想法或竞品空白，无空话；人的四条点子全部显式进入任务书。</p>
+    <div class="innov">
+      <div class="card"><span class="src human">溯源：人的点子 R1</span><h4>双路径解析加置信度标注</h4><p>规则引擎与 AI 模型包互补而非替代：STEP 精确算、图片 PDF 兜底提取，人工只核对低置信项——与 DeepMech、黑湖的替代式叙事正面错位。</p></div>
+      <div class="card"><span class="src human">溯源：人的点子 R2</span><h4>多方案报价由企业数据算出</h4><p>方案 A、B、C 三档参考价全部由本厂费率与生产数据实时计算，拒绝提前编造的模板价；老板按客户预算现场选档，比赛演示效果强。</p></div>
+      <div class="card"><span class="src human">溯源：人的点子 R2 加共创</span><h4>探价模式只给区间不给底价</h4><p>不诚心询价秒回价格区间，守住底数不被拿去压别家——把 M2 语料里老板的原话抱怨（S35）变成了可演示的防御功能。</p></div>
+      <div class="card"><span class="src gap">溯源：竞品空白加共创</span><h4>本厂数据库反向识别二次询价</h4><p>同图二次询价自动调出历史报价与实际成本；数据资产归厂不归平台，与行业大数据黑箱形成信任差异。</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="brand">AI 智能机械零件报价系统 · M3 方案设计</div>
+    <div class="footer">子谦国际 OPC 创业基础</div>
+  </footer>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

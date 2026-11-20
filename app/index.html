@@ -910,7 +910,7 @@ route();
   panel.innerHTML =
     '<div class="qa-head">' +
     '<div class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4V5Z"/><path d="M8.5 9h7M8.5 12h4"/></svg></div>' +
-    '<div><div class="qa-t">报价助手</div><div class="qa-s">智谱 GLM · 只讲这一页怎么用</div></div>' +
+    '<div><div class="qa-t">报价助手</div><div class="qa-s">智谱 GLM · 项目问答 · 操作带做</div></div>' +
     '<button class="qa-x" type="button" aria-label="关闭">×</button></div>' +
     '<div class="qa-body" id="qaBody"></div>' +
     '<div class="qa-chips" id="qaChips"></div>' +
@@ -979,7 +979,7 @@ route();
   }
 
   function greet() {
-    add("bot", "我是站内助手，只回答这个演示页怎么用。\n当前你在「" + pageName() + "」，可以直接点下面的问题，也可以自己打字。");
+    add("bot", "我是这个项目的站内助手：页面怎么用、这个项目怎么做的、报价怎么算，都可以问。\n当前你在「" + pageName() + "」，可以直接点下面的问题，也可以自己打字。");
     save();
   }
 

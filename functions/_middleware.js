@@ -4,7 +4,8 @@
 const ORIGIN = "https://opc-course-archive.pages.dev";
 
 // 报价后端（阿里云 ECS，HTTP 80；TLS 由 Cloudflare 边缘终结）
-const QUOTE_BACKEND = "http://8.136.0.202";
+// 注意：必须用域名不能用裸 IP——Cloudflare Function fetch 裸 IP 会被边缘 1003 拒绝
+const QUOTE_BACKEND = "http://8.136.0.202.nip.io";
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);

@@ -253,8 +253,10 @@ function extractFields(sk){
 }
 
 /* ================= 渲染框架 ================= */
-let CUR={sample:"plate",fields:null,scheme:"A",calc:null,quoteNo:null,viewTask:null};
+let CUR={sample:"plate",fields:null,scheme:"A",calc:null,quoteNo:null,viewTask:null,real:null};
 const $=s=>document.querySelector(s);
+function PART(){return CUR.real||SAMPLES[CUR.sample];}
+function MATKEY(name){const m={"6061铝合金":"al6061","7075铝合金":"al7075","45钢":"steel45","304不锈钢":"ss304"};return m[name]||null;}
 function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.innerHTML=x;return e;}
 function icon(n){return '<i data-lucide="'+n+'" style="width:15px;height:15px"></i>';}
 function money(n){return Math.round(n*100)/100;}
@@ -322,8 +324,14 @@ function tbl(heads,rows,onRow){
 /* ================= 2 上传与解析 ================= */
 function vUpload(w){
   w.appendChild(pageHead("上传与解析","UPLOAD & PARSE","STEP 走几何解析；图片 / PDF 走 AI 提取。演示用预置样本，识别结果逐项带来源与置信度，AI 推测项橙色标注待核。"));
-  const drop=h("div","drop",icon("upload-cloud")+'<div class="t1">拖拽 STEP / 图片 / PDF 到这里</div><div class="t2">或点击选择文件 · 演示请用下方预置样本</div>');
-  drop.onclick=()=>toast("演示版：请使用预置样本载入");
+  const drop=h("div","drop",icon("upload-cloud")+'<div class="t1">拖拽 STEP / 图片 / PDF 到这里</div><div class="t2">或点击选择文件（STEP 走几何解析，图片 / PDF 走 OCR 与 AI 提取）</div>');
+  const fi=document.createElement("input");fi.type="file";fi.accept=".step,.stp,.igs,.iges,.pdf,.png,.jpg,.jpeg,.bmp,.tif,.tiff";fi.style.display="none";
+  w.appendChild(fi);
+  drop.onclick=()=>fi.click();
+  drop.ondragover=(e)=>{e.preventDefault();drop.style.borderColor="var(--accent)";};
+  drop.ondragleave=()=>{drop.style.borderColor="";};
+  drop.ondrop=(e)=>{e.preventDefault();drop.style.borderColor="";if(e.dataTransfer.files&&e.dataTransfer.files[0])realUpload(e.dataTransfer.files[0],w);};
+  fi.onchange=()=>{if(fi.files&&fi.files[0])realUpload(fi.files[0],w);};
   w.appendChild(drop);
   w.appendChild(h("div",null,'<div style="margin:20px 0 8px;font-weight:800;font-size:14px">预置样本（来自项目测试数据集）</div>'));
   const ss=h("div","samples");
@@ -334,17 +342,116 @@ function vUpload(w){
   w.appendChild(ss);
   if(CUR.fields)showParse(w);
 }
+
+/* ================= 真实上传：本机后端解析 + 前端估算兜底 ================= */
+const API_V1="/api/v1";
+function api(path,opt){
+  opt=opt||{};
+  opt.headers=Object.assign({"X-Operator-Id":"demo"},opt.headers||{});
+  return fetch(API_V1+path,opt).then(function(r){
+    return r.text().then(function(t){
+      var d=null;try{d=JSON.parse(t);}catch(e){}
+      if(!r.ok)throw new Error((d&&(d.error&&d.error.message||d.detail||d.error))||("HTTP "+r.status));
+      return d;
+    });
+  });
+}
+function uploadProgress(w,title){
+  const box=h("div","panel");box.style.marginTop="18px";
+  box.appendChild(h("h3",null,icon("loader")+title));
+  const pr=h("div","progress");const bar=h("div");bar.style.width="6%";pr.appendChild(bar);box.appendChild(pr);
+  const tip=h("div","basis","准备中…");box.appendChild(tip);w.appendChild(box);lucide.createIcons();
+  return {bar:bar,tip:tip,box:box,set:function(pct,msg){bar.style.width=Math.max(6,Math.min(100,pct))+"%";if(msg)tip.textContent=msg;}};
+}
+function realUpload(file,w){
+  const name=file.name||"part.stp";const ext=(name.split(".").pop()||"").toLowerCase();
+  const isStep=["step","stp","igs","iges"].indexOf(ext)>=0;
+  const ui=uploadProgress(w,"上传与解析 · "+name);
+  const fd=new FormData();fd.append("file",file,file.name);
+  ui.set(12,"上传原文件…");
+  api("/files/upload",{method:"POST",body:fd}).then(function(up){
+    ui.set(32,"已入库（SHA256 "+String(up.sha256).slice(0,10)+"…），建任务…");
+    return api("/quotation-tasks",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({part_name:name,quantity:1,file_ids:[up.file_id],material_grade:"6061-T6",region:"长三角",machine_type:"普通CNC车床"})})
+      .then(function(t){return {up:up,task:t};});
+  }).then(function(x){
+    ui.set(48,isStep?"几何解析中（OCP 内核，读包络/体积/孔候选）…":"OCR 与 AI 提取中…");
+    return api("/quotation-tasks/"+x.task.id+"/parse",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"})
+      .then(function(p){return {up:x.up,task:x.task,parse:p};});
+  }).then(function(x){
+    ui.set(82,"取解析结果…");
+    var jobs=[api("/quotation-tasks/"+x.task.id+"/annotations"),api("/quotation-tasks/"+x.task.id+"/features")];
+    if(isStep)jobs.unshift(api("/quotation-tasks/"+x.task.id+"/geometry"));
+    return Promise.all(jobs).then(function(r){
+      var g=isStep?r[0]:null, ann=isStep?r[1]:r[0], feats=isStep?r[2]:r[1];
+      applyReal(file,g,ann,feats,x);ui.set(100,"完成");route();
+    });
+  }).catch(function(err){
+    if(isStep){
+      ui.set(60,"后端未连通，改走前端估算…");
+      clientParse(file).then(function(real){CUR.real=real;CUR.calc=null;CUR.fields=real.fields;save();route();})
+        .catch(function(e2){ui.set(100,"解析失败："+e2.message);toast("解析失败："+e2.message);});
+    }else{
+      ui.set(100,"失败："+(err.message||err));
+      toast("图片/PDF 需要本机后端（OCR 与 AI 提取），先启动后端再传");
+    }
+  });
+}
+function applyReal(file,g,ann,feats,x){
+  var mm3=g&&g.volume_mm3?parseFloat(g.volume_mm3):0;
+  var holes=(feats||[]).length;
+  var tech=(ann||[]).filter(function(a){return a&&a.field_value;}).slice(0,3).map(function(a){return a.field_value;}).join("；");
+  var real={label:file.name,mat:"al6061",hash:String(x.up.sha256).slice(0,10)+"…",techReq:tech||"（图纸未提取到技术要求）",
+    source:(g&&g.parser_name==="ocp")?"STEP计算":"OCR/AI提取",
+    part:{l:g?parseFloat(g.length_mm):0,w:g?parseFloat(g.width_mm):0,h:g?parseFloat(g.height_mm):0,vol:mm3?mm3/1000:0,holes:holes,unit:(g&&g.unit)||"mm"},
+    taskId:x.task.id,backend:true};
+  if(!real.part.vol&&ann&&ann.length){
+    var dim=ann.find(function(a){return /尺寸|长|宽|高|外形/.test(a.field_name||"");});
+    if(dim&&dim.field_value){var nums=String(dim.field_value).match(/\d+(\.\d+)?/g)||[];if(nums.length>=3){real.part.l=+nums[0];real.part.w=+nums[1];real.part.h=+nums[2];real.part.vol=real.part.l*real.part.w*real.part.h*0.45;}}
+  }
+  real.fields=buildFields(real);
+  CUR.sample=null;CUR.real=real;CUR.calc=null;CUR.fields=real.fields;
+  S.lastFile={part:real.label,hash:real.hash};save();
+}
+function buildFields(real){
+  var p=real.part;
+  return [
+    {k:"材料",v:MATERIALS[real.mat].name,src:"AI推测",conf:"低",assume:true,opts:Object.values(MATERIALS).map(function(x){return x.name;})},
+    {k:"包络尺寸",v:p.l+" x "+p.w+" x "+p.h+" mm",src:real.source,conf:"确定",assume:false},
+    {k:"体积",v:(p.vol||0).toFixed(1)+" cm3",src:real.source,conf:"确定",assume:false},
+    {k:"孔候选",v:(p.holes||0)+" 个",src:real.source,conf:"确定",assume:false},
+    {k:"单位",v:p.unit||"mm",src:real.source,conf:"确定",assume:false},
+    {k:"技术要求",v:real.techReq,src:real.source,conf:"中",assume:false},
+    {k:"数量",v:"1",src:"人工",conf:"确定",assume:false}
+  ];
+}
+function clientParse(file){
+  return file.text().then(function(txt){
+    var pts=txt.match(/CARTESIAN_POINT\s*\(\s*'[^']*'\s*,\s*\(\s*(-?[\d.Ee+]+)\s*,\s*(-?[\d.Ee+]+)\s*,\s*(-?[\d.Ee+]+)/g)||[];
+    if(!pts.length)throw new Error("没读到坐标点，可能不是 STEP 文本");
+    var mn=[1e9,1e9,1e9],mx=[-1e9,-1e9,-1e9];
+    pts.forEach(function(t){var m=t.match(/\(\s*(-?[\d.Ee+]+)\s*,\s*(-?[\d.Ee+]+)\s*,\s*(-?[\d.Ee+]+)\s*\)$/);if(!m)return;for(var i=0;i<3;i++){var v=parseFloat(m[i+1]);if(v<mn[i])mn[i]=v;if(v>mx[i])mx[i]=v;}});
+    var scale=/INCH/i.test(txt)?25.4:1;
+    var l=(mx[0]-mn[0])*scale,w=(mx[1]-mn[1])*scale,hh=(mx[2]-mn[2])*scale;
+    var holes=(txt.match(/CYLINDRICAL_SURFACE/g)||[]).length;
+    var bbox=l*w*hh;
+    var real={label:file.name,mat:"al6061",hash:"前端估算",techReq:"（未接后端，技术要求未提取）",source:"前端估算",
+      part:{l:+l.toFixed(2),w:+w.toFixed(2),h:+hh.toFixed(2),vol:+(bbox*0.45/1000).toFixed(2),holes:holes,unit:"mm"},backend:false};
+    real.fields=buildFields(real);return real;
+  });
+}
+
 function startParse(w){
   const box=h("div","panel");box.style.marginTop="18px";
-  box.appendChild(h("h3",null,icon("loader")+"解析中… "+SAMPLES[CUR.sample].label));
+  box.appendChild(h("h3",null,icon("loader")+"解析中… "+PART().label));
   const pr=h("div","progress");const bar=h("div");pr.appendChild(bar);box.appendChild(pr);
   box.appendChild(h("div",null,'<span class="basis">几何内核读取包络 / 体积 / 孔候选 · AI 模型提取材料与技术要求</span>'));
   w.appendChild(box);lucide.createIcons();
   let p=0;const iv=setInterval(()=>{p+=12+Math.random()*10;bar.style.width=Math.min(p,100)+"%";
-    if(p>=100){clearInterval(iv);CUR.fields=extractFields(CUR.sample);S.lastFile={part:SAMPLES[CUR.sample].label,hash:SAMPLES[CUR.sample].hash};save();route();}},240);
+    if(p>=100){clearInterval(iv);CUR.fields=CUR.real?CUR.real.fields:extractFields(CUR.sample);S.lastFile={part:PART().label,hash:PART().hash};save();route();}},240);
 }
 function showParse(w){
-  const p=SAMPLES[CUR.sample];
+  const p=PART();
   const box=h("div","panel");box.style.marginTop="6px";
   box.appendChild(h("h3",null,icon("scan-search")+"解析结果 · "+p.label+' <span class="basis">文件哈希 '+p.hash+"</span>"));
   const fs=h("div","fields");
@@ -353,7 +460,7 @@ function showParse(w){
     el.appendChild(h("div","k",f.k));
     let vhtml='<span>'+f.v+"</span>";let sel=null;
     if(f.assume){sel=h("select");f.opts.forEach(o=>{const op=h("option",null,o);if(o===f.v)op.selected=true;sel.appendChild(op);});
-      sel.onchange=()=>{f.v=sel.value;f.assume=false;f.src="人工确认";f.conf="确定";save();route();};vhtml="";}
+      sel.onchange=()=>{f.v=sel.value;f.assume=false;f.src="人工确认";f.conf="确定";const k=MATKEY(sel.value);if(CUR.real&&k)CUR.real.mat=k;CUR.calc=null;save();route();};vhtml="";}
     const vv=h("div","v",vhtml);if(sel)vv.appendChild(sel);
     el.appendChild(vv);
     const src=h("div","src");
@@ -364,7 +471,7 @@ function showParse(w){
   box.appendChild(fs);
   const acts=h("div");acts.style.cssText="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap";
   const b1=h("button","btn","去报价 "+icon("arrow-right"));
-  b1.onclick=()=>{const sk=SAMPLES[CUR.sample];
+  b1.onclick=()=>{const sk=PART();
     const t={id:"QT-20261120-"+String(S.tasks.length+1).padStart(3,"0"),part:sk.label,mat:sk.mat,status:"review",qty:1,created:"11-20 "+new Date().toTimeString().slice(0,5),amount:null,mode:null};
     if(!S.tasks.find(x=>x.part===t.part))S.tasks.push(t);save();CUR.calc=null;CUR.scheme="A";location.hash="#/compare";};
   const b2=h("button","btn steel","先探个价 "+icon("gauge"));b2.onclick=()=>location.hash="#/probe";
@@ -376,7 +483,7 @@ function vProbe(w){
   w.appendChild(pageHead("探价模式","QUICK PROBE","只给区间不给底价。三项输入即可，30 秒出结果；区间与真实成本底价独立计算，客户拿不到底数。"));
   const g=h("div","grid2");
   const left=h("div","panel probe-in");left.appendChild(h("h3",null,icon("gauge")+"三项输入（自动预填）"));
-  const p=SAMPLES[CUR.sample].part;const mk=SAMPLES[CUR.sample].mat;
+  const p=PART().part;const mk=PART().mat;
   left.innerHTML+=`<label>材料类别</label><select id="pb-m">${Object.entries(MATERIALS).map(([k,m])=>`<option value="${k}" ${k===mk?"selected":""}>${m.name}</option>`).join("")}</select>
   <label>包络尺寸（长 x 宽 x 高，mm）</label><input id="pb-dim" value="${p.l} x ${p.w} x ${p.h}">
   <label>数量（可选）</label><input id="pb-qty" value="1">`;
@@ -401,7 +508,7 @@ function vProbe(w){
         <button class="btn sm" id="pb-save">存为探价记录</button>
         <button class="btn sm steel" id="pb-go">转正式报价</button></div>`;
     w.appendChild(rc);lucide.createIcons();
-    $("#pb-save").onclick=()=>{S.probes.unshift({id:"TJ-20261120-"+String(S.probes.length+1).padStart(3,"0"),part:SAMPLES[CUR.sample].label,low:lo,high:hi,created:"11-20 "+new Date().toTimeString().slice(0,5)});save();toast("已存为探价记录（打标）");location.hash="#/dashboard";};
+    $("#pb-save").onclick=()=>{S.probes.unshift({id:"TJ-20261120-"+String(S.probes.length+1).padStart(3,"0"),part:PART().label,low:lo,high:hi,created:"11-20 "+new Date().toTimeString().slice(0,5)});save();toast("已存为探价记录（打标）");location.hash="#/dashboard";};
     $("#pb-go").onclick=()=>location.hash="#/compare";
   };
 }
@@ -409,7 +516,7 @@ function vProbe(w){
 /* ================= 4 多方案对比 ================= */
 function vCompare(w){
   w.appendChild(pageHead("多方案报价","SCHEMES A / B / C","三档参考价全部由本厂参数实时算出，不提前编造。选定方案进入终审。"));
-  const sk=SAMPLES[CUR.sample];
+  const sk=PART();
   if(!CUR.calc){CUR.calc={A:calc(sk.part,sk.mat,1,"A"),B:calc(sk.part,sk.mat,1,"B"),C:calc(sk.part,sk.mat,1,"C")};}
   const gs=h("div","schemes");
   [["A","常规加工","基准参数组"],["B","优化工艺",""],["C","换材料 45钢",""]].forEach(([code,name])=>{
@@ -447,10 +554,10 @@ function costTable(c,editable){
 function recalcTotal(c){const sub=c.lines.slice(0,5).reduce((a,b)=>a+b.v,0);c.lines[5].v=sub*rates().profit;c.total=Math.round((sub+c.lines[5].v)*(c.qty||1));}
 
 /* ================= 5 终审 ================= */
-function loadTaskByPart(part){const sk=Object.values(SAMPLES).find(s=>s.label===part);if(sk){CUR.sample=Object.keys(SAMPLES).find(k=>SAMPLES[k]===sk);CUR.calc=null;}}
+function loadTaskByPart(part){if(CUR.real&&CUR.real.label===part){CUR.calc=null;return;}const sk=Object.values(SAMPLES).find(s=>s.label===part);if(sk){CUR.real=null;CUR.sample=Object.keys(SAMPLES).find(k=>SAMPLES[k]===sk);CUR.calc=null;}}
 function vReview(w){
   w.appendChild(pageHead("终审","FINAL REVIEW","全流程 AI 已跑完，这里是你唯一的闸门：假设项集中处理，逐行可改价，改完确认转正式。"));
-  const sk=SAMPLES[CUR.sample];
+  const sk=PART();
   const as=CUR.fields?CUR.fields.filter(f=>f.assume):[];
   const ab=h("div","assume");
   ab.appendChild(h("div","ah",icon("alert-triangle")+"假设项与低置信项（"+(as.length||1)+"）—— 请逐项确认"));
@@ -489,7 +596,7 @@ function vReview(w){
 /* ================= 6 报价单 ================= */
 function vQuote(w){
   w.appendChild(pageHead("报价单","QUOTATION","打印样式报价单 · 每行含依据小字 · 只使用已确认数据"));
-  const sk=SAMPLES[CUR.sample];const c=(CUR.calc&&CUR.calc[CUR.scheme])||calc(sk.part,sk.mat,1,"A");
+  const sk=PART();const c=(CUR.calc&&CUR.calc[CUR.scheme])||calc(sk.part,sk.mat,1,"A");
   const no=CUR.quoteNo||"BJ-2026-1001";const today="2026-11-20";
   const paper=h("div","paper");
   paper.innerHTML=`
@@ -585,5 +692,7 @@ function vHistory(w){
 }
 route();
 </script>
+
+<!-- 站内 AI 助手已按产品负责人决定暂时撤下，代码备份于 deliverables/M5/tools/assistant_module_backup.html -->
 </body>
 </html>

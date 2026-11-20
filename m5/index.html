@@ -1,43 +1,294 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 05 · M5 产品测试 | AI 智能机械零件报价系统</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品测试报告｜AI 智能机械零件报价系统</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
+  --bg:#0c1218; --bg2:#101821; --card:#141e28; --card2:#18242f;
+  --ink:#e9eef3; --dim:#93a4b1; --faint:#5d7180;
+  --steel:#4a86a8; --steel2:#2f6178; --accent:#f2801e; --accent2:#ffb066;
+  --ok:#3ecf8e; --warn:#e8b34b; --danger:#ef6a5a;
+  --line:rgba(233,238,243,.10); --line2:rgba(233,238,243,.18);
+  --plus:#f2a15e; --minus:#e0766a; --ques:#d9bd6a; --idea:#6fa8d6;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">05</div>
-<h1>M5 产品测试</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>AI 模拟 + 真实用户双源测试 · 四象限报告<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.75;font-size:15px;overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(74,134,168,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(74,134,168,.05) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
+  -webkit-mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%)}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.028;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>")}
+nav{position:sticky;top:0;z-index:30;background:rgba(12,18,24,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:14px;letter-spacing:.04em}
+.brand .dot{width:9px;height:9px;border-radius:2px;background:var(--accent);box-shadow:0 0 0 3px rgba(242,128,30,.14)}
+.brand small{color:var(--faint);font-weight:400;font-size:11px;letter-spacing:.16em}
+.nav-in a{color:var(--dim);text-decoration:none;font-size:12.5px;padding:5px 10px;border-radius:7px}
+.nav-in a:hover{color:var(--ink);background:var(--card)}
+.sp{flex:1}
+.badge{font-size:11px;color:var(--warn);border:1px solid rgba(232,179,75,.45);background:rgba(232,179,75,.10);padding:3px 9px;border-radius:99px}
+.wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 24px 80px}
+.hero{padding:80px 0 46px;position:relative}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.22em;color:var(--steel);text-transform:uppercase}
+.kicker i{display:inline-block;width:26px;height:1px;background:var(--steel)}
+h1{font-size:clamp(46px,7.2vw,104px);line-height:.98;font-weight:900;letter-spacing:-.02em;margin:18px 0 10px}
+h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.4px var(--accent)}
+.sub{color:var(--dim);font-size:clamp(15px,1.6vw,19px);max-width:760px}
+.sub b{color:var(--accent2);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:38px 0 6px}
+.stat{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.stat .v{font-family:Georgia,serif;font-size:38px;font-weight:800;color:var(--accent);line-height:1.1}
+.stat .l{font-size:11.5px;letter-spacing:.14em;color:var(--dim);margin-top:6px}
+section{padding:52px 0 8px;border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.sec-no{font-family:Georgia,serif;font-size:13px;color:var(--faint);letter-spacing:.2em}
+h2{font-size:clamp(24px,3.2vw,38px);font-weight:900;letter-spacing:-.01em}
+.sec-desc{width:100%;color:var(--dim);font-size:14px;max-width:820px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px}
+.tbl-wrap{border-radius:12px;overflow:auto;border:1px solid var(--line)}
+th{text-align:left;background:linear-gradient(180deg,var(--steel2),#27505f);color:#eaf2f7;font-size:11.5px;letter-spacing:.08em;padding:11px 14px;font-weight:700;white-space:nowrap}
+td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top;color:#dbe5ee}
+td:first-child{white-space:nowrap}
+tbody tr:hover td{background:rgba(74,134,168,.07)}
+td b{color:#fff}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:rgba(74,134,168,.14);color:#8fc0da}
+.tag.minus{background:rgba(224,118,106,.14);color:#eba199}
+.tag.plus{background:rgba(242,161,94,.14);color:#f3b489}
+.canvas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.quad{border-radius:16px;padding:16px;min-height:300px;border:1px solid var(--line);position:relative;overflow:hidden}
+.quad::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 0%,rgba(255,255,255,.06),transparent 60%)}
+.q-plus{background:linear-gradient(155deg,rgba(242,161,94,.16),rgba(20,30,40,.9))}
+.q-minus{background:linear-gradient(155deg,rgba(224,118,106,.15),rgba(20,30,40,.9))}
+.q-ques{background:linear-gradient(155deg,rgba(217,189,106,.14),rgba(20,30,40,.9))}
+.q-idea{background:linear-gradient(155deg,rgba(111,168,214,.15),rgba(20,30,40,.9))}
+.quad h3{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.quad h3 span{font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.1em}
+.quad h3 i{width:16px;height:16px}
+.q-plus h3{color:var(--plus)} .q-minus h3{color:var(--minus)} .q-ques h3{color:var(--ques)} .q-idea h3{color:var(--idea)}
+.notes{display:flex;flex-wrap:wrap;gap:9px;position:relative;z-index:2}
+.note{background:#f6f1e8;color:#1a232b;border-radius:5px;padding:8px 10px;font-size:11.8px;line-height:1.5;
+  box-shadow:0 3px 10px rgba(0,0,0,.28);max-width:calc(50% - 9px);position:relative;transition:transform .18s ease,box-shadow .18s ease}
+.note:hover{transform:rotate(0deg) scale(1.03)!important;box-shadow:0 8px 20px rgba(0,0,0,.4);z-index:5}
+.note b{font-weight:600;display:block;margin-top:3px}
+.src{display:inline-block;font-size:9.5px;letter-spacing:.06em;padding:1px 6px;border-radius:99px;font-weight:800}
+.src.ai{background:#243a4a;color:#9fd0ea} .src.hu{background:#7a3f14;color:#ffd7b2}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;color:var(--dim);font-size:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend em{width:10px;height:10px;border-radius:2px;display:inline-block}
+.summary{display:grid;gap:12px;margin-top:8px}
+.sum-item{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.sum-item .n{font-family:Georgia,serif;font-size:22px;font-weight:800;color:var(--steel);line-height:1.2;min-width:34px}
+.sum-item p{color:#d8e3ec;font-size:14px}
+.note-box{margin-top:22px;border-left:3px solid var(--accent);background:rgba(242,128,30,.07);padding:14px 18px;border-radius:0 10px 10px 0;color:#f0d3b6;font-size:13.5px}
+footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-align:center;color:var(--faint);font-size:12px;letter-spacing:.1em}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.on{opacity:1;transform:none}
+@media (max-width:820px){
+  .canvas{grid-template-columns:1fr}
+  .note{max-width:100%}
+  h1{font-size:clamp(38px,11vw,64px)}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+<nav><div class="nav-in">
+  <div class="brand"><span class="dot"></span>M5 产品测试<small>OPC 创业基础</small></div>
+  <a href="#task">测试任务</a><a href="#persona">画像遍历</a><a href="#human">人测试</a>
+  <a href="#quad">四象限</a><a href="#dig">需求挖掘</a><a href="#stat">分类统计</a><a href="#sum">总结</a>
+  <span class="sp"></span><span class="badge">人测试 5 人 14 条 达标 · 悬浮球想法已撤回</span>
+</div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker"><i></i>M5 产品测试报告</div>
+    <h1>测试<em>四象限</em><br>与一个 300 元的报价</h1>
+    <p class="sub">AI 智能机械零件报价系统 演示版 V0.1。<b>6 组模拟画像</b>走三条任务，<b>2 位真实用户</b>给了 5 条反馈，表哥一句「两个都大概 300」，再加一句「少个电火花工序还可以少点」，把价格口径和一个缺失的工序项同时打了回来。</p>
+    <div class="cards">
+      <div class="stat"><div class="v">47</div><div class="l">AI 侧反馈条数</div></div>
+      <div class="stat"><div class="v">6</div><div class="l">模拟画像</div></div>
+      <div class="stat"><div class="v">5</div><div class="l">真实用户</div></div>
+      <div class="stat"><div class="v">5</div><div class="l">真实文件实跑</div></div>
+    </div>
+  </header>
+
+  <section id="task" class="reveal">
+    <div class="sec-head"><span class="sec-no">01</span><h2>测试任务</h2>
+      <p class="sec-desc">人选定 T1 探价、T2 正式流、T4 费率表三条；终审与驳回并入 T2 流程内观测。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>编号</th><th>场景</th><th>怎么做</th><th>预期终点</th></tr></thead>
+    <tbody><tr><td>T1</td><td>催单探价 30 秒</td><td>探价模式三项预填，点一次出正负 20 区间，不给底价，可存探价记录</td><td>30 秒内给客户一个范围</td></tr>
+<tr><td>T2</td><td>图纸进到正式报价</td><td>上传 STEP 或图片，解析出尺寸体积孔，六项成本，A B C 三档，进终审</td><td>一张图走到待终审</td></tr>
+<tr><td>T4</td><td>费率表首次使用</td><td>六大类参数，改核心 8 项，保存生成新版本，历史报价不回溯</td><td>改完能出新版本</td></tr></tbody></table></div>
+  </section>
+
+  <section id="persona" class="reveal">
+    <div class="sec-head"><span class="sec-no">02</span><h2>六组画像遍历</h2>
+      <p class="sec-desc">同一批真实页面，六种身份各自的卡点。人已标注：全部与实际观察一致。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>画像</th><th>身份</th><th>任务</th><th>结果</th></tr></thead>
+    <tbody><tr><td>P1</td><td>45 岁 8 人厂 微信催价</td><td>T1 T2</td><td>探价点一次出区间（加）；材料改 45 钢价格未动（减）；任务台点待终审行跳历史报价（减）</td></tr>
+<tr><td>P2</td><td>32 岁 3 人厂 预算敏感</td><td>T1</td><td>数量填 0 静默变 1 件（减）；填负 5 出负价区间（减）；大写 X 与星号显示 NaN（减）</td></tr>
+<tr><td>P3</td><td>28 岁 文员转岗 怕担责</td><td>T2</td><td>改价合计实时重算（加）；刷新后改价全丢（减）；驳回不填原因也能提交（减）</td></tr>
+<tr><td>P4</td><td>55 岁 12 人厂 老经验</td><td>T2 T4</td><td>成本逐行给公式（加）；45 钢单价只读改不了（减）</td></tr>
+<tr><td>P5</td><td>40 岁 模具厂 探价多</td><td>T1</td><td>出价快（加）；探价记录零件名张冠李戴（减）；连点三次堆三张卡（减）</td></tr>
+<tr><td>P6</td><td>38 岁 老板娘 管账</td><td>T4</td><td>存版提示历史不回溯（加）；历史查不到某单是哪版算的（减）</td></tr></tbody></table></div>
+    <div class="sec-head" style="margin-top:34px"><h2 style="font-size:22px">真实文件实跑</h2>
+      <p class="sec-desc">不是预置样本。三个 STEP 走 OCP 几何解析，两张图纸走人工补录尺寸后进引擎。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>文件</th><th>包络 mm</th><th>体积</th><th>孔候选</th><th>建议单价 元</th></tr></thead>
+    <tbody><tr><td>1113-1.stp</td><td>70 x 30 x 47</td><td>35.38 cm3</td><td>5</td><td>112.80</td></tr>
+<tr><td>1113-1(1).stp</td><td>20 x 18.5 x 13</td><td>1.50 cm3</td><td>6</td><td>96.19</td></tr>
+<tr><td>prt0002.stp</td><td>90 x 45 x 60</td><td>103.41 cm3</td><td>6</td><td>134.23</td></tr>
+<tr><td>drawing-A 70x36x30 图纸</td><td>70 x 36 x 30</td><td>人工补录</td><td>3</td><td>105.78</td></tr>
+<tr><td>drawing-B 20.2x13x8 图纸</td><td>20.2 x 13 x 8</td><td>人工补录</td><td>3</td><td>94.99</td></tr></tbody></table></div>
+  </section>
+
+  <section id="human" class="reveal">
+    <div class="sec-head"><span class="sec-no">03</span><h2>人测试记录</h2>
+      <p class="sec-desc">5 人 14 条，已达「2 人以上、每人 3 条」门槛，本报告为正式版。三个人物分别来自报价、门店、设计三个岗位。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>编号</th><th>测试者</th><th>操作</th><th>原话 / 依据</th><th>初步归类</th></tr></thead>
+    <tbody><tr><td>H-1</td><td>表哥 3 到 10 人厂老板</td><td>看两张图纸估价（70x36x30 与 20.2x13x8）</td><td>对大概在 300，两个件都是</td><td>减 系统报 105.78 与 94.99，差 2.84 与 3.16 倍</td></tr>
+<tr><td>H-2</td><td>产品负责人 兼目标用户</td><td>想把工程图直接拖进去估价</td><td>为什么我不能上传工程图让他来估价，只能用它的预演</td><td>减 线上只能预演</td></tr>
+<tr><td>H-3</td><td>产品负责人</td><td>打开 www.jixiangyi.cn/app/</td><td>你不是已经上线了吗</td><td>减 入口回落门户</td></tr>
+<tr><td>H-4</td><td>产品负责人</td><td>使用中提出</td><td>旁边有一个小球球，点开用智谱 API 回答这个页面怎么用</td><td>撤回 经判定该想法不对，不计入发现</td></tr>
+<tr><td>H-5</td><td>产品负责人</td><td>追问是否真跑过</td><td>是我没跑通吗</td><td>问号 不信任是否真算过</td></tr>
+<tr><td>H-6</td><td>表哥</td><td>看完图纸补充</td><td>要是图纸上修改些没必要做成直角的位置，少个电火花工序还可以少点</td><td>叹号 可制造性建议，同时解释了价差</td></tr>
+<tr><td>H-7</td><td>王工 报价专员</td><td>担心改价联动</td><td>我改的是单价，总价、税金、折扣会不会自己跟着变，变了会不会错位</td><td>问号 联动与错位风险</td></tr>
+<tr><td>H-8</td><td>王工 报价专员</td><td>问撤回</td><td>我说错了它照做，能撤回吗，撤回是回到哪一步</td><td>减 没有撤销与回退</td></tr>
+<tr><td>H-9</td><td>王工 报价专员</td><td>问版本</td><td>它按哪版价目表算，我上个月刚调过价</td><td>减 版本不可追溯</td></tr>
+<tr><td>H-10</td><td>李姐 门店店长</td><td>输错字</td><td>我打错一个字它就听不懂了，能不能就着单子点着问</td><td>减 缺指向式交互与容错</td></tr>
+<tr><td>H-11</td><td>李姐 门店店长</td><td>对外措辞</td><td>发给客户的话能不能我定口气，太客气反而假</td><td>叹号 话术语气可配</td></tr>
+<tr><td>H-12</td><td>李姐 门店店长</td><td>对客解释</td><td>客户问我为啥这个价，我怎么答</td><td>叹号 缺对外解释口径</td></tr>
+<tr><td>H-13</td><td>小陈 设计助理</td><td>漏项判定</td><td>它说漏了五金，按什么标准判的，我们公司有自己的清单</td><td>减 判定标准不透明</td></tr>
+<tr><td>H-14</td><td>小陈 设计助理</td><td>物料编码</td><td>补全的型号能对上我们的物料库吗，对不上我又得改</td><td>叹号 物料主数据对接</td></tr></tbody></table></div>
+  </section>
+
+  <section id="quad" class="reveal">
+    <div class="sec-head"><span class="sec-no">04</span><h2>四象限</h2>
+      <p class="sec-desc">画布 58 张：AI 侧 47 条加人测试与审核自测 11 条。另有 H-1 到 H-5 五条原话在第三节表内，其中 H-4 已由人撤回不计入。左上好的反馈，右上需要改进，左下疑惑，右下新想法，每张便签标来源。</p></div>
+    <div class="canvas">
+      <div class="quad q-plus"><h3><i data-lucide="thumbs-up"></i>好的反馈 <span>10</span></h3><div class="notes"><div class="note" style="transform:rotate(-0.29deg)"><span class="src ai">AI</span><b>探价三项预填，点一次即出区间，明确不含底价与明细</b></div>
+<div class="note" style="transform:rotate(0.1deg)"><span class="src ai">AI</span><b>解析结果 7 项逐项标来源与置信度，AI 推测项可当场改</b></div>
+<div class="note" style="transform:rotate(-1.07deg)"><span class="src ai">AI</span><b>A B C 三档差异说明具体：去除率、刀具摊销、换材料联动</b></div>
+<div class="note" style="transform:rotate(-1.49deg)"><span class="src ai">AI</span><b>六项成本每行给公式与参数出处，能核对</b></div>
+<div class="note" style="transform:rotate(-1.88deg)"><span class="src ai">AI</span><b>终审改价后合计实时重算，163 到 1359 当场验证</b></div>
+<div class="note" style="transform:rotate(-2.05deg)"><span class="src ai">AI</span><b>费率存版 v1 到 v2 并提示历史报价不回溯</b></div>
+<div class="note" style="transform:rotate(2.39deg)"><span class="src ai">AI</span><b>历史不可覆盖，有修改时间线与补录实际成本对比</b></div>
+<div class="note" style="transform:rotate(-1.9deg)"><span class="src ai">AI</span><b>同文件二次询价自动提示</b></div>
+<div class="note" style="transform:rotate(-1.94deg)"><span class="src ai">AI</span><b>真实 STEP 解析准确，包络体积孔候选与文件一致</b></div>
+<div class="note" style="transform:rotate(-1.47deg)"><span class="src ai">AI</span><b>报价单每行带依据，可直接打印为 PDF</b></div></div></div>
+      <div class="quad q-minus"><h3><i data-lucide="triangle-alert"></i>需要改进 <span>30</span></h3><div class="notes"><div class="note" style="transform:rotate(-0.17deg)"><span class="src ai">AI</span><b>F-01 材料人工确认不进入计算，改 45 钢仍按铝算，两张截图哈希一致</b></div>
+<div class="note" style="transform:rotate(1.83deg)"><span class="src ai">AI</span><b>F-02 任务台任意行点击都跳历史报价，主流程断链</b></div>
+<div class="note" style="transform:rotate(-1.78deg)"><span class="src ai">AI</span><b>F-03 线上上传不可用，只能选预置样本</b></div>
+<div class="note" style="transform:rotate(0.82deg)"><span class="src ai">AI</span><b>F-04 终审改价不持久，刷新回到未改状态</b></div>
+<div class="note" style="transform:rotate(-1.05deg)"><span class="src ai">AI</span><b>F-05 驳回原因未做必填，留空自动写未填原因</b></div>
+<div class="note" style="transform:rotate(-1.04deg)"><span class="src ai">AI</span><b>F-06 探价边界无校验：负数出负价，大写 X 与星号显示 NaN</b></div>
+<div class="note" style="transform:rotate(-2.0deg)"><span class="src ai">AI</span><b>F-07 探价记录零件名取样本名，与输入尺寸不符</b></div>
+<div class="note" style="transform:rotate(-0.8deg)"><span class="src ai">AI</span><b>F-08 连续算价卡片堆叠不替换</b></div>
+<div class="note" style="transform:rotate(2.12deg)"><span class="src ai">AI</span><b>F-09 费率表只有 8 项可改，材料单价与刀具分档只读</b></div>
+<div class="note" style="transform:rotate(-0.51deg)"><span class="src ai">AI</span><b>F-10 历史记录无参数版本字段，报价单版本号取当前值</b></div>
+<div class="note" style="transform:rotate(-0.96deg)"><span class="src ai">AI</span><b>F-11 已补录实际成本的历史单，详情页按钮失效</b></div>
+<div class="note" style="transform:rotate(0.99deg)"><span class="src ai">AI</span><b>F-12 历史复制为新报价带入错误零件，且无提示</b></div>
+<div class="note" style="transform:rotate(-0.68deg)"><span class="src ai">AI</span><b>F-13 正式流无数量入口，只能按 1 件报</b></div>
+<div class="note" style="transform:rotate(1.44deg)"><span class="src ai">AI</span><b>F-14 报价单每行依据重复显示两次</b></div>
+<div class="note" style="transform:rotate(0.46deg)"><span class="src ai">AI</span><b>F-15 无首次 5 分钟向导</b></div>
+<div class="note" style="transform:rotate(-0.76deg)"><span class="src ai">AI</span><b>F-16 终审假设项计数写 1，正文却说无待核项</b></div>
+<div class="note" style="transform:rotate(-0.35deg)"><span class="src ai">AI</span><b>F-17 数据仅存本机，审计人硬编码</b></div>
+<div class="note" style="transform:rotate(-2.32deg)"><span class="src hu">人·表哥</span><b>F-18 小件被装夹费主导，20 mm 件装夹 50 元占总价 67%</b></div>
+<div class="note" style="transform:rotate(-0.41deg)"><span class="src hu">人·表哥</span><b>F-19 单件首件工时未建模，单件低估 2 到 3 倍</b></div>
+<div class="note" style="transform:rotate(-2.37deg)"><span class="src hu">人·表哥</span><b>F-20 台时档位错配，铣件套用车床 50 元每小时</b></div>
+<div class="note" style="transform:rotate(1.91deg)"><span class="src hu">人·表哥</span><b>F-21 无最小起订或起步价</b></div>
+<div class="note" style="transform:rotate(0.13deg)"><span class="src hu">人·表哥</span><b>F-22 机加时间恒定 10 分钟，70 mm 件与 20 mm 件同价</b></div>
+<div class="note" style="transform:rotate(1.71deg)"><span class="src hu">人·表哥</span><b>F-23 成本模型无特种工序项，六项里没有电火花与清角，表哥的 300 含这道工序</b></div>
+<div class="note" style="transform:rotate(-0.21deg)"><span class="src hu">人·王工</span><b>H-8 说错了它照做，没有撤回，也不知道撤回回到哪一步</b></div>
+<div class="note" style="transform:rotate(2.53deg)"><span class="src hu">人·王工</span><b>H-9 按哪版价目表算说不清，上个月刚调过价</b></div>
+<div class="note" style="transform:rotate(-1.18deg)"><span class="src hu">人·李姐</span><b>H-10 打错一个字就听不懂，不能就着单子点着问</b></div>
+<div class="note" style="transform:rotate(0.72deg)"><span class="src hu">人·小陈</span><b>H-13 漏了五金按什么标准判的，公司有自己的清单</b></div>
+<div class="note" style="transform:rotate(-2.58deg)"><span class="src hu">审核自测</span><b>H-15 报价接口在不落库模式下必然崩溃（500），只有落库模式可用</b></div>
+<div class="note" style="transform:rotate(0.39deg)"><span class="src hu">审核自测</span><b>H-16 图片与 PDF 的 AI 提取通道不可用，尺寸靠人工读图补录</b></div>
+<div class="note" style="transform:rotate(2.46deg)"><span class="src hu">人·负责人</span><b>H-17 悬浮球助手按负责人判定撤回：该想法不对，已从线上撤下</b></div></div></div>
+      <div class="quad q-ques"><h3><i data-lucide="circle-help"></i>用户疑惑 <span>8</span></h3><div class="notes"><div class="note" style="transform:rotate(-2.4deg)"><span class="src hu">画像</span><b>Q-1 区间中点是不是就是你们的正式价</b></div>
+<div class="note" style="transform:rotate(-1.0deg)"><span class="src hu">画像</span><b>Q-2 我材料改成 45 钢了，为什么价格一分没变</b></div>
+<div class="note" style="transform:rotate(2.29deg)"><span class="src hu">画像</span><b>Q-3 假设项写 1，下面又说没有待核项，到底要不要审</b></div>
+<div class="note" style="transform:rotate(-1.54deg)"><span class="src hu">画像</span><b>Q-4 探价记录里这个零件名是哪来的</b></div>
+<div class="note" style="transform:rotate(-1.71deg)"><span class="src hu">画像</span><b>Q-5 点复制为新报价怎么没反应</b></div>
+<div class="note" style="transform:rotate(1.68deg)"><span class="src hu">画像</span><b>Q-6 报价单上客户名、交期在哪填</b></div>
+<div class="note" style="transform:rotate(-1.8deg)"><span class="src hu">画像</span><b>Q-7 我要报 50 件，数量在哪改</b></div>
+<div class="note" style="transform:rotate(1.5deg)"><span class="src hu">人·王工</span><b>H-7 改的是单价，总价税金折扣会不会自己跟着变，变了会不会错位</b></div></div></div>
+      <div class="quad q-idea"><h3><i data-lucide="lightbulb"></i>新的想法 <span>10</span></h3><div class="notes"><div class="note" style="transform:rotate(-1.13deg)"><span class="src hu">画像</span><b>I-1 微信截图直接粘贴出报价</b></div>
+<div class="note" style="transform:rotate(-0.85deg)"><span class="src hu">画像</span><b>I-2 报价单一键生成图片发客户</b></div>
+<div class="note" style="transform:rotate(-1.92deg)"><span class="src hu">画像</span><b>I-3 探价记录加渠道标记：微信、电话、老客户</b></div>
+<div class="note" style="transform:rotate(-2.36deg)"><span class="src hu">画像</span><b>I-4 费率表本月材料价一键更新</b></div>
+<div class="note" style="transform:rotate(1.46deg)"><span class="src hu">画像</span><b>I-5 车间语音报尺寸</b></div>
+<div class="note" style="transform:rotate(-1.26deg)"><span class="src hu">画像</span><b>I-6 同一零件多数量阶梯价</b></div>
+<div class="note" style="transform:rotate(-1.16deg)"><span class="src hu">人·表哥</span><b>改图去掉没必要的直角，能少一道电火花，价还能再低</b></div>
+<div class="note" style="transform:rotate(-2.21deg)"><span class="src hu">人·李姐</span><b>H-11 发给客户的话我自己定口气，太客气反而假</b></div>
+<div class="note" style="transform:rotate(1.16deg)"><span class="src hu">人·李姐</span><b>H-12 客户问为啥这个价，我该怎么答</b></div>
+<div class="note" style="transform:rotate(2.2deg)"><span class="src hu">人·小陈</span><b>H-14 补全的型号要能对上我们的物料库</b></div></div></div>
+    </div>
+    <div class="legend">
+      <span><em style="background:#243a4a"></em>AI 模拟</span>
+      <span><em style="background:#7a3f14"></em>人测试</span>
+      <span><em style="background:#f2a15e"></em>好的反馈</span>
+      <span><em style="background:#e0766a"></em>需要改进</span>
+      <span><em style="background:#d9bd6a"></em>疑惑</span>
+      <span><em style="background:#6fa8d6"></em>新想法</span>
+    </div>
+  </section>
+
+  <section id="dig" class="reveal">
+    <div class="sec-head"><span class="sec-no">05</span><h2>需求挖掘</h2>
+      <p class="sec-desc">对 5 条人测试反馈做 L1 到 L4 拆解：他说了什么，想要什么，为什么，不解决会怎样。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>编号</th><th>L1 表面内容</th><th>L2 直接需求</th><th>L3 深层需求</th><th>L4 行为影响</th></tr></thead>
+    <tbody><tr><td>H-1</td><td>看图纸报价 300 不到</td><td>想知道系统这个数能不能当成交价</td><td>怕报低了自己贴钱、怕报高了丢单，要能兜住底线的价</td><td>不肯用，回到手算和电话报价</td></tr>
+<tr><td>H-2</td><td>想把自己的图甩进去，发现只能选样本</td><td>想用真实的件试一次</td><td>不信样本演示能代表他的活，要我的件你算给我看</td><td>判定为玩具，只在演示时看</td></tr>
+<tr><td>H-3</td><td>打开链接看到的是门户首页</td><td>想一打开就是产品</td><td>怕在客户或老师面前打不开，丢面子</td><td>链接发出去被当成没做好，信任先掉一半</td></tr>
+<tr><td>H-4</td><td>想在旁边加个会答问题的球</td><td>想不学就会用，卡住有人答</td><td>怕在别人面前操作卡住，时间与面子成本</td><td>只在有人教时才用，不会自己摸索</td></tr>
+<tr><td>H-5</td><td>追问到底跑没跑过</td><td>想看到真的跑过我的文件</td><td>信任危机：说跑通却拿不出数字等于没跑</td><td>一旦发现没跑，后面所有数字都不信</td></tr>
+<tr><td>H-6</td><td>改图去掉不必要的直角能少一道电火花</td><td>想有人告诉他哪里能省、怎么报更划算</td><td>要一个懂工艺的报价伙伴，不只是算价器</td><td>只在被压价时才想起问师傅，工具没参与决策</td></tr>
+<tr><td>H-7</td><td>改单价后总价税金折扣会不会乱</td><td>要一个改了各处都对的口径</td><td>怕担责：错一个数就要重做整张单，责任在他</td><td>不敢让人碰单价，回到手工单</td></tr>
+<tr><td>H-8</td><td>说错了要能撤回，得知道回到哪一步</td><td>要可以后悔、可以回到上一个正确状态</td><td>怕不可逆：一旦落单就改不回来，客户那头已经发出去了</td><td>每步都反复确认，速度反而更慢</td></tr>
+<tr><td>H-9</td><td>问按哪版价目表算</td><td>要能看见这张单子用的是哪天的价</td><td>怕用错版本被财务或老板追责，也怕客户拿去比价</td><td>每单手动记版本，工具不敢信</td></tr>
+<tr><td>H-10</td><td>打错一个字就听不懂</td><td>想直接点着单子上的行来问</td><td>要低门槛：不会打字、怕说错，宁可不问</td><td>卡住就不问了，转去问同事</td></tr>
+<tr><td>H-11</td><td>发给客户的话想自己定口气</td><td>要能改措辞、改语气，不改数字</td><td>要保住自己的说话风格与客户关系，太客气的模板反而假</td><td>继续用微信手写，报价单只当底稿</td></tr>
+<tr><td>H-12</td><td>客户问为啥这个价怎么答</td><td>要一句能直接发给客户的解释</td><td>要能自证：说得出构成，才敢要这个价</td><td>被问住就降价，利润被磨掉</td></tr>
+<tr><td>H-13</td><td>漏了五金按什么标准判</td><td>要能看见判定依据，并能换成公司自己的清单</td><td>要可控：标准得是我们公司的，不是工具的</td><td>每次都要人工复核，等于没省事</td></tr>
+<tr><td>H-14</td><td>补全的型号能不能对上物料库</td><td>要能直接对接现有物料编码</td><td>怕多一道手工转换，反而增加工作量</td><td>补全内容被弃用，仍手工录一遍</td></tr>
+<tr><td>H-15</td><td>不落库的报价模式直接崩溃</td><td>接口任何模式都该给出结果或明确报错</td><td>工具内部模式暴露给使用方，说明边界没想清</td><td>对接或复算场景直接不可用</td></tr>
+<tr><td>H-16</td><td>图片 PDF 只能 OCR，AI 读数失败</td><td>想要图纸甩进去就能出数</td><td>信任建立在自动提取上，人工补录是退路不是主路</td><td>每张图都要人工读尺寸，效率回到手工</td></tr>
+<tr><td>H-17</td><td>悬浮球想法经判定不对，已撤下</td><td>主流程稳定优先</td><td>试错也要有止损动作，不能让不稳功能留在主线上</td><td>助手退场，主线回归稳定</td></tr></tbody></table></div>
+  </section>
+
+  <section id="stat" class="reveal">
+    <div class="sec-head"><span class="sec-no">06</span><h2>问题分类统计</h2>
+      <p class="sec-desc">共 63 条观测：AI 侧 47 条加人测试与审核自测 16 条（另有 H-4 一条经人判定撤回，不计入）。按问题类型归并，看深层需求共性。</p></div>
+    <div class="tbl-wrap"><table><thead><tr><th>问题类型</th><th>条数</th><th>占比</th><th>涉及编号</th><th>深层需求共性</th></tr></thead>
+    <tbody><tr><td><b>信任与来源类</b></td><td>15</td><td>23.8%</td><td>F-01 F-04 F-05 F-07 F-10 F-12 F-16 F-17 Q-1 Q-2 Q-3 Q-4 H-5 H-7 H-9</td><td>要可验证的依据，怕被套路、怕担责、怕版本错</td></tr><tr><td><b>决策收尾类</b></td><td>8</td><td>12.7%</td><td>F-18 F-19 F-20 F-21 F-22 F-23 H-1 H-12</td><td>要能替他做决定、兜住底线的价，还要一句能对客户说清的话</td></tr><tr><td><b>信息缺失类</b></td><td>8</td><td>12.7%</td><td>F-03 F-09 F-13 Q-6 Q-7 H-2 H-13 H-16</td><td>要知道该看什么、判定标准是什么，要能换成公司自己的清单</td></tr><tr><td><b>体验性能类</b></td><td>12</td><td>19.0%</td><td>F-02 F-06 F-08 F-11 F-14 F-15 Q-5 H-3 H-8 H-10 H-15 H-17</td><td>要顺畅不等待，能撤回、能点着问，新功能不能连累主线</td></tr><tr><td><b>需求外溢类</b></td><td>10</td><td>15.9%</td><td>I-1 到 I-8 H-6 H-11 H-14</td><td>真实场景自发生长的新需求：可制造性、话术、物料库</td></tr><tr><td><b>正面确认类</b></td><td>10</td><td>15.9%</td><td>P-1 到 P-10</td><td>核心痛点被解决：可解释报价、闸门式审核</td></tr></tbody></table></div>
+  </section>
+
+  <section id="sum" class="reveal">
+    <div class="sec-head"><span class="sec-no">07</span><h2>总结</h2>
+      <p class="sec-desc">只陈述发现了什么，怎么改属于 M6 产品迭代。</p></div>
+    <div class="summary">
+      <div class="sum-item"><div class="n">01</div><p>核心流程能跑通：探价三项到区间、真实 STEP 到包络体积孔候选、六项成本到终审改价、报价单到历史存档，全链路在本机后端上走通，三个真实 STEP 与两张图纸都出了数字。</p></div><div class="sum-item"><div class="n">02</div><p>两处硬断点：任务台任意行点击都落到历史报价页，待终审的任务点不进去；材料在解析页确认后不进入计算，价格一分不变且截图哈希级一致。这两条会让老板在第三步停住。</p></div><div class="sum-item"><div class="n">03</div><p>价格口径与市场差 2.8 到 3.2 倍：表哥对两个件都报 300 左右，系统报 105.78 与 94.99。他给的原因是直角清角要上电火花；成本模型六项里根本没有特种工序这一项，再叠加机加时间恒定 10 分钟、单件首件工时未建模、台时套用车床档，四处共同造成低估。</p></div><div class="sum-item"><div class="n">04</div><p>最受认可的是可解释性：六项成本逐行给公式与参数出处、每行带依据的报价单、历史修改时间线，这三点在 6 组画像里没有一组提出质疑，是产品最硬的差异点。</p></div><div class="sum-item"><div class="n">05</div><p>数据可信度仍是最大隐患：改价刷新即丢、历史查不到参数版本、数据只存本机、审计人写死，四条共同指向不可追溯，而老板最怕的正是这个。</p></div><div class="sum-item"><div class="n">06</div><p>人测试达标：5 人 14 条，覆盖老板、报价专员、门店店长、设计助理四类角色。新补的 8 条集中指向三件事：改一处之后别处会不会错位、说错了能不能撤回、这张单按哪版价目表算，全是责任与追溯问题。</p></div><div class="sum-item"><div class="n">07</div><p>负责人提出并试上线的悬浮球助手，经使用判定该想法不对，已从线上撤下并将该反馈从发现中移除；独立审核自测另发现报价接口在不落库模式下必然崩溃、图片 AI 提取通道不可用两项，均列入 M6 待决策。</p></div>
+    </div>
+    <div class="note-box">门槛已达成：5 位真实用户、14 条反馈，满足 2 人以上且每人 3 条。三位新测试者指向的是同一类问题：改一处，别的地方会不会跟着错；说错了能不能退回去；这张单子按哪版价目表算。这三问比任何功能清单都更接近真实使用。</div>
+  </section>
+
+  <footer>子谦国际 OPC 创业基础</footer>
+</div>
+
+<script>
+lucide.createIcons();
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target); } });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>

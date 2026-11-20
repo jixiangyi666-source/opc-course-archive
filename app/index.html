@@ -168,7 +168,7 @@ nav a.on{color:var(--accent);background:var(--accent-soft);font-weight:700}
 </head>
 <body>
 <div id="root"></div>
-<div class="foot">AI 智能机械零件报价系统 V0.1 演示版 · 数据取自项目技术底座 · jixiangyi.cn</div>
+<div class="foot">AI 智能机械零件报价系统 V0.2 演示版 · 数据取自项目技术底座 · 演示数据仅存本机浏览器 · jixiangyi.cn</div>
 <script>
 /* ================= 数据与计算引擎（预置值全部来自技术底座） ================= */
 const LS_KEY="opc-quote-demo-v1";
@@ -198,13 +198,14 @@ function seed(){
   };
 }
 let S=load();
-function load(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):seed();}catch(e){return seed();}}
-function save(){localStorage.setItem(LS_KEY,JSON.stringify(S));}
+function load(){let d;try{const r=localStorage.getItem(LS_KEY);d=r?JSON.parse(r):seed();}catch(e){d=seed();}
+  if(!d.matOverrides)d.matOverrides={};if(!d.operatorName)d.operatorName="戢祥毅";return d;}
+function save(){S.cur={sample:CUR.sample,matKey:CUR.matKey||null,qty:CUR.qty,scheme:CUR.scheme,calc:CUR.calc,quoteNo:CUR.quoteNo,real:CUR.real,fields:CUR.fields};localStorage.setItem(LS_KEY,JSON.stringify(S));}
 function rates(){return S.rates;}
 
 /* 计算引擎：纯函数，依据字符串全程可见 */
 function calc(part,matKey,qty,scheme,r){
-  r=r||rates();const m=MATERIALS[matKey];qty=qty||1;
+  r=r||rates();const m=M(matKey);qty=qty||1;
   const L=part.l+r.marginMM*2,W=part.w+r.marginMM*2,H=part.h+r.marginMM*2;
   const blankVol=L*W*H/1000;                       // cm3
   const matCost=blankVol*m.density/1000*m.price*1000/1000*(1+r.lossRate);
@@ -212,9 +213,9 @@ function calc(part,matKey,qty,scheme,r){
   let diffNote="基准参数组";
   if(scheme==="B"){removal*=1.4;toolRate*=1.5;setupMin*=0.5;diffNote="一次装夹、高效刀路（去除率提升40%，刀具摊销上浮50%）";}
   if(scheme==="C"){diffNote="材料换为 45钢，密度/单价/刀具档联动重算";}
-  const mat2=(scheme==="C")?MATERIALS.steel45:m;
-  const rem2=(scheme==="C")?MATERIALS.steel45.removal:removal;
-  const tr2=(scheme==="C")?MATERIALS.steel45.toolRate:toolRate;
+  const mat2=(scheme==="C")?M("steel45"):m;
+  const rem2=(scheme==="C")?M("steel45").removal:removal;
+  const tr2=(scheme==="C")?M("steel45").toolRate:toolRate;
   const removedVol=Math.max(blankVol-part.vol,0.5);
   const hours=r.prepH+removedVol/rem2/60+(part.holes||0)*r.holeMin;
   const machCost=hours*r.machineRate;
@@ -253,10 +254,14 @@ function extractFields(sk){
 }
 
 /* ================= 渲染框架 ================= */
-let CUR={sample:"plate",fields:null,scheme:"A",calc:null,quoteNo:null,viewTask:null,real:null};
+let CUR={sample:"plate",matKey:null,qty:1,fields:null,scheme:"A",calc:null,quoteNo:null,viewTask:null,real:null};
+(function restoreCur(){const c=S.cur;if(!c)return;CUR.sample=c.sample;CUR.matKey=c.matKey||null;CUR.qty=c.qty||1;CUR.scheme=c.scheme||"A";CUR.calc=c.calc||null;CUR.quoteNo=c.quoteNo;CUR.real=c.real||null;CUR.fields=c.fields||null;})();
 const $=s=>document.querySelector(s);
 function PART(){return CUR.real||SAMPLES[CUR.sample];}
+function M(k){return Object.assign({},MATERIALS[k],(S.matOverrides&&S.matOverrides[k])||{});}
+function EFFMAT(){const p=PART();return CUR.matKey||(p&&p.mat)||"al6061";}
 function MATKEY(name){const m={"6061铝合金":"al6061","7075铝合金":"al7075","45钢":"steel45","304不锈钢":"ss304"};return m[name]||null;}
+const FIELD_HINTS={"材料":"AI 从图纸/模型推测，务必人工确认；确认后所有报价按此材料重算","包络尺寸":"长 x 宽 x 高（mm），来自几何包围盒","体积":"成品体积（cm3），用于估算切削量","孔候选":"识别到的孔数量，参与工时估算","单位":"STEP 头声明的单位已统一换算为 mm","技术要求":"图纸文字提取；识别不出的需人工补录","数量":"报价件数，整数且 ≥1；影响总价与批量口径"};
 function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.innerHTML=x;return e;}
 function icon(n){return '<i data-lucide="'+n+'" style="width:15px;height:15px"></i>';}
 function money(n){return Math.round(n*100)/100;}
@@ -272,7 +277,9 @@ function render(view){
   brand.onclick=()=>location.hash="#/dashboard";
   const nv=h("nav");PAGES.forEach(p=>{const a=h("a",null,p[1]+" "+icon(p[2]));a.href="#/"+p[0];if(p[0]===view)a.className="on";nv.appendChild(a);});
   const rst=h("button","btn-ghost","重置演示数据");rst.onclick=()=>{localStorage.removeItem(LS_KEY);S=seed();save();toast("已恢复预置数据");location.hash="#/dashboard";route();};
-  inb.append(brand,nv,h("span","sp"),rst);bar.appendChild(inb);root.appendChild(bar);
+  const faqBtn=h("button","btn-ghost","常见问题");faqBtn.onclick=showFaq;
+  const guideBtn=h("button","btn-ghost","使用向导");guideBtn.onclick=showGuide;
+  inb.append(brand,nv,h("span","sp"),faqBtn,guideBtn,rst);bar.appendChild(inb);root.appendChild(bar);
   const wrap=h("div","wrap");root.appendChild(wrap);
   const V={dashboard:vDash,upload:vUpload,probe:vProbe,compare:vCompare,review:vReview,quote:vQuote,rates:vRates,history:vHistory};
   (V[view]||vDash)(wrap);
@@ -333,6 +340,7 @@ function vUpload(w){
   drop.ondrop=(e)=>{e.preventDefault();drop.style.borderColor="";if(e.dataTransfer.files&&e.dataTransfer.files[0])realUpload(e.dataTransfer.files[0],w);};
   fi.onchange=()=>{if(fi.files&&fi.files[0])realUpload(fi.files[0],w);};
   w.appendChild(drop);
+  w.appendChild(h("div","basis","演示版已支持真实上传（需解析服务在线）：STEP 离线时自动降级前端估算，图片/PDF 离线时请重试；也可用下方预置样本快速走全流程。"));
   w.appendChild(h("div",null,'<div style="margin:20px 0 8px;font-weight:800;font-size:14px">预置样本（来自项目测试数据集）</div>'));
   const ss=h("div","samples");
   Object.entries(SAMPLES).forEach(([k,v])=>{
@@ -473,10 +481,14 @@ function showParse(w){
   CUR.fields.forEach((f,i)=>{
     const el=h("div","field");
     el.appendChild(h("div","k",f.k));
+    if(f.k==="数量"){const qin=h("input");qin.type="number";qin.min="1";qin.step="1";qin.value=CUR.qty;qin.title=FIELD_HINTS["数量"];
+      qin.onchange=()=>{const q=parseInt(qin.value);if(!q||q<1){qin.value=CUR.qty;toast("数量必须是大于等于 1 的整数");return;}CUR.qty=q;CUR.calc=null;save();route();};
+      const vvq=h("div","v");vvq.appendChild(qin);el.appendChild(vvq);el.appendChild(h("div","src","<span>人工</span><span>确定</span>"));fs.appendChild(el);return;}
     let vhtml='<span>'+f.v+"</span>";let sel=null;
-    if(f.assume){sel=h("select");f.opts.forEach(o=>{const op=h("option",null,o);if(o===f.v)op.selected=true;sel.appendChild(op);});
-      sel.onchange=()=>{f.v=sel.value;f.assume=false;f.src="人工确认";f.conf="确定";const k=MATKEY(sel.value);if(CUR.real&&k)CUR.real.mat=k;CUR.calc=null;save();route();};vhtml="";}
+    if(f.assume){sel=h("select");sel.title=FIELD_HINTS["材料"];f.opts.forEach(o=>{const op=h("option",null,o);if(o===f.v)op.selected=true;sel.appendChild(op);});
+      sel.onchange=()=>{f.v=sel.value;f.assume=false;f.src="人工确认";f.conf="确定";const k=MATKEY(sel.value);CUR.matKey=k||(CUR.real?CUR.real.mat:SAMPLES[CUR.sample].mat);if(CUR.real&&k)CUR.real.mat=k;CUR.calc=null;save();toast("材料已按「"+sel.value+"」确认，报价将重算");route();};vhtml="";}
     const vv=h("div","v",vhtml);if(sel)vv.appendChild(sel);
+    if(FIELD_HINTS[f.k])vv.title=FIELD_HINTS[f.k];
     el.appendChild(vv);
     const src=h("div","src");
     src.appendChild(h("span",null,f.src));
@@ -487,8 +499,9 @@ function showParse(w){
   const acts=h("div");acts.style.cssText="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap";
   const b1=h("button","btn","去报价 "+icon("arrow-right"));
   b1.onclick=()=>{const sk=PART();
-    const t={id:"QT-20261120-"+String(S.tasks.length+1).padStart(3,"0"),part:sk.label,mat:sk.mat,status:"review",qty:1,created:"11-20 "+new Date().toTimeString().slice(0,5),amount:null,mode:null};
-    if(!S.tasks.find(x=>x.part===t.part))S.tasks.push(t);save();CUR.calc=null;CUR.scheme="A";location.hash="#/compare";};
+    const t={id:"QT-20261120-"+String(S.tasks.length+1).padStart(3,"0"),part:sk.label,mat:EFFMAT(),status:"review",qty:CUR.qty,created:"11-20 "+new Date().toTimeString().slice(0,5),amount:null,mode:null};
+    const ex=S.tasks.find(x=>x.part===t.part);if(ex){ex.qty=CUR.qty;ex.mat=EFFMAT();ex.status="review";}else S.tasks.push(t);
+    save();CUR.calc=null;CUR.scheme="A";location.hash="#/compare";};
   const b2=h("button","btn steel","先探个价 "+icon("gauge"));b2.onclick=()=>location.hash="#/probe";
   acts.append(b2,b1);box.appendChild(acts);w.appendChild(box);
 }
@@ -498,10 +511,11 @@ function vProbe(w){
   w.appendChild(pageHead("探价模式","QUICK PROBE","只给区间不给底价。三项输入即可，30 秒出结果；区间与真实成本底价独立计算，客户拿不到底数。"));
   const g=h("div","grid2");
   const left=h("div","panel probe-in");left.appendChild(h("h3",null,icon("gauge")+"三项输入（自动预填）"));
-  const p=PART().part;const mk=PART().mat;
-  left.innerHTML+=`<label>材料类别</label><select id="pb-m">${Object.entries(MATERIALS).map(([k,m])=>`<option value="${k}" ${k===mk?"selected":""}>${m.name}</option>`).join("")}</select>
-  <label>包络尺寸（长 x 宽 x 高，mm）</label><input id="pb-dim" value="${p.l} x ${p.w} x ${p.h}">
-  <label>数量（可选）</label><input id="pb-qty" value="1">`;
+  const p=PART().part;const mk=EFFMAT();
+  left.innerHTML+=`<label>材料类别</label><select id="pb-m" title="按实际材料选，影响重量与刀具档">${Object.entries(MATERIALS).map(([k,m])=>`<option value="${k}" ${k===mk?"selected":""}>${m.name}</option>`).join("")}</select>
+  <label>包络尺寸（长 x 宽 x 高，mm）</label><input id="pb-dim" value="${p.l} x ${p.w} x ${p.h}" title="分隔符 x / X / × / * 均按乘号处理；三个数都要大于 0">
+  <label>数量</label><input id="pb-qty" value="${CUR.qty||1}" title="整数且 ≥1">
+  <label>零件名（可选，用于探价记录）</label><input id="pb-name" placeholder="如：客户发来的连接座；不填按 尺寸·材料 命名">`;
   const btn=h("button","btn","快速算价 "+icon("zap"));btn.style.marginTop="18px";left.appendChild(btn);
   const right=h("div","panel");right.appendChild(h("h3",null,icon("shield-alert")+"探价规则"));
   right.innerHTML+=`<div class="rate-row"><span class="rn">区间宽度</span><span class="rv">±${rates().probeBand*100}%</span></div>
@@ -510,20 +524,28 @@ function vProbe(w){
   <p style="color:var(--dim);font-size:12.5px;margin-top:14px">不诚心比价的客户只拿到区间；拿区间去压别家也压不到你的底数。M2 调研里老板的原话抱怨，变成了功能。</p>`;
   g.append(left,right);w.appendChild(g);
   btn.onclick=()=>{
-    const dim=$("#pb-dim").value.split("x").map(x=>parseFloat(x.trim()));
-    const mk2=$("#pb-m").value,qty=parseInt($("#pb-qty").value)||1;
+    // F-06：x/X/×/* 归一化；负数、0、非数字在提交前拦截
+    const rawDim=$("#pb-dim").value.replace(/[xX×*＊]/g,"x");
+    const dim=rawDim.split("x").map(v=>parseFloat(String(v).trim()));
+    if(dim.length!==3||dim.some(v=>!isFinite(v)||v<=0)){toast("尺寸格式：长 x 宽 x 高（mm），三个数都要大于 0（分隔符 x/X/×/* 均可）");return;}
+    const qty=parseInt($("#pb-qty").value);
+    if(!qty||qty<1){toast("数量必须是大于等于 1 的整数");return;}
+    const mk2=$("#pb-m").value;
+    const nm=($("#pb-name")?$("#pb-name").value:"").trim();
+    const recName=nm||((qty>1?qty+" x ":"")+dim.join("x")+" · "+M(mk2).name); // F-07：不再取样本名
     const part={l:dim[0],w:dim[1],h:dim[2],vol:dim[0]*dim[1]*dim[2]*0.55,holes:p.holes||0};
     const c=calc(part,mk2,qty,"A");
     const base=Math.round(c.total*(1+rates().profit*0));
     const lo=Math.round(base*(1-rates().probeBand)),hi=Math.round(base*(1+rates().probeBand));
-    const rc=h("div","range-card");
-    rc.innerHTML=`<div class="rl">参考价格区间（${qty} 件）</div><div class="rv">${lo} ~ ${hi} 元</div>
+    const oldRC=$("#probe-result");if(oldRC)oldRC.remove(); // F-08：结果单卡替换
+    const rc=h("div","range-card");rc.id="probe-result";
+    rc.innerHTML=`<div class="rl">参考价格区间（${qty} 件 · ${recName}）</div><div class="rv">${lo} ~ ${hi} 元</div>
       <div class="rn">本区间不含底价与成本明细 · 约 20 秒生成</div>
       <div style="display:flex;gap:10px;justify-content:center;margin-top:18px">
         <button class="btn sm" id="pb-save">存为探价记录</button>
         <button class="btn sm steel" id="pb-go">转正式报价</button></div>`;
     w.appendChild(rc);lucide.createIcons();
-    $("#pb-save").onclick=()=>{S.probes.unshift({id:"TJ-20261120-"+String(S.probes.length+1).padStart(3,"0"),part:PART().label,low:lo,high:hi,created:"11-20 "+new Date().toTimeString().slice(0,5)});save();toast("已存为探价记录（打标）");location.hash="#/dashboard";};
+    $("#pb-save").onclick=()=>{S.probes.unshift({id:"TJ-20261120-"+String(S.probes.length+1).padStart(3,"0"),part:recName,low:lo,high:hi,created:"11-20 "+new Date().toTimeString().slice(0,5)});save();toast("已存为探价记录（打标）");location.hash="#/dashboard";};
     $("#pb-go").onclick=()=>location.hash="#/compare";
   };
 }
@@ -532,12 +554,12 @@ function vProbe(w){
 function vCompare(w){
   w.appendChild(pageHead("多方案报价","SCHEMES A / B / C","三档参考价全部由本厂参数实时算出，不提前编造。选定方案进入终审。"));
   const sk=PART();
-  if(!CUR.calc){CUR.calc={A:calc(sk.part,sk.mat,1,"A"),B:calc(sk.part,sk.mat,1,"B"),C:calc(sk.part,sk.mat,1,"C")};}
+  if(!CUR.calc){CUR.calc={A:calc(sk.part,EFFMAT(),CUR.qty,"A"),B:calc(sk.part,EFFMAT(),CUR.qty,"B"),C:calc(sk.part,EFFMAT(),CUR.qty,"C")};}
   const gs=h("div","schemes");
   [["A","常规加工","基准参数组"],["B","优化工艺",""],["C","换材料 45钢",""]].forEach(([code,name])=>{
     const c=CUR.calc[code];const sc=h("div","scheme"+(CUR.scheme===code?" sel":""));
     sc.innerHTML=`<div class="sl">方案 ${code}</div><h4>${name}</h4><div class="pv bignum">${c.total} 元</div>
-      <div class="ph">预估工时 ${c.hours.toFixed(2)} h · 1 件</div><div class="diff">${c.diffNote}</div>`;
+      <div class="ph">预估工时 ${c.hours.toFixed(2)} h · ${c.qty||1} 件</div><div class="diff">${c.diffNote}</div>`;
     sc.onclick=()=>{CUR.scheme=code;route();};gs.appendChild(sc);
   });
   w.appendChild(gs);
@@ -569,19 +591,21 @@ function costTable(c,editable){
 function recalcTotal(c){const sub=c.lines.slice(0,5).reduce((a,b)=>a+b.v,0);c.lines[5].v=sub*rates().profit;c.total=Math.round((sub+c.lines[5].v)*(c.qty||1));}
 
 /* ================= 5 终审 ================= */
-function loadTaskByPart(part){if(CUR.real&&CUR.real.label===part){CUR.calc=null;return;}const sk=Object.values(SAMPLES).find(s=>s.label===part);if(sk){CUR.real=null;CUR.sample=Object.keys(SAMPLES).find(k=>SAMPLES[k]===sk);CUR.calc=null;}}
+function loadTaskByPart(part){const t=S.tasks.find(x=>x.part===part);
+  if(t){CUR.qty=t.qty||1;CUR.matKey=t.mat||null;}else{CUR.matKey=null;CUR.qty=1;}
+  if(CUR.real&&CUR.real.label===part){CUR.calc=null;return;}const sk=Object.values(SAMPLES).find(s=>s.label===part);if(sk){CUR.real=null;CUR.sample=Object.keys(SAMPLES).find(k=>SAMPLES[k]===sk);CUR.calc=null;}}
 function vReview(w){
   w.appendChild(pageHead("终审","FINAL REVIEW","全流程 AI 已跑完，这里是你唯一的闸门：假设项集中处理，逐行可改价，改完确认转正式。"));
   const sk=PART();
   const as=CUR.fields?CUR.fields.filter(f=>f.assume):[];
   const ab=h("div","assume");
-  ab.appendChild(h("div","ah",icon("alert-triangle")+"假设项与低置信项（"+(as.length||1)+"）—— 请逐项确认"));
+  ab.appendChild(h("div","ah",icon("alert-triangle")+"假设项与低置信项（"+as.length+"）—— 请逐项确认"));
   if(as.length){as.forEach(f=>{
     const r=h("div","ar");r.innerHTML=`<span>${f.k}：<b>${f.v}</b><span class="basis">（AI 推测待核）</span></span>`;
     const done=h("span","tagchip t-ok","<i></i>已确认");r.appendChild(done);ab.appendChild(r);});
   }else{ab.appendChild(h("div","ar","本次解析无待核项——材料与关键尺寸均为确定来源"));}
   w.appendChild(ab);
-  if(!CUR.calc){CUR.calc={A:calc(sk.part,sk.mat,1,"A"),B:calc(sk.part,sk.mat,1,"B"),C:calc(sk.part,sk.mat,1,"C")};}
+  if(!CUR.calc){CUR.calc={A:calc(sk.part,EFFMAT(),CUR.qty,"A"),B:calc(sk.part,EFFMAT(),CUR.qty,"B"),C:calc(sk.part,EFFMAT(),CUR.qty,"C")};}
   const c=CUR.calc[CUR.scheme];
   const box=h("div","panel");box.appendChild(h("h3",null,icon("clipboard-check")+"方案 "+CUR.scheme+" 报价依据单 · "+sk.label+"（每行可改价，总价实时重算）"));
   box.appendChild(costTable(c,true));
@@ -591,7 +615,8 @@ function vReview(w){
     m.innerHTML=`<h3>驳回本单？</h3><p>驳回后任务回到「已驳回」状态，可修改信息后重新报价。请填驳回原因（记入修改记录，留痕）。</p>`;
     const inp=h("input");inp.placeholder="驳回原因，如：工时估低了、材料不对";inp.style.cssText="width:100%;background:var(--bg);border:1px solid var(--line-2);color:var(--ink);border-radius:9px;padding:10px 13px;font-size:13.5px;margin-top:12px";
     const acts=h("div","acts");const ok=h("button","btn sm","确认驳回");const no=h("button","btn ghost sm","取消");
-    ok.onclick=()=>{const t=S.tasks.find(t=>t.part===sk.label&&t.status==="review");if(t){t.status="reject";t.rejectReason=inp.value||"未填原因";}
+    ok.onclick=()=>{const reason=(inp.value||"").trim();if(reason.length<5){toast("驳回原因必填且不少于 5 个字（当前 "+reason.length+" 个）");return;}
+      const t=S.tasks.find(t=>t.part===sk.label&&t.status==="review");if(t){t.status="reject";t.rejectReason=reason;}
       CUR.calc=null;save();bg.remove();toast("已驳回：点击该任务可重新修改报价");location.hash="#/dashboard";};
     no.onclick=()=>bg.remove();acts.append(no,ok);m.append(inp,acts);bg.appendChild(m);document.body.appendChild(bg);lucide.createIcons();
   };
@@ -600,9 +625,9 @@ function vReview(w){
     const bg=h("div","modal-bg");const m=h("div","modal");
     m.innerHTML=`<h3>确认报价？</h3><p>确认后本单从「建议价」转为「正式价」，假设项视为已人工接受。正式报价单只使用已确认数据。</p>`;
     const acts=h("div","acts");const ok=h("button","btn sm","确认");const no=h("button","btn ghost sm","再看看");
-    ok.onclick=()=>{CUR.quoteNo="BJ-2026-"+String(1000+S.history.length+1);bg.remove();
+    ok.onclick=()=>{CUR.quoteNo="BJ-2026-"+String(1000+S.history.length+1);CUR.confirmedAt=Date.now();bg.remove();
       const t=S.tasks.find(t=>t.part===sk.label&&t.status==="review");if(t){t.status="done";t.amount=c.total;t.mode="正式";}
-      if(c.mods)c.mods.forEach(m2=>{});save();location.hash="#/quote";};
+      save();location.hash="#/quote";};
     no.onclick=()=>bg.remove();acts.append(no,ok);m.appendChild(acts);bg.appendChild(m);document.body.appendChild(bg);lucide.createIcons();
   };
   box.append(br,b);w.appendChild(box);
@@ -611,23 +636,23 @@ function vReview(w){
 /* ================= 6 报价单 ================= */
 function vQuote(w){
   w.appendChild(pageHead("报价单","QUOTATION","打印样式报价单 · 每行含依据小字 · 只使用已确认数据"));
-  const sk=PART();const c=(CUR.calc&&CUR.calc[CUR.scheme])||calc(sk.part,sk.mat,1,"A");
+  const sk=PART();const c=(CUR.calc&&CUR.calc[CUR.scheme])||calc(sk.part,EFFMAT(),CUR.qty,"A");
   const no=CUR.quoteNo||"BJ-2026-1001";const today="2026-11-20";
   const paper=h("div","paper");
   paper.innerHTML=`
   <h2>机加工零件报价单</h2>
   <div class="meta-row"><span>报价单位：示例机械加工厂</span><span>报价编号：${no}</span><span>日期：${today}</span><span>有效期：15 天</span></div>
-  <div class="meta-row"><span>客户名称：（客户填写）</span><span>零件：${sk.label}</span><span>材料：${MATERIALS[sk.mat].name}（人工确认）</span><span>数量：${c.qty||1} 件</span></div>
+  <div class="meta-row"><span>客户名称：（客户填写）</span><span>零件：${sk.label}</span><span>材料：${M(EFFMAT()).name}（人工确认）</span><span>数量：${c.qty||1} 件</span></div>
   <table><thead><tr><th style="width:34%">项目</th><th style="width:18%">金额（元）</th><th>依据</th></tr></thead><tbody>
-  ${c.lines.map(l=>`<tr><td>${l.k}</td><td class="amt">${money(l.v).toFixed(2)}<span class="basis2">${l.basis}</span></td><td><span class="basis2">${l.basis}</span></td></tr>`).join("")}
+  ${c.lines.map(l=>`<tr><td>${l.k}</td><td class="amt">${money(l.v).toFixed(2)}</td><td><span class="basis2">${l.basis}</span></td></tr>`).join("")}
   </tbody></table>
   <div class="grand">报价合计：${c.total} 元（含税）</div>
-  <div class="note">备注：本报价依据企业自有费率表（参数版本 v${rates().version}）逐项核算，同输入同参数重算结果一致。材料单价标注"市场参考价"者以实际采购价为准。探价类咨询仅提供价格区间，不含底价与明细。</div>`;
+  <div class="note">备注：本报价依据企业自有费率表（参数版本 v${rates().version}）逐项核算，同输入同参数重算结果一致。材料单价标注"市场参考价"者以实际采购价为准。探价类咨询仅提供价格区间，不含底价与明细。演示版数据仅存本机浏览器。</div>`;
   w.appendChild(paper);
   const acts=h("div");acts.style.cssText="display:flex;gap:10px;margin-top:18px;justify-content:center";
   const b1=h("button","btn","打印导出 "+icon("printer"));b1.onclick=()=>window.print();
   const b2=h("button","btn steel","存入历史 "+icon("save"));
-  b2.onclick=()=>{if(!S.history.find(x=>x.id===no)){S.history.unshift({id:no,part:sk.label,mat:sk.mat,mode:"正式",amount:c.total,status:"已确认",date:"11-20 "+new Date().toTimeString().slice(0,5),actual:null,mods:(c.mods||[]).map(m=>({who:"戢祥毅",what:m.what,when:"刚刚"}))});save();}
+  b2.onclick=()=>{if(!S.history.find(x=>x.id===no)){S.history.unshift({id:no,part:sk.label,mat:EFFMAT(),mode:"正式",amount:c.total,status:"已确认",date:"11-20 "+new Date().toTimeString().slice(0,5),ts:CUR.confirmedAt||Date.now(),ratesVersion:rates().version,formulaVersion:"DEMO-1.1",actual:null,mods:(c.mods||[]).map(m=>({who:S.operatorName,what:m.what,when:"刚刚"}))});save();}
     toast("已存入历史（不可覆盖，修改将生成新版本）");location.hash="#/history";};
   acts.append(b1,b2);w.appendChild(acts);
 }
@@ -657,6 +682,26 @@ function vRates(w){
   b.onclick=()=>{main.querySelectorAll("input").forEach(inp=>{const k=inp.dataset.key;if(k)rates()[k]=parseFloat(inp.value)||rates()[k];});
     rates().version++;save();toast("已生成参数版本 v"+rates().version+"，历史报价不受影响");route();};
   main.appendChild(b);w.appendChild(main);
+  // F-09：材料单价 / 刀具摊销 / 去除率开放编辑（存为覆盖值，随版本走，历史不回溯）
+  const mat=h("div","panel");mat.style.marginBottom="16px";
+  mat.appendChild(h("h3",null,icon("layers")+"材料单价 / 刀具摊销 / 去除率（可编辑，保存生成新版本 v"+(rates().version+1)+"）"));
+  Object.entries(MATERIALS).forEach(([k,m])=>{
+    const o=(S.matOverrides&&S.matOverrides[k])||{};
+    [["price","单价（元/kg）",m.price],["toolRate","刀具摊销（元/h）",m.toolRate],["removal","去除率（cm3/min）",m.removal]].forEach(entry=>{
+      const r=h("div","rate-row");r.innerHTML='<span class="rn">'+m.name+' · '+entry[1]+'</span>';
+      const inp=h("input");inp.value=(o[entry[0]]!=null?o[entry[0]]:entry[2]);inp.dataset.mat=k;inp.dataset.mf=entry[0];r.appendChild(inp);
+      r.appendChild(h("span","rs",o[entry[0]]!=null?"自定义 v"+rates().version:"预置"));mat.appendChild(r);
+    });
+  });
+  const ob=h("div","rate-row");ob.innerHTML='<span class="rn">操作人姓名（用于修改留痕）</span>';
+  const oi=h("input");oi.value=S.operatorName||"戢祥毅";oi.dataset.op="1";oi.style.width="160px";ob.appendChild(oi);mat.appendChild(ob);
+  const b2m=h("button","btn sm","保存材料与操作人");b2m.style.marginTop="14px";
+  b2m.onclick=()=>{S.matOverrides=S.matOverrides||{};
+    mat.querySelectorAll("input").forEach(inp=>{
+      if(inp.dataset.mat){S.matOverrides[inp.dataset.mat]=S.matOverrides[inp.dataset.mat]||{};const v=parseFloat(inp.value);if(isFinite(v)&&v>=0)S.matOverrides[inp.dataset.mat][inp.dataset.mf]=v;}
+      if(inp.dataset.op&&inp.value.trim())S.operatorName=inp.value.trim();});
+    rates().version++;save();toast("材料参数与操作人已存为 v"+rates().version+"，历史报价不回溯");route();};
+  mat.appendChild(b2m);w.appendChild(mat);
   defs.forEach(([g,items])=>{
     const gd=h("div","rate-group");gd.appendChild(h("h4",null,icon("chevron-right")+g));
     items.forEach(([n,v])=>{const r=h("div","rate-row");r.innerHTML=`<span class="rn">${n}</span><span class="rv">${v}</span>`;gd.appendChild(r);});
@@ -677,17 +722,28 @@ function vHistory(w){
   function drawList(){
     listBox.innerHTML="";
     const rows=S.history.filter(x=>!kw||x.id.includes(kw)||x.part.includes(kw))
-      .map(x=>[x.id,x.part,(x.mode==="正式"?'<span class="tagchip t-ok"><i></i>已确认</span>':'<span class="tagchip t-probe"><i></i>探价</span>'),x.amount+" 元",x.date,x.actual?'<span style="color:var(--ok)">已补录</span>':"—"]);
+      .map(x=>{const tg=(x.status==="已撤回")?'<span class="tagchip t-reject"><i></i>已撤回</span>':(x.mode==="正式"?'<span class="tagchip t-ok"><i></i>已确认</span>':'<span class="tagchip t-probe"><i></i>探价</span>');
+        return [x.id,x.part,tg,x.amount+" 元",x.date,x.actual?'<span style="color:var(--ok)">已补录</span>':"—"];});
     listBox.appendChild(tbl(["编号","零件","模式/状态","金额","日期","实际成本"],rows,r=>{
       const item=S.history.find(x=>x.id===r[0]);CUR.viewTask=item;drawDetail();}));
   }
   function drawDetail(){
     listBox.innerHTML="";const x=CUR.viewTask;
     const d=h("div","detail-box");
-    d.innerHTML=`<h3 style="font-size:16px;font-weight:800">${x.id} · ${x.part} <span class="basis">${MATERIALS[x.mat]?MATERIALS[x.mat].name:""}</span></h3>`;
+    d.innerHTML=`<h3 style="font-size:16px;font-weight:800">${x.id} · ${x.part} <span class="basis">${MATERIALS[x.mat]?MATERIALS[x.mat].name:(M(x.mat)?M(x.mat).name:"")}</span></h3>
+      <div class="basis" style="margin-top:6px">核算口径：参数版本 v${x.ratesVersion!=null?x.ratesVersion:"未记录（旧单）"}${x.formulaVersion?" · 公式 "+x.formulaVersion:""}</div>`;
     const acts=h("div");acts.style.cssText="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap";
-    const b1=h("button","btn sm steel","复制为新报价");b1.onclick=()=>{loadTaskByPart(x.part);location.hash="#/compare";toast("已带入零件信息，作为新报价参考");};
-    acts.appendChild(b1);d.appendChild(acts);
+    const b1=h("button","btn sm steel","复制为新报价");b1.title="只复制背景，零件信息清空，需重新上传/选样本，避免带入错零件";
+    b1.onclick=()=>{CUR.real=null;CUR.sample=null;CUR.matKey=null;CUR.fields=null;CUR.calc=null;CUR.qty=1;S.lastFile=null;save();location.hash="#/upload";toast("已清空旧零件信息：请重新选样本或上传图纸后再报价");};
+    acts.appendChild(b1);
+    if(x.status==="已确认"&&x.ts&&Date.now()-x.ts<24*3600*1000){
+      const bw=h("button","btn sm ghost","撤回（24h 内）");
+      bw.onclick=()=>{x.status="已撤回";(x.mods=x.mods||[]).unshift({who:S.operatorName,what:"确认后撤回，留痕退回待审核",when:"刚刚"});save();toast("已撤回：历史留痕，可重新报价生成新版本");drawList();};
+      acts.appendChild(bw);
+    }else if(x.status==="已确认"){
+      const bw=h("button","btn sm ghost","撤回（已过 24h 时限）");bw.disabled=true;bw.title="确认超过 24 小时不可撤回，走「复制为新报价」重新报价";acts.appendChild(bw);
+    }
+    d.appendChild(acts);
     const tl=h("div","timeline");
     (x.mods||[]).forEach(m=>tl.appendChild(h("div","te","<b>"+m.who+"</b> 修改："+m.what+" · "+m.when)));
     if(!x.mods||!x.mods.length)tl.appendChild(h("div","te","无修改记录（首次生成即确认）"));
@@ -705,8 +761,317 @@ function vHistory(w){
   }
   drawList();
 }
+
+/* ================= 首次向导与常见问题（静态，不接对话） ================= */
+const GUIDE_KEY="opc-guide-v1";
+function showGuide(){
+  const bg=h("div","modal-bg");const m=h("div","modal");
+  m.innerHTML='<h3>三步上手（首次 5 分钟）</h3><p>1 上传解析：拖入 STEP / 图片 / PDF，或点预置样本；确认材料与数量（确认后按实际材料重算）。<br>2 多方案：看 A / B / C 三档价与逐行依据，选一档。<br>3 终审：核对假设项，逐行可改价，确认生成报价单并存入历史（不可覆盖）。<br>探价模式只给区间不给底价；费率表改参数存新版本，历史报价不回溯。</p>';
+  const acts=h("div","acts");const ok=h("button","btn sm","开始使用");
+  ok.onclick=()=>{try{localStorage.setItem(GUIDE_KEY,"1");}catch(e){}bg.remove();};
+  acts.appendChild(ok);m.appendChild(acts);bg.appendChild(m);document.body.appendChild(bg);
+}
+function showFaq(){
+  const bg=h("div","modal-bg");const m=h("div","modal");m.style.maxWidth="560px";m.style.maxHeight="80vh";m.style.overflowY="auto";
+  const items=[
+    ["材料确认后价格会变吗","会。解析页把材料从「待核」改成实际材料后，多方案、终审、报价单全部按确认的材料重算。"],
+    ["改价 / 确认后刷新会丢吗","不会。改价、数量、方案与任务状态都实时存本机，刷新后仍在（演示数据仅存本机浏览器）。"],
+    ["数量在哪改","解析结果里的「数量」一栏直接改（整数且 ≥1），多方案、终审、报价单按它算总价。"],
+    ["探价记录的名字是哪来的","你填的零件名；不填就按「尺寸 · 材料」自动拼，不再用预置样本名。"],
+    ["为什么不能改旧单","历史不可覆盖：复制旧单会清空零件信息让你重新上传，避免带入错零件；改参数只影响新单。已确认单 24 小时内可撤回（留痕）。"],
+    ["报价依据为什么只显示一次","报价单金额列只放金额，计算依据统一放右侧依据列，不再重复两遍。"],
+    ["费率表能改哪些","核心 8 项（设备/人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）+ 材料 4 类的单价/刀具摊销/去除率；保存生成新版本，历史不回溯。"]
+  ];
+  m.innerHTML="<h3>常见问题</h3>"+items.map(x=>'<p style="margin-top:10px"><b style="color:var(--ink)">'+x[0]+'</b><br>'+x[1]+'</p>').join("");
+  const acts=h("div","acts");const ok=h("button","btn sm","知道了");ok.onclick=()=>bg.remove();
+  acts.appendChild(ok);m.appendChild(acts);bg.appendChild(m);document.body.appendChild(bg);
+}
 route();
+(function autoGuide(){try{if(!localStorage.getItem(GUIDE_KEY))setTimeout(showGuide,600);}catch(e){}})();
 </script>
 
+<!-- 站内 AI 助手（悬浮球 · 智谱 GLM）：构建时自动注入，长期保留；来源 deliverables/M5/tools/assistant_module_backup.html -->
+<!-- ================= 站内 AI 助手（悬浮球 · 智谱 GLM） ================= -->
+<style>
+.qa-ball{position:fixed;right:24px;bottom:26px;z-index:9998;width:58px;height:58px;border:0;border-radius:50%;cursor:pointer;
+  background:linear-gradient(145deg,#f2801e,#d9631a);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 28px rgba(242,128,30,.36),0 0 0 7px rgba(242,128,30,.10);transition:transform .18s ease,box-shadow .18s ease}
+.qa-ball:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 16px 34px rgba(242,128,30,.44),0 0 0 9px rgba(242,128,30,.12)}
+.qa-ball svg{width:26px;height:26px}
+.qa-dot{position:absolute;top:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#3ecf8e;border:2px solid #0f151b}
+.qa-nudge{position:fixed;right:92px;bottom:40px;z-index:9997;max-width:210px;background:#1b2632;border:1px solid rgba(242,128,30,.45);
+  color:#e9eef3;font-size:12.5px;line-height:1.55;padding:9px 12px;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.4);display:none}
+.qa-nudge b{color:#f2801e}
+.qa-nudge.on{display:block;animation:qaIn .25s ease}
+.qa-panel{position:fixed;right:24px;bottom:96px;z-index:9999;width:364px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 130px);
+  background:#141d26;border:1px solid rgba(233,238,243,.14);border-radius:16px;display:none;flex-direction:column;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.qa-panel.on{display:flex;animation:qaIn .2s ease}
+@keyframes qaIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.qa-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(233,238,243,.10);background:#161f28}
+.qa-ic{width:32px;height:32px;border-radius:9px;background:rgba(242,128,30,.14);color:#f2801e;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.qa-ic svg{width:17px;height:17px}
+.qa-t{font-size:13.5px;font-weight:800;letter-spacing:.02em}
+.qa-s{font-size:11px;color:#8fa2b1;margin-top:1px}
+.qa-x{margin-left:auto;background:none;border:0;color:#8fa2b1;font-size:20px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:6px}
+.qa-x:hover{color:#fff;background:rgba(233,238,243,.08)}
+.qa-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.qa-body::-webkit-scrollbar{width:6px}.qa-body::-webkit-scrollbar-thumb{background:rgba(233,238,243,.16);border-radius:3px}
+.qa-msg{max-width:86%;font-size:12.8px;line-height:1.68;padding:9px 12px;border-radius:12px;white-space:pre-wrap;word-break:break-word}
+.qa-msg.bot{background:#1e2a36;border:1px solid rgba(233,238,243,.08);color:#dce6ee;border-bottom-left-radius:4px;align-self:flex-start}
+.qa-msg.me{background:rgba(242,128,30,.16);border:1px solid rgba(242,128,30,.32);color:#ffd9b8;border-bottom-right-radius:4px;align-self:flex-end}
+.qa-msg.tip{background:none;border:1px dashed rgba(233,238,243,.16);color:#8fa2b1;font-size:11.5px;align-self:flex-start;max-width:100%}
+.qa-typing{display:flex;gap:4px;align-items:center;align-self:flex-start;background:#1e2a36;border-radius:12px;padding:10px 12px}
+.qa-typing i{width:6px;height:6px;border-radius:50%;background:#7f93a4;animation:qaB 1.1s infinite}
+.qa-typing i:nth-child(2){animation-delay:.15s}.qa-typing i:nth-child(3){animation-delay:.3s}
+@keyframes qaB{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.qa-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 8px}
+.qa-chip{background:#1b2632;border:1px solid rgba(233,238,243,.14);color:#b9c8d4;font-size:11.5px;padding:5px 10px;border-radius:99px;cursor:pointer}
+.qa-chip:hover{border-color:rgba(242,128,30,.55);color:#ffd0a8}
+.qa-form{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid rgba(233,238,243,.10);background:#161f28}
+.qa-in{flex:1;background:#0f151b;border:1px solid rgba(233,238,243,.16);color:#e9eef3;border-radius:10px;padding:9px 12px;font-size:12.8px;outline:none}
+.qa-in:focus{border-color:rgba(242,128,30,.6)}
+.qa-send{background:#f2801e;color:#1a1206;border:0;border-radius:10px;padding:0 14px;font-size:12.5px;font-weight:800;cursor:pointer}
+.qa-send:disabled{opacity:.5;cursor:default}
+@media print{.qa-ball,.qa-panel,.qa-nudge{display:none!important}}
+@media (max-width:520px){.qa-panel{right:12px;left:12px;width:auto;bottom:88px;height:66vh}.qa-ball{right:16px;bottom:18px}}
+</style>
+
+<script>
+(function () {
+  var KEY = "opc-qa-v1";
+  var open = false, busy = false, hist = [];
+
+  var HTML_BALL =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M12 3a7 7 0 0 0-7 7v4l-2 3h11a7 7 0 0 0 7-7 7 7 0 0 0-7-7Z" opacity=".9"/>' +
+    '<path d="M9.2 16.5c.9 1.9 3.4 2.6 5.3 1.7"/><circle cx="9" cy="9.6" r=".9" fill="currentColor" stroke="none"/>' +
+    '<circle cx="15" cy="9.6" r=".9" fill="currentColor" stroke="none"/></svg>';
+
+  var CHIPS = {
+    dashboard: ["这个页面怎么用？", "探价和正式报价的区别", "费率表在哪改"],
+    upload: ["支持什么图纸文件？", "材料为什么标待核？", "改完材料价格为什么没变"],
+    probe: ["探价怎么填最快？", "区间是怎么算的", "探价记录存在哪"],
+    compare: ["A、B、C 三档差在哪？", "选哪一档更稳妥", "怎么进终审"],
+    review: ["终审我要做什么？", "改价后要重新算吗", "驳回会怎样"],
+    quote: ["怎么导成 PDF？", "客户要明细给不给", "报价单存到哪"],
+    rates: ["哪些参数能改？", "改完历史单会变吗", "材料单价在哪改"],
+    history: ["怎么复制旧单？", "实际成本怎么补录", "为什么不能改旧单"]
+  };
+
+  var FAQ = [
+    ["探价|区间|多少|报价", "探价三步：1) 顶部进「探价模式」；2) 确认材料类别、包络尺寸、数量三项（已预填）；3) 点「快速算价」，出正负 20% 区间。区间不含底价与成本明细，适合先给客户一个范围；要正式报价就点「转正式报价」进多方案。"],
+    ["材料|待核|45钢|铝", "解析页的材料是 AI 推测项，标「待核」时要人工确认：点材料下拉选实际材料即可。注意演示版里这个确认只改标注状态，报价仍按预置样本材料算（正式版才联动重算）。"],
+    ["终审|审核|闸门|改价", "终审是唯一人工闸门：上方核对假设项，下方逐行改价（材料/工时/刀具/装夹/其他五行可改），合计会实时重算，没问题点「确认报价」转正式价；不对就点「驳回重算」并填写原因。"],
+    ["费率|参数|版本|单价", "费率表在顶部导航「费率表」：核心 8 个参数（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）可直接改，保存后生成新版本，历史报价不回溯。材料单价、刀具分档这些演示版是只读展示。"],
+    ["驳回", "驳回：在终审页点「驳回重算」，填原因后确认，任务会转成「已驳回」并留痕；之后从任务台点该任务可回到多方案重新改价。"],
+    ["上传|图纸|STEP|PDF|文件", "演示版不支持真实上传，只能用页面上的三个预置样本说明流程；正式版才接 STEP 几何解析和图片/PDF 的 AI 提取，每项都会标来源与置信度。"],
+    ["报价单|导出|打印|PDF", "报价单页点「打印导出」用浏览器打印，目标选「另存为 PDF」就是 PDF；每行都带计算依据。点「存入历史」会写进历史报价，不可覆盖。"],
+    ["历史|补录|复制|旧单", "历史报价不可覆盖：点某一行看详情与修改时间线，可「复制为新报价」重新算，也可补录实际工时和实际成本，用来校准费率。"],
+    ["数量|批量|几件", "探价模式里可以填数量；正式流（多方案到终审）演示版按 1 件算，批量报价还没做。"],
+    ["客户|交期|有效期", "报价单里客户名先留空手填，有效期默认 15 天；演示版不承诺交期，这是有意的。"],
+    ["多方案|A|B|C|方案", "A 是常规加工基准；B 优化工艺（一次装夹、去除率提升 40%、刀具摊销上浮 50%，工时更短）；C 是把材料换成 45 钢联动重算。三档都按本厂费率实时算，选定一档再进终审。"]
+  ];
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+
+  function pageKey() {
+    var h = (location.hash || "#/dashboard").replace("#/", "").split("/")[0];
+    return CHIPS[h] ? h : "dashboard";
+  }
+  function pageName() {
+    var h1 = document.querySelector(".page-head h1");
+    return h1 ? h1.innerText.trim() : "任务台";
+  }
+  function pageState() {
+    var t = document.querySelector("#ct-total");
+    if (t) return "终审合计 " + t.innerText.trim();
+    var s = document.querySelector(".scheme .pv");
+    if (s && document.querySelector(".schemes")) return "当前方案合计 " + s.innerText.trim();
+    return "";
+  }
+
+  // ---------- DOM ----------
+  var ball = el("button", "qa-ball");
+  ball.type = "button";
+  ball.setAttribute("aria-label", "打开报价助手");
+  ball.innerHTML = HTML_BALL + '<span class="qa-dot"></span>';
+
+  var nudge = el("div", "qa-nudge", "<b>不会用？</b>点右边小球问我，讲清这个页面怎么操作。");
+
+  var panel = el("div", "qa-panel");
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-label", "报价助手");
+  panel.innerHTML =
+    '<div class="qa-head">' +
+    '<div class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4V5Z"/><path d="M8.5 9h7M8.5 12h4"/></svg></div>' +
+    '<div><div class="qa-t">报价助手</div><div class="qa-s">智谱 GLM · 只讲这一页怎么用</div></div>' +
+    '<button class="qa-x" type="button" aria-label="关闭">×</button></div>' +
+    '<div class="qa-body" id="qaBody"></div>' +
+    '<div class="qa-chips" id="qaChips"></div>' +
+    '<form class="qa-form"><input class="qa-in" id="qaIn" maxlength="200" placeholder="问：这个页面怎么用？" autocomplete="off"><button class="qa-send" type="submit">发送</button></form>';
+
+  document.addEventListener("DOMContentLoaded", mount);
+  if (document.readyState !== "loading") mount();
+  function mount() {
+    if (document.querySelector(".qa-ball")) return;
+    document.body.appendChild(ball);
+    document.body.appendChild(nudge);
+    document.body.appendChild(panel);
+    bind();
+    restore();
+    setTimeout(function () {
+      if (!open && !sessionStorage.getItem(KEY + "-nudged")) {
+        nudge.classList.add("on");
+        sessionStorage.setItem(KEY + "-nudged", "1");
+        setTimeout(function () { nudge.classList.remove("on"); }, 9000);
+      }
+    }, 5200);
+  }
+
+  var body, chips, input;
+  function bind() {
+    body = panel.querySelector("#qaBody");
+    chips = panel.querySelector("#qaChips");
+    input = panel.querySelector("#qaIn");
+    ball.onclick = function () { open ? close() : show(); };
+    nudge.onclick = show;
+    panel.querySelector(".qa-x").onclick = close;
+    panel.querySelector(".qa-form").onsubmit = function (e) {
+      e.preventDefault();
+      var q = (input.value || "").trim();
+      if (!q || busy) return;
+      input.value = "";
+      ask(q);
+    };
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) close(); });
+    window.addEventListener("hashchange", function () { if (open) renderChips(); });
+  }
+
+  function show() {
+    open = true; panel.classList.add("on"); nudge.classList.remove("on");
+    renderChips();
+    if (!hist.length) greet();
+    setTimeout(function () { input.focus(); }, 120);
+  }
+  function close() { open = false; panel.classList.remove("on"); }
+
+  function renderChips() {
+    chips.innerHTML = "";
+    (CHIPS[pageKey()] || CHIPS.dashboard).forEach(function (t) {
+      var c = el("button", "qa-chip", t);
+      c.type = "button";
+      c.onclick = function () { ask(t); };
+      chips.appendChild(c);
+    });
+  }
+
+  function add(role, text, cls) {
+    var m = el("div", "qa-msg " + (cls || role), text);
+    body.appendChild(m);
+    body.scrollTop = body.scrollHeight;
+    return m;
+  }
+
+  function greet() {
+    add("bot", "我是站内助手，只回答这个演示页怎么用。\n当前你在「" + pageName() + "」，可以直接点下面的问题，也可以自己打字。");
+    save();
+  }
+
+  function save() {
+    try {
+      hist = Array.prototype.slice.call(body.querySelectorAll(".qa-msg.bot,.qa-msg.me")).map(function (m) {
+        return { role: m.classList.contains("me") ? "user" : "assistant", content: m.innerText };
+      }).slice(-12);
+      sessionStorage.setItem(KEY, JSON.stringify(hist));
+    } catch (e) {}
+  }
+  function restore() {
+    try {
+      var raw = sessionStorage.getItem(KEY);
+      if (!raw) return;
+      hist = JSON.parse(raw) || [];
+      if (open) return;
+      hist.forEach(function (m) { add(m.role === "user" ? "me" : "bot", m.content); });
+    } catch (e) {}
+  }
+
+  function ask(q) {
+    if (busy) return;
+    busy = true;
+    panel.dataset.busy = "1";
+    add("me", q);
+    var tip = el("div", "qa-typing", "<i></i><i></i><i></i>");
+    body.appendChild(tip);
+    body.scrollTop = body.scrollHeight;
+    var msgs = hist.slice(-6).concat([{ role: "user", content: q }]);
+    callApi(msgs).then(function (reply) {
+      tip.remove();
+      typeOut(reply);
+    }).catch(function (err) {
+      tip.remove();
+      var a = localAnswer(q);
+      add("tip", "（后端未连通，先用离线说明）");
+      typeOut(a);
+    }).then(function () {
+      busy = false;
+      panel.dataset.busy = "";
+    });
+  }
+
+  function callApi(msgs) {
+    return fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: msgs, context: { page: pageName(), note: pageState() } })
+    }).then(function (r) {
+      if (!r.ok) return r.json().catch(function () { return {}; }).then(function (d) {
+        throw new Error((d && d.error) || ("HTTP " + r.status));
+      });
+      return r.json();
+    }).then(function (d) {
+      if (!d || !d.reply) throw new Error("空回答");
+      return d.reply;
+    });
+  }
+
+  function typeOut(text) {
+    var m = add("bot", "");
+    var i = 0;
+    var t = setInterval(function () {
+      i += Math.max(2, Math.round(text.length / 60));
+      m.innerText = text.slice(0, i);
+      body.scrollTop = body.scrollHeight;
+      if (i >= text.length) { clearInterval(t); m.innerText = text; save(); }
+    }, 22);
+  }
+
+  var HOWTO = {
+    dashboard: "任务台三步：1 上方三个数字卡看量（报价任务、已确认报价、探价记录）；2 点「新建报价」开一单，或点「快速探价」先给区间；3 表格点行看任务。这里只做分派，不算价。",
+    upload: "上传解析三步：1 点一张预置样本卡（演示版不接真实文件）；2 等约 2 秒出 7 项结果，材料标「AI推测·待核」要点下拉改成实际材料；3 底部点「去报价」进多方案。",
+    probe: "探价三步：1 材料类别保持预填；2 包络尺寸按 长 x 宽 x 高 改，中间用英文小写 x；3 填数量点「快速算价」。出正负 20% 区间，不含底价与明细。",
+    compare: "多方案三步：1 点 A、B、C 三张卡切换看合计（A 常规、B 优化工艺、C 换 45钢）；2 看下方六项成本与依据；3 点「选定方案 X，去终审」。",
+    review: "终审三步：1 先看上方假设项是不是都确认过；2 下方前五行金额可直接改，合计实时重算；3 没问题点「确认报价，生成报价单」，不对就点「驳回重算」写原因。",
+    quote: "报价单三步：1 核对编号、零件、材料、数量与六行依据；2 点「打印导出」，打印目标选另存为 PDF；3 点「存入历史」留档，历史不可覆盖。",
+    rates: "费率表三步：1 上半「核心参数」8 项直接改（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）；2 点「保存为新版本」；3 历史报价不回溯。材料单价演示版只读。",
+    history: "历史报价三步：1 用搜索框按编号或零件名过滤；2 点一行看修改时间线；3 可「复制为新报价」或补录实际工时与实际成本。"
+  };
+  function localAnswer(q) {
+    if (/怎么用|使用|不会|上手|入门|操作/.test(q)) return HOWTO[pageKey()] || HOWTO.dashboard;
+    for (var i = 0; i < FAQ.length; i++) {
+      var re = new RegExp(FAQ[i][0]);
+      if (re.test(q)) return FAQ[i][1];
+    }
+    return "这一项我不确定。演示版能讲清的是：任务台看任务、上传解析看识别结果、探价出区间、多方案比 A/B/C、终审改价确认、报价单导出、费率表改参数、历史报价查旧单。你问的具体是哪一页？";
+  }
+
+  window.__qa = { ask: ask, open: show, close: close, page: pageName };
+})();
+</script>
 </body>
 </html>

@@ -1,43 +1,358 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 04 · M4 需求分析 | AI 智能机械零件报价系统</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4 需求分析｜AI 智能机械零件报价系统</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-:root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">04</div>
-<h1>M4 需求分析</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>八大字段需求文档 · 平台生成提示词<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+  :root{
+    --bg:#0f151b; --card:#182129; --card-2:#1c2833; --ink:#e9eef3; --dim:#93a4b1;
+    --accent:#f2801e; --accent-2:#4a86a8; --accent-soft:rgba(242,128,30,.10);
+    --blue-soft:rgba(74,134,168,.10); --line:rgba(233,238,243,.12); --line-soft:rgba(233,238,243,.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Source Han Serif SC","Noto Serif SC",Georgia,"Songti SC","SimSun",serif;line-height:1.75}
+  .grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(74,134,168,.07) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(74,134,168,.07) 1px,transparent 1px),
+      linear-gradient(rgba(74,134,168,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(74,134,168,.035) 1px,transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.4;
+    background-image:radial-gradient(rgba(233,238,243,.03) 1px,transparent 1px);background-size:5px 5px}
+  .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 24px 8px}
+  nav{position:sticky;top:0;z-index:50;background:rgba(15,21,27,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:center;
+    padding:12px 24px;font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12.5px;letter-spacing:.06em}
+  nav .mark{font-weight:700;color:var(--accent);letter-spacing:.14em}
+  nav a{color:var(--dim);text-decoration:none;transition:color .25s}
+  nav a:hover{color:var(--accent)}
+  nav .sp{flex:1}
+  .frame{margin:56px 0 0;border:2px solid var(--ink);position:relative;background:var(--card)}
+  .frame::before{content:"";position:absolute;inset:6px;border:1px dashed rgba(233,238,243,.3);pointer-events:none}
+  .frame-in{padding:60px 56px 52px}
+  .kicker{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12.5px;letter-spacing:.32em;color:var(--accent);margin-bottom:18px}
+  .kicker b{color:var(--ink);font-weight:700}
+  h1{font-size:clamp(36px,6.6vw,78px);line-height:1.14;font-weight:900;letter-spacing:.01em}
+  h1 .thin{display:block;font-size:clamp(15px,2.2vw,23px);font-weight:400;color:var(--dim);letter-spacing:.5em;margin-top:14px}
+  .hero-sub{margin-top:24px;font-size:15.5px;color:var(--dim);max-width:780px}
+  .hero-sub b{color:var(--ink)}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  .tag{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.08em;
+    border:1px solid var(--line);padding:7px 14px;color:var(--dim);background:var(--bg)}
+  .tag.hot{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:700}
+  .titleblock{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);margin-top:44px;
+    font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px}
+  .titleblock div{padding:12px 14px;border-right:1px solid var(--line)}
+  .titleblock div:last-child{border-right:none}
+  .titleblock span{display:block;color:var(--dim);font-size:10.5px;letter-spacing:.2em;margin-bottom:4px}
+  .titleblock b{font-size:12.5px;color:var(--ink)}
+  .section{margin-top:92px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
+  .sec-no{font-family:Georgia,serif;font-size:clamp(28px,4vw,42px);font-weight:700;color:var(--accent);letter-spacing:.02em}
+  .sec-head h2{font-size:clamp(20px,3vw,29px);font-weight:900;letter-spacing:.06em}
+  .sec-head .en{margin-left:auto;font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.28em;color:var(--dim)}
+  .sec-note{font-size:13.5px;color:var(--dim);margin:10px 0 26px}
+  .sec-note i{width:15px;height:15px;vertical-align:-2px;margin-right:6px;color:var(--accent)}
+  .tbl-wrap{border:1px solid var(--line);background:var(--card);overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.1em;
+    text-align:left;padding:13px 16px;background:var(--accent-2);color:#0d1418;font-weight:700;white-space:nowrap}
+  td{padding:13px 16px;border-top:1px solid var(--line-soft);vertical-align:top}
+  tbody tr{transition:background .25s}
+  tbody tr:hover{background:var(--accent-soft)}
+  td .b{font-weight:700}
+  .mono{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.04em}
+  .dim{color:var(--dim)}
+  .pill{display:inline-block;font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:11px;letter-spacing:.08em;
+    padding:3px 10px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);margin-bottom:8px;font-weight:700}
+  .pill.blue{border-color:var(--accent-2);color:#7fb3d0;background:var(--blue-soft)}
+  .flow{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);padding:20px 24px;margin-bottom:16px}
+  .flow h4{font-size:15.5px;font-weight:900;letter-spacing:.04em;margin-bottom:8px}
+  .flow p{font-size:14px;color:var(--dim)}
+  .flow p b{color:var(--ink);font-weight:700}
+  .promptbox{background:#0b1015;border:1px solid var(--line);padding:26px 30px;margin-top:8px}
+  .promptbox pre{white-space:pre-wrap;word-break:break-word;font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:12.8px;line-height:2;color:#c9d6df}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);padding:22px 20px;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+  .card:hover{transform:translateY(-5px);box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+  .card .num{font-family:Georgia,serif;font-size:34px;font-weight:700;color:var(--accent);line-height:1.2}
+  .card .lab{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:11px;letter-spacing:.18em;color:var(--dim);margin-top:10px}
+  .card .exp{font-size:12.5px;color:var(--dim);margin-top:8px;line-height:1.65}
+  .quote{background:var(--card);border-left:4px solid var(--accent);padding:26px 30px;margin:26px 0;font-size:16px;line-height:2;position:relative}
+  .quote::before{content:"\201C";position:absolute;top:-28px;left:14px;font-family:Georgia,serif;font-size:92px;color:var(--accent);opacity:.28}
+  footer{margin-top:100px;border-top:2px solid var(--ink);padding:34px 0 46px;text-align:center}
+  footer .brand{font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+  .footer{margin-top:10px;font-family:Verdana,"PingFang SC","Microsoft YaHei",sans-serif;font-size:11px;letter-spacing:.22em;color:var(--dim);opacity:.85}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+  @media(max-width:720px){
+    .frame-in{padding:42px 26px}
+    .titleblock{grid-template-columns:repeat(2,1fr)}
+    .titleblock div{border-bottom:1px solid var(--line)}
+    nav{flex-wrap:wrap;gap:12px}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+
+<nav>
+  <span class="mark">M4 · 需求分析</span>
+  <a href="#s0">形态</a>
+  <a href="#fields">八大字段</a>
+  <a href="#decisions">五题决策</a>
+  <a href="#miaoda">秒哒提示词</a>
+  <a href="#wb">WorkBuddy</a>
+  <span class="sp"></span>
+  <span class="dim">AI 智能机械零件报价系统</span>
+</nav>
+
+<div class="wrap">
+
+  <header class="frame reveal">
+    <div class="frame-in">
+      <div class="kicker"><b>M4 需求分析</b>｜从产品任务书到需求文档</div>
+      <h1>AI 智能机械零件报价系统<span class="thin">需求文档（八大字段）</span></h1>
+      <p class="hero-sub">从 M3 人定稿的《产品任务书》出发，经<b>五题深度探索</b>（功能边界、双速报价逻辑、图纸解析路线、成本数据库、技术架构裁决），产出结构化需求文档与两套平台生成提示词。核心交互立场：<b>AI 全流程直跑，人只做最终审核</b>——参考价一路算通，正式报价单一道闸门。</p>
+      <div class="tags">
+        <span class="tag hot">网页 · PC 桌面端优先</span>
+        <span class="tag">托管容器部署 · 不自管服务器</span>
+        <span class="tag">API 优先 · 远期 APP 复用</span>
+        <span class="tag">工业蓝灰 + 橙强调</span>
+        <span class="tag">预置数据取自技术底座真实值</span>
+      </div>
+      <div class="titleblock">
+        <div><span>模块</span><b>M4 需求分析</b></div>
+        <div><span>定稿人</span><b>戢祥毅（人确认）</b></div>
+        <div><span>日期</span><b>2026-11-20</b></div>
+        <div><span>成果物</span><b>需求文档 + 双平台提示词</b></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section reveal" id="s0">
+    <div class="sec-head"><span class="sec-no">00</span><h2>产品形态</h2><span class="en">FORM FACTOR</span></div>
+    <p class="sec-note"><i data-lucide="monitor"></i>形态为第一决策项：网页、PC 桌面端优先；架构 API 优先，后台、数据库、报价引擎与前端解耦，远期 APP 端直接复用同一套接口；部署采用托管容器 + 静态托管 + 托管 PostgreSQL + 对象存储，全程不自管服务器。</p>
+    <div class="cards">
+      <div class="card"><div class="num">1</div><div class="lab">终端形态</div><div class="exp">网页，PC 桌面端优先；V0.1 不做任何移动端，仅架构预留</div></div>
+      <div class="card"><div class="num">2</div><div class="lab">部署方式</div><div class="exp">现有 FastAPI 系统容器化（路线甲），托管云平台运行，免去服务器运维</div></div>
+      <div class="card"><div class="num">3</div><div class="lab">复用策略</div><div class="exp">API 优先：网页、远期 APP、小程序共用同一套接口与报价引擎</div></div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="fields">
+    <div class="sec-head"><span class="sec-no">01-08</span><h2>八大字段</h2><span class="en">REQUIREMENTS</span></div>
+
+    <div style="margin-top:34px" class="reveal">
+      <span class="pill">字段 1</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">项目背景</h3>
+      <p class="dim" style="font-size:14.5px;margin-bottom:26px">承接 M2 HMW：帮助 3-10 人小型 CNC 加工厂的老板，在客户发图催价时，减少手动查资料、核算成本与反复确认工艺的时间，更快整理出可核对的报价依据。读图靠老师傅、成本靠手算、依据说不清、历史存不住——本产品用 AI 图纸提取 + 规则化成本引擎 + 单一终审闸门解决。</p>
+    </div>
+
+    <div class="reveal">
+      <span class="pill">字段 2</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">目标用户</h3>
+      <p class="dim" style="font-size:14.5px;margin-bottom:6px">第一优先：3-10 人小型 CNC 加工厂的企业负责人（老板），兼接单报价人员。</p>
+      <p class="dim" style="font-size:14.5px;margin-bottom:26px">场景：微信或邮件收到客户图纸（STEP/图片/PDF）催价；白天忙生产晚上补报价；探价客户浪费精算时间。顾虑：不信任黑箱报价、怕泄露费率底数、不想学复杂软件。</p>
+    </div>
+
+    <div class="reveal">
+      <span class="pill">字段 3</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:12px">核心功能列表（P0/P1）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th style="width:6%">#</th><th style="width:22%">P0 功能（V0.1 必做）</th><th>要点</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1</td><td><span class="b">文件上传与存档</span></td><td>STEP/图片/PDF；类型校验；哈希去重；同文件自动识别历史</td></tr>
+            <tr><td class="mono">2</td><td><span class="b">STEP 几何解析</span></td><td>包络尺寸/体积/表面积/单位换算/有效性/孔候选清单（OCP 内核）</td></tr>
+            <tr><td class="mono">3</td><td><span class="b">图片/PDF 分层提取</span></td><td>PDF 文本层优先、多模态 API 兜底；每项带置信度与原文引用；AI 推测项显式标注待核</td></tr>
+            <tr><td class="mono">4</td><td><span class="b">AI 全流程直通</span></td><td>低置信/缺失项用显式假设值继续算，不设中间人工闸门</td></tr>
+            <tr><td class="mono">5</td><td><span class="b">费率表管理</span></td><td>六大类参数；首次 5 分钟向导；预置推荐值全可改；版本化</td></tr>
+            <tr><td class="mono">6</td><td><span class="b">规则化成本引擎</span></td><td>材料/工时/刀具摊销/装夹/其他/利润六项；纯函数，同输入同版本必同结果</td></tr>
+            <tr><td class="mono">7</td><td><span class="b">探价模式</span></td><td>材料类别+包络尺寸+数量三项；30 秒内出正负 20% 区间；不给底价；打标入库</td></tr>
+            <tr><td class="mono">8</td><td><span class="b">多方案报价</span></td><td>A 常规/B 优化参数档/C 换材料；三卡片对比；不承诺交期</td></tr>
+            <tr><td class="mono">9</td><td><span class="b">终审页</span></td><td>假设项集中呈现、逐行改价、修改留痕；确认后建议价转正式价</td></tr>
+            <tr><td class="mono">10</td><td><span class="b">报价单导出</span></td><td>打印样式页 + PDF 导出</td></tr>
+            <tr><td class="mono">11</td><td><span class="b">历史报价</span></td><td>存档/按编号或零件名查询/复制为新报价/补录实际成本</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sec-note" style="margin-top:14px">P1（后补）：相似件几何识别、特征深度分析、AI 工艺建议文字、费率校准建议、三维在线预览、批量折扣。P2（远期）：APP 端、订阅计费、客户管理、数据看板。</p>
+    </div>
+
+    <div class="reveal" style="margin-top:40px">
+      <span class="pill">字段 4</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:12px">业务流程</h3>
+      <div class="flow"><h4>探价流</h4><p>上传文件 → 选<b>快速探价</b> → 确认预填三项（材料类别/包络尺寸/数量）→ 出价格区间（正负 20%，无底价无明细）→ 打标存档</p></div>
+      <div class="flow"><h4>正式流</h4><p>上传文件 → 自动解析提取（假设项标注）→ 成本引擎逐项核算 → <b>A/B/C 三档参考价</b> → 老板终审（处理假设项/改价）→ 确认 → 报价单导出 → 自动存档</p></div>
+      <div class="flow"><h4>参数维护流</h4><p>首次向导或修改参数 → 生成<b>新版本</b> → 历史报价锁定旧版本不受影响</p></div>
+      <div class="flow"><h4>历史流</h4><p>历史列表 → 按编号或零件名查询 → 详情与修改记录 → 复制为新报价 → 订单完成后<b>补录实际成本</b></p></div>
+    </div>
+
+    <div class="reveal" style="margin-top:40px">
+      <span class="pill">字段 5</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:12px">数据字段定义</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th style="width:22%">页面/功能</th><th>字段（名称/类型/说明）</th></tr></thead>
+          <tbody>
+            <tr><td><span class="b">报价任务</span></td><td>任务编号；状态（创建/解析中/计算中/待终审/已确认/已驳回）；创建人；时间</td></tr>
+            <tr><td><span class="b">文件</span></td><td>文件名；类型（STEP/图片/PDF）；大小；哈希；上传时间</td></tr>
+            <tr><td><span class="b">几何数据</span></td><td>长/宽/高；体积；表面积；实体数；单位；有效性；孔候选（直径/数量）</td></tr>
+            <tr><td><span class="b">识别结果</span></td><td>字段名（材料/尺寸/技术要求）；值；原文引用；置信度；来源（STEP计算/PDF文本层/AI推测）；假设标记</td></tr>
+            <tr><td><span class="b">费率参数</span></td><td>参数类别（六大类）；参数名；值；单位；来源（市场参考价/企业录入）；版本；生效日期</td></tr>
+            <tr><td><span class="b">成本计算</span></td><td>六项成本额；计算依据；参数版本；公式版本；人工修改标记</td></tr>
+            <tr><td><span class="b">报价</span></td><td>报价编号；版本；模式（探价/正式）；方案（A/B/C）；总价或区间；状态（建议/已确认）；确认人；时间</td></tr>
+            <tr><td><span class="b">审计</span></td><td>操作人；动作；原值；新值；时间</td></tr>
+            <tr><td><span class="b">补录</span></td><td>实际工时；实际成本；完成时间</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:40px">
+      <span class="pill">字段 6</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">视觉风格</h3>
+      <p class="dim" style="font-size:14.5px;margin-bottom:26px">工业蓝灰 + 橙强调，专业机械感。CAD 工程图元素：细网格底纹、图框式卡片、标注线语言；数据密度优先、报价金额突出；Lucide 线性图标；桌面端优先。气质 = 专业 CAD/CAM 工具的秩序感 + 现代 SaaS 的清爽。（人四选一定稿：选项 A）</p>
+    </div>
+
+    <div class="reveal">
+      <span class="pill">字段 7</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">非功能性需求</h3>
+      <p class="dim" style="font-size:14.5px;line-height:2.1;margin-bottom:26px">加载：解析走异步任务不阻塞；静态资源 CDN；列表分页。兼容：Chrome/Edge 现代浏览器，桌面端优先。安全：费率数据不出系统；图纸外发 AI API 前评估供应商数据政策；密钥走环境变量；上传校验；操作留痕不可删。精度：金额全程 Decimal，杜绝浮点误差。可维护：报价引擎保持纯函数；321 项自动化测试全回归通过才可上线；参数版本化。可用性：老板 3 分钟完成一次终审；探价 30 秒内出结果。</p>
+    </div>
+
+    <div class="reveal">
+      <span class="pill">字段 8</span>
+      <h3 style="font-size:18px;font-weight:900;margin-bottom:12px">验收标准（每功能）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th style="width:20%">功能</th><th>满足什么算通过</th></tr></thead>
+          <tbody>
+            <tr><td><span class="b">上传</span></td><td>三类文件可传；错误类型明确提示；同文件再传自动提示历史</td></tr>
+            <tr><td><span class="b">STEP 解析</span></td><td>测试样本的包络/体积/表面积与 CAD 软件读数一致（允许误差标准由业务样本确认后设定，不预设）</td></tr>
+            <tr><td><span class="b">提取</span></td><td>每项可见置信度与原文引用；AI 推测项显著标注；老板可当场改</td></tr>
+            <tr><td><span class="b">引擎</span></td><td>同输入+同参数版本重算结果完全一致；每行成本可展开看依据</td></tr>
+            <tr><td><span class="b">探价</span></td><td>三项确认后 30 秒内出区间；区间与底价独立计算；记录带探价标记</td></tr>
+            <tr><td><span class="b">多方案</span></td><td>A/B/C 均由本厂参数实时算出；页面可见差异说明</td></tr>
+            <tr><td><span class="b">终审</span></td><td>假设项集中列出；改价后总价实时重算；留痕完整；正式单只含确认数据</td></tr>
+            <tr><td><span class="b">导出</span></td><td>打印页与 PDF 均含依据明细</td></tr>
+            <tr><td><span class="b">历史</span></td><td>不可覆盖；修改生成新版本；可补录实际成本</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="decisions">
+    <div class="sec-head"><span class="sec-no">D</span><h2>五题深度探索决策记录</h2><span class="en">DECISIONS</span></div>
+    <p class="sec-note"><i data-lucide="git-branch"></i>人机分工：AI 给选项与利弊，人逐题拍板；技术底座勘察（321 项测试的 smart-quotation 工程）是题 5 裁决的依据。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:16%">题</th><th style="width:44%">决策内容</th><th>人的拍板</th></tr></thead>
+        <tbody>
+          <tr><td><span class="b">题 1 功能边界</span></td><td>输入双路径不对称深度、探价简化区间版、成本库核心版、打印页导出、不做清单 8 条</td><td>四项全选 B；不做清单确认；P2 改为远期做 APP</td></tr>
+          <tr><td><span class="b">题 2 双速报价</span></td><td>双速=同一引擎两种调用；六项成本公式骨架；A/B/C 参数档；依据单逐行可改</td><td>定义确认；区间宽度由 25% 改为正负 20%；其余认可</td></tr>
+          <tr><td><span class="b">题 3 图纸解析</span></td><td>OCP 定为官方路线；分层流水线；不做清单增补 5 条</td><td>原则修订：人只做最后审核，AI 全跑错了再改，不设中间强制闸门（参考价格定位）</td></tr>
+          <tr><td><span class="b">题 4 成本数据库</span></td><td>六大类费率参数；首次 5 分钟向导；版本化与人工采纳反哺；费率不出系统</td><td>4a-4d 全部认可</td></tr>
+          <tr><td><span class="b">题 5 技术架构</span></td><td>两路线对比后裁决路线甲：现有系统容器化 + 托管云部署，弃 Serverless 重搭</td><td>确认裁决；视觉风格选 A 工业蓝灰+橙；全部认可直接开跑</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="quote">人只做最后的审核；主要是用 AI 在里面跑，错了再去改。前期学习的时候需要人来参与。也不要强制人工，因为这只是生成一个参考价格。<span style="display:block;margin-top:12px;font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.14em;color:var(--dim)">—— 人在题 3 定下的单一终审闸门原则（2026-11-20 原话）</span></div>
+  </section>
+
+  <section class="section reveal" id="miaoda">
+    <div class="sec-head"><span class="sec-no">P1</span><h2>秒哒生成提示词</h2><span class="en">MIAODA PROMPT</span></div>
+    <p class="sec-note"><i data-lucide="clipboard-copy"></i>整段纯文本，已由 AI 通过浏览器控制直接提交至秒哒平台（项目 app-fwz7ssajx1c1）；预置数据取自技术底座真实值（6061 单价 28.5 元每公斤来自参数登记示例；三轴铣 80 元每小时来自行业访谈；样本零件来自测试数据集）。品质宣言为固定文案，置于最后。</p>
+    <div class="promptbox"><pre>【产品是什么】
+产品名称：AI 智能机械零件报价系统。一句话定位：帮小型机加工厂老板在客户发图催价时，几十秒出参考价、几分钟整理出可核对的报价依据。形态：网站（桌面端优先）。
+
+【目标用户】
+3-10 人小型 CNC 加工厂的老板和接单报价人员。场景：微信或邮件收到客户图纸催价，需要快速给出参考价或正式报价。顾虑：不信任黑箱报价，要看得懂每项依据；怕泄露费率底数；不想学复杂软件。
+
+【页面与功能】（8 页）
+1. 任务台（首页）
+   内容：报价任务列表（任务编号/零件名/状态标签/金额/日期），顶部新建报价入口，同文件二次询价自动提示条
+   操作：点新建报价进入上传页；点任务进入对应阶段页面；点提示条查看历史报价
+2. 上传与解析页
+   内容：拖拽上传区（STEP/图片/PDF，演示可一键载入预置样本），解析进度，解析结果卡（材料/关键尺寸/体积/包络尺寸/技术要求，每项带来源标签与置信度，AI 推测项橙色标注待核）
+   操作：上传或载入样本后自动展示结果；点任意字段可当场修改；改完点去报价
+3. 探价模式页
+   内容：三项输入（材料类别下拉/包络尺寸/数量，自动预填），结果区显示价格区间卡（区间大字号，注明不含底价与明细）
+   操作：确认三项后点快速算价，30 秒内出区间；点存为探价记录回到任务台
+4. 多方案对比页
+   内容：A 常规加工 / B 优化工艺 / C 换材料三张对比卡片（总价/预估工时/差异说明一行），底部按方案进入终审
+   操作：点任一卡片展开该方案成本明细；选定方案进入终审页
+5. 终审页
+   内容：顶部假设项与低置信项集中清单（橙色，逐项可改），成本明细表（材料/工时/刀具/装夹/其他/利润，每行可改价，显示依据），总价实时重算，底部确认按钮
+   操作：处理完假设项，改价后点确认报价，弹确认框后进入报价单页
+6. 报价单页
+   内容：打印样式报价单（企业名/报价编号/客户/零件信息/明细表/金额/日期/有效期），每行含依据小字
+   操作：点打印导出；点存入历史回到任务台
+7. 费率表页
+   内容：六大类参数分组列表（材料库/设备费率/工时规则/刀具摊销/利润规则/探价规则），每条参数显示值/单位/来源标注（市场参考价或企业录入）/版本号
+   操作：点编辑改参数，保存生成新版本，历史报价不受影响
+8. 历史报价页
+   内容：历史列表（编号/零件名/模式/金额/状态/日期），搜索框，详情含修改记录与补录区（实际工时/实际成本）
+   操作：按编号或零件名查询；点详情查看；复制旧单为新报价；补录实际成本
+
+【核心交互要求】
+每功能完整闭环：操作、系统反馈、结果保存、可再次查看；
+表单有校验（必填提示）、空态有引导文案、加载有状态；按钮点击有反馈。
+
+【数据】
+预置 3 个报价任务：解析中-支架零件（304不锈钢，客户图纸照片）；待终审-带孔板50x40x10（6061，已解析出8个孔候选）；已确认-立方块40x30x20（45钢，报价216元）；
+预置 1 条探价记录：带孔板50x40x10，区间180至270元，带探价标记；
+预置 4 种材料（密度为常量，单价标注市场参考价）：6061铝合金密度2.70克每立方厘米、单价28.5元每公斤；7075铝合金密度2.81、单价45元每公斤；45钢密度7.85、单价6.5元每公斤；304不锈钢密度7.93、单价18元每公斤；
+预置费率参数 8 条（来源标注市场参考价）：三轴数控铣小时费率80元每小时；铝件材料去除率25立方厘米每分钟；毛坯单边余量2毫米；单次装夹30分钟；人工费率60元每小时；刀具摊销率铝件10元每小时钢件18元每小时；默认利润率百分之20；探价区间宽度正负百分之20；
+预置 3 条历史报价：其中1条已补录实际成本（预估246元、实际281元），1条含改价修改记录（工时费160改180）；
+字段：任务=编号/状态/金额/日期；识别结果=字段名/值/来源/置信度/假设标记；参数=类别/名/值/单位/来源/版本；报价=编号/模式/方案/金额/状态。
+
+【交付要求】
+8 页完整可演示；上传样本、解析结果、探价、多方案、终审、报价单全流程点通；
+桌面端适配；空态/加载态/错误态齐全；直接可用无需补页。
+
+【边界】
+不做登录注册、不做支付、不做后台管理、不做三维在线预览、不做工单生产管理。
+
+【品质宣言】
+设计标准（双锚点）：可用性对标一线互联网产品（Keep/小红书/大众点评）的移动端界面品质，达到"专业设计团队打磨"的水准；视觉体验对标 Awwwards 顶级数字作品的完成度，绝不呈现套模板的粗糙感。
+视觉语言：统一使用同一套线性图标（Lucide 风格），全程禁止用 emoji 当图标、禁止裸露占位图；色彩有主次、层级分明，圆角与间距风格全站统一。
+创意自由度：在功能清晰可用的前提下，把每一屏当作精雕细琢的产品界面：讲究排版节奏、留白、微动效与即时反馈，让每个页面超出普通"表单工具"的观感。
+体验标准：桌面端优先，信息密度合理，交互反馈即时，让用户第一眼判断"这是正经上线产品"。</pre></div>
+  </section>
+
+  <section class="section reveal" id="wb">
+    <div class="sec-head"><span class="sec-no">P2</span><h2>WorkBuddy 提示词</h2><span class="en">WORKBUDDY PROMPT</span></div>
+    <p class="sec-note"><i data-lucide="zap"></i>简化演示版：无登录、无数据库、3 个核心功能可跑通可演示。用法：新建任务 → 代码开发 → 网站 → 粘贴 → 发送。秒哒与 WorkBuddy 可一起跑或选其一：秒哒出正式产品，WorkBuddy 出原型快、先验证主流程。</p>
+    <div class="promptbox"><pre>请开发一个网页，产品名《AI 智能机械零件报价系统》。这是一个演示版原型：无需登录注册，不使用数据库，数据全部预置在页面中，打开即可直接操作。
+目标用户：3-10 人小型机加工厂的老板和接单报价人员。
+请实现以下 3 个核心功能，每个功能必须能完整跑通并现场演示：
+1. 智能图纸解析：页面是上传与解析页，用户上传零件图（演示时用预置样本代替），系统展示提取的材料、尺寸、体积信息，每项标注来源与置信度，AI 推测项标待核
+2. 双速报价与多方案：页面是报价页，用户点快速探价，输入材料类别和包络尺寸后出价格区间（不出底价）；点正式报价，看到 A 常规/B 优化工艺/C 换材料三档对比卡片与成本明细
+3. 历史报价库：页面是历史列表页，按编号或零件名查询历史报价，查看详情，可补录实际成本；同一文件再次上传时提示历史记录
+预置数据：3 个报价任务（不同状态）、4 种材料（6061/7075/45钢/304）、3 条历史报价（1 条已补录实际成本）。
+要求：界面简洁清晰；所有按钮可点、操作有反馈；是一个打开就能完整演示的原型。</pre></div>
+  </section>
+
+  <footer>
+    <div class="brand">AI 智能机械零件报价系统 · M4 需求分析</div>
+    <div class="footer">子谦国际 OPC 创业基础</div>
+  </footer>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

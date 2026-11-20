@@ -125,7 +125,7 @@ footer p{font-size:11px;color:var(--faint);letter-spacing:.22em}
     <span class="chip">团队 <b>戢祥毅 · 李茂槐 · 张博然</b></span>
     <span class="chip"><b>南京工业职业技术大学</b> · 艺术设计学院</span>
     <span class="chip">赛道 <b>AI＋智能制造</b></span>
-    <span class="chip">产品演示 <b>jixiangyi.cn/app/</b></span>
+    <span class="chip">产品演示 <b>jixiangyi.cn</b></span>
   </div>
 </section>
 
@@ -194,7 +194,7 @@ footer p{font-size:11px;color:var(--faint);letter-spacing:.22em}
     <div><div class="idx">HOW IT WORKS</div><h2>这个站怎么运转</h2><p>链接永久固定，内容随课程推进更新</p></div>
   </div>
   <div class="howto reveal">
-    <div class="row"><span class="n">01</span><span class="t"><b>主站是门面：</b>你在 <code>www.jixiangyi.cn</code> 看到的就是这里——项目介绍和八张模块卡片。</span></div>
+    <div class="row"><span class="n">01</span><span class="t"><b>主站是门面：</b>你在 <code>opc.jixiangyi.cn</code> 看到的就是这里——项目介绍和八张模块卡片；主域名 <code>jixiangyi.cn</code> 留给产品演示版。</span></div>
     <div class="row"><span class="n">02</span><span class="t"><b>子域直达模块：</b>点 M1 卡片跳转 <code>m1.jixiangyi.cn</code>，打开直接是该模块的全过程报告；其余模块完成后同样直达。</span></div>
     <div class="row"><span class="n">03</span><span class="t"><b>链接永久不变：</b>模块内容更新时只替换页面，子域名永远不变——提交过的链接始终有效。</span></div>
   </div>
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function(){
   if (!m) return;
   if (!document.querySelector("#modules")) return;
   var d = document.createElement("iframe");
-  d.src = "https://www.jixiangyi.cn/m" + m[1] + "/";
+  d.src = "https://opc.jixiangyi.cn/m" + m[1] + "/";
   d.style.cssText = "position:fixed;inset:0;width:100%;height:100%;border:0;z-index:99999;background:#f4f1ea";
   d.title = "M" + m[1] + " 模块报告";
   document.body.appendChild(d);

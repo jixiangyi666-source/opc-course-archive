@@ -34,6 +34,22 @@ export async function onRequest(context) {
     return new Response(JSON.stringify(out, null, 1), { headers: { "Content-Type": "application/json; charset=utf-8" } });
   }
 
+  if (path === "/api/debug2") {
+    const out = { at: new Date().toISOString() };
+    const probe = async (name, url) => {
+      try {
+        const r = await fetch(url, { redirect: "manual", headers: { "X-Operator-Id": "debug" } });
+        const t = await r.text();
+        out[name] = { status: r.status, ct: r.headers.get("content-type"), len: t.length, head: t.slice(0, 160) };
+      } catch (e) {
+        out[name] = { error: String(e) };
+      }
+    };
+    await probe("sslip", "http://8.136.0.202.sslip.io/api/v1/meta/capabilities");
+    await probe("example", "https://example.com/");
+    return new Response(JSON.stringify(out, null, 1), { headers: { "Content-Type": "application/json; charset=utf-8" } });
+  }
+
   // /api/v1/* -> 阿里云报价后端（2026-11-20 新增：产品页真实上传/解析）
   if (path.startsWith("/api/v1/")) {
     try {

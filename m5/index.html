@@ -110,9 +110,9 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
   <header class="hero">
     <div class="kicker"><i></i>M5 产品测试报告</div>
     <h1>测试<em>四象限</em><br>与一个 300 元的报价</h1>
-    <p class="sub">AI 智能机械零件报价系统 演示版 V0.1。<b>6 组模拟画像</b>走三条任务，<b>2 位真实用户</b>给了 5 条反馈，表哥一句「两个都大概 300」，再加一句「少个电火花工序还可以少点」，把价格口径和一个缺失的工序项同时打了回来。</p>
+    <p class="sub">AI 智能机械零件报价系统 演示版 V0.1。<b>6 组模拟画像</b>走三条任务，<b>5 位真实用户</b>给了 14 条反馈，表哥一句「两个都大概 300」，再加一句「少个电火花工序还可以少点」，把价格口径和一个缺失的工序项同时打了回来。</p>
     <div class="cards">
-      <div class="stat"><div class="v">47</div><div class="l">AI 侧反馈条数</div></div>
+      <div class="stat"><div class="v">40</div><div class="l">AI 侧反馈条数</div></div>
       <div class="stat"><div class="v">6</div><div class="l">模拟画像</div></div>
       <div class="stat"><div class="v">5</div><div class="l">真实用户</div></div>
       <div class="stat"><div class="v">5</div><div class="l">真实文件实跑</div></div>
@@ -126,6 +126,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
     <tbody><tr><td>T1</td><td>催单探价 30 秒</td><td>探价模式三项预填，点一次出正负 20 区间，不给底价，可存探价记录</td><td>30 秒内给客户一个范围</td></tr>
 <tr><td>T2</td><td>图纸进到正式报价</td><td>上传 STEP 或图片，解析出尺寸体积孔，六项成本，A B C 三档，进终审</td><td>一张图走到待终审</td></tr>
 <tr><td>T4</td><td>费率表首次使用</td><td>六大类参数，改核心 8 项，保存生成新版本，历史报价不回溯</td><td>改完能出新版本</td></tr></tbody></table></div>
+    <div class="note-box" style="margin-top:18px">覆盖缺口（如实登记）：十项专业覆盖中，单位异常（inch 样本）与 PDF 输入未测；45# 钢正常复算、伪 STEP 解析失败、材料缺失引导三项由独立审核补测（见 M5 独立审核报告 §二/§四），本报告未重复实跑。</div>
   </section>
 
   <section id="persona" class="reveal">
@@ -150,7 +151,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
 
   <section id="human" class="reveal">
     <div class="sec-head"><span class="sec-no">03</span><h2>人测试记录</h2>
-      <p class="sec-desc">5 人 14 条，已达「2 人以上、每人 3 条」门槛，本报告为正式版。三个人物分别来自报价、门店、设计三个岗位。</p></div>
+      <p class="sec-desc">5 人 14 条：负责人 4、王工 3、李姐 3 三人各达每人 3 条，满足官方最低门槛（至少 2 名真人且每人至少 3 条），本报告为正式版。三个人物分别来自报价、门店、设计三个岗位。</p></div>
     <div class="tbl-wrap"><table><thead><tr><th>编号</th><th>测试者</th><th>操作</th><th>原话 / 依据</th><th>初步归类</th></tr></thead>
     <tbody><tr><td>H-1</td><td>表哥 3 到 10 人厂老板</td><td>看两张图纸估价（70x36x30 与 20.2x13x8）</td><td>对大概在 300，两个件都是</td><td>减 系统报 105.78 与 94.99，差 2.84 与 3.16 倍</td></tr>
 <tr><td>H-2</td><td>产品负责人 兼目标用户</td><td>想把工程图直接拖进去估价</td><td>为什么我不能上传工程图让他来估价，只能用它的预演</td><td>减 线上只能预演</td></tr>
@@ -170,7 +171,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
 
   <section id="quad" class="reveal">
     <div class="sec-head"><span class="sec-no">04</span><h2>四象限</h2>
-      <p class="sec-desc">画布 58 张：AI 侧 47 条加人测试与审核自测 11 条。另有 H-1 到 H-5 五条原话在第三节表内，其中 H-4 已由人撤回不计入。左上好的反馈，右上需要改进，左下疑惑，右下新想法，每张便签标来源。</p></div>
+      <p class="sec-desc">画布 58 张：AI 侧 40 条、人测试 16 条、审核自测 2 条。另有 H-1、H-2、H-3、H-5、H-6 五条原话在第三节表内，其中 H-4 已由人撤回不计入。左上好的反馈，右上需要改进，左下疑惑，右下新想法，每张便签标来源。</p></div>
     <div class="canvas">
       <div class="quad q-plus"><h3><i data-lucide="thumbs-up"></i>好的反馈 <span>10</span></h3><div class="notes"><div class="note" style="transform:rotate(-0.29deg)"><span class="src ai">AI</span><b>探价三项预填，点一次即出区间，明确不含底价与明细</b></div>
 <div class="note" style="transform:rotate(0.1deg)"><span class="src ai">AI</span><b>解析结果 7 项逐项标来源与置信度，AI 推测项可当场改</b></div>
@@ -212,20 +213,20 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
 <div class="note" style="transform:rotate(-2.58deg)"><span class="src hu">审核自测</span><b>H-15 报价接口在不落库模式下必然崩溃（500），只有落库模式可用</b></div>
 <div class="note" style="transform:rotate(0.39deg)"><span class="src hu">审核自测</span><b>H-16 图片与 PDF 的 AI 提取通道不可用，尺寸靠人工读图补录</b></div>
 <div class="note" style="transform:rotate(2.46deg)"><span class="src hu">人·负责人</span><b>H-17 悬浮球助手按负责人判定撤回：该想法不对，已从线上撤下</b></div></div></div>
-      <div class="quad q-ques"><h3><i data-lucide="circle-help"></i>用户疑惑 <span>8</span></h3><div class="notes"><div class="note" style="transform:rotate(-2.4deg)"><span class="src hu">画像</span><b>Q-1 区间中点是不是就是你们的正式价</b></div>
-<div class="note" style="transform:rotate(-1.0deg)"><span class="src hu">画像</span><b>Q-2 我材料改成 45 钢了，为什么价格一分没变</b></div>
-<div class="note" style="transform:rotate(2.29deg)"><span class="src hu">画像</span><b>Q-3 假设项写 1，下面又说没有待核项，到底要不要审</b></div>
-<div class="note" style="transform:rotate(-1.54deg)"><span class="src hu">画像</span><b>Q-4 探价记录里这个零件名是哪来的</b></div>
-<div class="note" style="transform:rotate(-1.71deg)"><span class="src hu">画像</span><b>Q-5 点复制为新报价怎么没反应</b></div>
-<div class="note" style="transform:rotate(1.68deg)"><span class="src hu">画像</span><b>Q-6 报价单上客户名、交期在哪填</b></div>
-<div class="note" style="transform:rotate(-1.8deg)"><span class="src hu">画像</span><b>Q-7 我要报 50 件，数量在哪改</b></div>
+      <div class="quad q-ques"><h3><i data-lucide="circle-help"></i>用户疑惑 <span>8</span></h3><div class="notes"><div class="note" style="transform:rotate(-2.4deg)"><span class="src ai">画像</span><b>Q-1 区间中点是不是就是你们的正式价</b></div>
+<div class="note" style="transform:rotate(-1.0deg)"><span class="src ai">画像</span><b>Q-2 我材料改成 45 钢了，为什么价格一分没变</b></div>
+<div class="note" style="transform:rotate(2.29deg)"><span class="src ai">画像</span><b>Q-3 假设项写 1，下面又说没有待核项，到底要不要审</b></div>
+<div class="note" style="transform:rotate(-1.54deg)"><span class="src ai">画像</span><b>Q-4 探价记录里这个零件名是哪来的</b></div>
+<div class="note" style="transform:rotate(-1.71deg)"><span class="src ai">画像</span><b>Q-5 点复制为新报价怎么没反应</b></div>
+<div class="note" style="transform:rotate(1.68deg)"><span class="src ai">画像</span><b>Q-6 报价单上客户名、交期在哪填</b></div>
+<div class="note" style="transform:rotate(-1.8deg)"><span class="src ai">画像</span><b>Q-7 我要报 50 件，数量在哪改</b></div>
 <div class="note" style="transform:rotate(1.5deg)"><span class="src hu">人·王工</span><b>H-7 改的是单价，总价税金折扣会不会自己跟着变，变了会不会错位</b></div></div></div>
-      <div class="quad q-idea"><h3><i data-lucide="lightbulb"></i>新的想法 <span>10</span></h3><div class="notes"><div class="note" style="transform:rotate(-1.13deg)"><span class="src hu">画像</span><b>I-1 微信截图直接粘贴出报价</b></div>
-<div class="note" style="transform:rotate(-0.85deg)"><span class="src hu">画像</span><b>I-2 报价单一键生成图片发客户</b></div>
-<div class="note" style="transform:rotate(-1.92deg)"><span class="src hu">画像</span><b>I-3 探价记录加渠道标记：微信、电话、老客户</b></div>
-<div class="note" style="transform:rotate(-2.36deg)"><span class="src hu">画像</span><b>I-4 费率表本月材料价一键更新</b></div>
-<div class="note" style="transform:rotate(1.46deg)"><span class="src hu">画像</span><b>I-5 车间语音报尺寸</b></div>
-<div class="note" style="transform:rotate(-1.26deg)"><span class="src hu">画像</span><b>I-6 同一零件多数量阶梯价</b></div>
+      <div class="quad q-idea"><h3><i data-lucide="lightbulb"></i>新的想法 <span>10</span></h3><div class="notes"><div class="note" style="transform:rotate(-1.13deg)"><span class="src ai">画像</span><b>I-1 微信截图直接粘贴出报价</b></div>
+<div class="note" style="transform:rotate(-0.85deg)"><span class="src ai">画像</span><b>I-2 报价单一键生成图片发客户</b></div>
+<div class="note" style="transform:rotate(-1.92deg)"><span class="src ai">画像</span><b>I-3 探价记录加渠道标记：微信、电话、老客户</b></div>
+<div class="note" style="transform:rotate(-2.36deg)"><span class="src ai">画像</span><b>I-4 费率表本月材料价一键更新</b></div>
+<div class="note" style="transform:rotate(1.46deg)"><span class="src ai">画像</span><b>I-5 车间语音报尺寸</b></div>
+<div class="note" style="transform:rotate(-1.26deg)"><span class="src ai">画像</span><b>I-6 同一零件多数量阶梯价</b></div>
 <div class="note" style="transform:rotate(-1.16deg)"><span class="src hu">人·表哥</span><b>改图去掉没必要的直角，能少一道电火花，价还能再低</b></div>
 <div class="note" style="transform:rotate(-2.21deg)"><span class="src hu">人·李姐</span><b>H-11 发给客户的话我自己定口气，太客气反而假</b></div>
 <div class="note" style="transform:rotate(1.16deg)"><span class="src hu">人·李姐</span><b>H-12 客户问为啥这个价，我该怎么答</b></div>
@@ -243,7 +244,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
 
   <section id="dig" class="reveal">
     <div class="sec-head"><span class="sec-no">05</span><h2>需求挖掘</h2>
-      <p class="sec-desc">对 5 条人测试反馈做 L1 到 L4 拆解：他说了什么，想要什么，为什么，不解决会怎样。</p></div>
+      <p class="sec-desc">对 17 条人测试与审核自测反馈做 L1 到 L4 拆解：他说了什么，想要什么，为什么，不解决会怎样。</p></div>
     <div class="tbl-wrap"><table><thead><tr><th>编号</th><th>L1 表面内容</th><th>L2 直接需求</th><th>L3 深层需求</th><th>L4 行为影响</th></tr></thead>
     <tbody><tr><td>H-1</td><td>看图纸报价 300 不到</td><td>想知道系统这个数能不能当成交价</td><td>怕报低了自己贴钱、怕报高了丢单，要能兜住底线的价</td><td>不肯用，回到手算和电话报价</td></tr>
 <tr><td>H-2</td><td>想把自己的图甩进去，发现只能选样本</td><td>想用真实的件试一次</td><td>不信样本演示能代表他的活，要我的件你算给我看</td><td>判定为玩具，只在演示时看</td></tr>
@@ -266,9 +267,9 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
 
   <section id="stat" class="reveal">
     <div class="sec-head"><span class="sec-no">06</span><h2>问题分类统计</h2>
-      <p class="sec-desc">共 63 条观测：AI 侧 47 条加人测试与审核自测 16 条（另有 H-4 一条经人判定撤回，不计入）。按问题类型归并，看深层需求共性。</p></div>
+      <p class="sec-desc">共 63 条观测：AI 40 条、人 21 条、审核自测 2 条（画布 58 条加第三节 5 条基础条目；H-4 一条经人判定撤回，不计入）。按问题类型归并，看深层需求共性。</p></div>
     <div class="tbl-wrap"><table><thead><tr><th>问题类型</th><th>条数</th><th>占比</th><th>涉及编号</th><th>深层需求共性</th></tr></thead>
-    <tbody><tr><td><b>信任与来源类</b></td><td>15</td><td>23.8%</td><td>F-01 F-04 F-05 F-07 F-10 F-12 F-16 F-17 Q-1 Q-2 Q-3 Q-4 H-5 H-7 H-9</td><td>要可验证的依据，怕被套路、怕担责、怕版本错</td></tr><tr><td><b>决策收尾类</b></td><td>8</td><td>12.7%</td><td>F-18 F-19 F-20 F-21 F-22 F-23 H-1 H-12</td><td>要能替他做决定、兜住底线的价，还要一句能对客户说清的话</td></tr><tr><td><b>信息缺失类</b></td><td>8</td><td>12.7%</td><td>F-03 F-09 F-13 Q-6 Q-7 H-2 H-13 H-16</td><td>要知道该看什么、判定标准是什么，要能换成公司自己的清单</td></tr><tr><td><b>体验性能类</b></td><td>12</td><td>19.0%</td><td>F-02 F-06 F-08 F-11 F-14 F-15 Q-5 H-3 H-8 H-10 H-15 H-17</td><td>要顺畅不等待，能撤回、能点着问，新功能不能连累主线</td></tr><tr><td><b>需求外溢类</b></td><td>10</td><td>15.9%</td><td>I-1 到 I-8 H-6 H-11 H-14</td><td>真实场景自发生长的新需求：可制造性、话术、物料库</td></tr><tr><td><b>正面确认类</b></td><td>10</td><td>15.9%</td><td>P-1 到 P-10</td><td>核心痛点被解决：可解释报价、闸门式审核</td></tr></tbody></table></div>
+    <tbody><tr><td><b>信任与来源类</b></td><td>15</td><td>23.8%</td><td>F-01 F-04 F-05 F-07 F-10 F-12 F-16 F-17 Q-1 Q-2 Q-3 Q-4 H-5 H-7 H-9</td><td>要可验证的依据，怕被套路、怕担责、怕版本错</td></tr><tr><td><b>决策收尾类</b></td><td>8</td><td>12.7%</td><td>F-18 F-19 F-20 F-21 F-22 F-23 H-1 H-12</td><td>要能替他做决定、兜住底线的价，还要一句能对客户说清的话</td></tr><tr><td><b>信息缺失类</b></td><td>8</td><td>12.7%</td><td>F-03 F-09 F-13 Q-6 Q-7 H-2 H-13 H-16</td><td>要知道该看什么、判定标准是什么，要能换成公司自己的清单</td></tr><tr><td><b>体验性能类</b></td><td>12</td><td>19.0%</td><td>F-02 F-06 F-08 F-11 F-14 F-15 Q-5 H-3 H-8 H-10 H-15 H-17</td><td>要顺畅不等待，能撤回、能点着问，新功能不能连累主线</td></tr><tr><td><b>需求外溢类</b></td><td>10</td><td>15.9%</td><td>I-1 到 I-6、I-8 H-6 H-11 H-14</td><td>真实场景自发生长的新需求：可制造性、话术、物料库</td></tr><tr><td><b>正面确认类</b></td><td>10</td><td>15.9%</td><td>P-1 到 P-10</td><td>核心痛点被解决：可解释报价、闸门式审核</td></tr></tbody></table></div>
   </section>
 
   <section id="sum" class="reveal">
@@ -277,7 +278,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0;text-alig
     <div class="summary">
       <div class="sum-item"><div class="n">01</div><p>核心流程能跑通：探价三项到区间、真实 STEP 到包络体积孔候选、六项成本到终审改价、报价单到历史存档，全链路在本机后端上走通，三个真实 STEP 与两张图纸都出了数字。</p></div><div class="sum-item"><div class="n">02</div><p>两处硬断点：任务台任意行点击都落到历史报价页，待终审的任务点不进去；材料在解析页确认后不进入计算，价格一分不变且截图哈希级一致。这两条会让老板在第三步停住。</p></div><div class="sum-item"><div class="n">03</div><p>价格口径与市场差 2.8 到 3.2 倍：表哥对两个件都报 300 左右，系统报 105.78 与 94.99。他给的原因是直角清角要上电火花；成本模型六项里根本没有特种工序这一项，再叠加机加时间恒定 10 分钟、单件首件工时未建模、台时套用车床档，四处共同造成低估。</p></div><div class="sum-item"><div class="n">04</div><p>最受认可的是可解释性：六项成本逐行给公式与参数出处、每行带依据的报价单、历史修改时间线，这三点在 6 组画像里没有一组提出质疑，是产品最硬的差异点。</p></div><div class="sum-item"><div class="n">05</div><p>数据可信度仍是最大隐患：改价刷新即丢、历史查不到参数版本、数据只存本机、审计人写死，四条共同指向不可追溯，而老板最怕的正是这个。</p></div><div class="sum-item"><div class="n">06</div><p>人测试达标：5 人 14 条，覆盖老板、报价专员、门店店长、设计助理四类角色。新补的 8 条集中指向三件事：改一处之后别处会不会错位、说错了能不能撤回、这张单按哪版价目表算，全是责任与追溯问题。</p></div><div class="sum-item"><div class="n">07</div><p>负责人提出并试上线的悬浮球助手，经使用判定该想法不对，已从线上撤下并将该反馈从发现中移除；独立审核自测另发现报价接口在不落库模式下必然崩溃、图片 AI 提取通道不可用两项，均列入 M6 待决策。</p></div>
     </div>
-    <div class="note-box">门槛已达成：5 位真实用户、14 条反馈，满足 2 人以上且每人 3 条。三位新测试者指向的是同一类问题：改一处，别的地方会不会跟着错；说错了能不能退回去；这张单子按哪版价目表算。这三问比任何功能清单都更接近真实使用。</div>
+    <div class="note-box">门槛已达成：5 位真实用户、14 条反馈，其中负责人 4、王工 3、李姐 3 三人各达每人 3 条，满足官方最低门槛（至少 2 名真人且每人至少 3 条；表哥 2 条、小陈 2 条为补充覆盖）。三位新测试者指向的是同一类问题：改一处，别的地方会不会跟着错；说错了能不能退回去；这张单子按哪版价目表算。这三问比任何功能清单都更接近真实使用。</div>
   </section>
 
   <footer>子谦国际 OPC 创业基础</footer>

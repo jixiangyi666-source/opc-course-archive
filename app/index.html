@@ -349,10 +349,10 @@ function showParse(w){
   CUR.fields.forEach((f,i)=>{
     const el=h("div","field");
     el.appendChild(h("div","k",f.k));
-    let vhtml='<span>'+f.v+"</span>";
-    if(f.assume){const sel=h("select");f.opts.forEach(o=>{const op=h("option",null,o);if(o===f.v)op.selected=true;sel.appendChild(op);});
+    let vhtml='<span>'+f.v+"</span>";let sel=null;
+    if(f.assume){sel=h("select");f.opts.forEach(o=>{const op=h("option",null,o);if(o===f.v)op.selected=true;sel.appendChild(op);});
       sel.onchange=()=>{f.v=sel.value;f.assume=false;f.src="人工确认";f.conf="确定";save();route();};vhtml="";}
-    const vv=h("div","v",vhtml);if(f.assume)vv.appendChild(sel);
+    const vv=h("div","v",vhtml);if(sel)vv.appendChild(sel);
     el.appendChild(vv);
     const src=h("div","src");
     src.appendChild(h("span",null,f.src));

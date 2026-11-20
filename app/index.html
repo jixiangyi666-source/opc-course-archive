@@ -348,13 +348,28 @@ const API_V1="/api/v1";
 function api(path,opt){
   opt=opt||{};
   opt.headers=Object.assign({"X-Operator-Id":"demo"},opt.headers||{});
-  return fetch(API_V1+path,opt).then(function(r){
-    return r.text().then(function(t){
-      var d=null;try{d=JSON.parse(t);}catch(e){}
-      if(!r.ok)throw new Error((d&&(d.error&&d.error.message||d.detail||d.error))||("HTTP "+r.status));
-      return d;
+  // 线上经 Cloudflare 边缘转发，偶发 520 / 200-空响应（跨境冷启动）：自动重试，最多 3 次
+  var attempt=0;
+  function once(){
+    attempt++;
+    return fetch(API_V1+path,opt).then(function(r){
+      return r.text().then(function(t){
+        var d=null;try{d=JSON.parse(t);}catch(e){}
+        if(!r.ok)throw new Error((d&&(d.error&&d.error.message||d.detail||d.error))||("HTTP "+r.status));
+        if(d===null)throw new Error("EDGE_BAD_RESPONSE"); // 200 但内容不是 JSON = 边缘错误页
+        return d;
+      });
+    }).catch(function(err){
+      var msg=String((err&&err.message)||err||"");
+      var retriable=msg==="EDGE_BAD_RESPONSE"||/Failed to fetch|NetworkError|Load failed|Network request failed|HTTP (520|522|524|523)/.test(msg);
+      if(retriable&&attempt<3){
+        return new Promise(function(res){setTimeout(res,700*attempt);}).then(once);
+      }
+      if(msg==="EDGE_BAD_RESPONSE")throw new Error("解析服务临时不可用（边缘抖动），请再试一次");
+      throw err;
     });
-  });
+  }
+  return once();
 }
 function uploadProgress(w,title){
   const box=h("div","panel");box.style.marginTop="18px";
@@ -393,7 +408,7 @@ function realUpload(file,w){
         .catch(function(e2){ui.set(100,"解析失败："+e2.message);toast("解析失败："+e2.message);});
     }else{
       ui.set(100,"失败："+(err.message||err));
-      toast("图片/PDF 需要本机后端（OCR 与 AI 提取），先启动后端再传");
+      toast("图片/PDF 解析失败：解析服务暂不可用或网络不稳，请重试一次");
     }
   });
 }

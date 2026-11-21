@@ -228,7 +228,7 @@ function calc(part,matKey,qty,scheme,r){
   return{qty,blankVol,matCost:matCost2,machCost,toolCost,setupCost,other:0,profit,hours,total:Math.round(total),
     lines:[
       {k:"材料费",v:matCost2,basis:"毛坯 "+L+"x"+W+"x"+H+"mm = "+blankVol.toFixed(1)+"cm3，密度 "+((scheme==="C")?mat2.density:m.density)+"g/cm3，单价 "+((scheme==="C")?mat2.price:m.price)+"元/kg（市场参考价），损耗 "+(r.lossRate*100)+"%"},
-      {k:"工时费",v:machCost,basis:hours.toFixed(2)+"h x "+r.machineRate+"元/h（三轴数控铣，市场参考价）；工时=准备"+r.prepH+"h+去除"+removedVol.toFixed(1)+"cm3/"+rem2.toFixed(1)+"cm3/min+孔"+(part.holes||0)+"x"+r.holeMin+"h"},
+      {k:"工时费",v:machCost,basis:hours.toFixed(2)+"h x "+r.machineRate+"元/h（三轴数控铣，市场参考价）；工时=准备"+r.prepH+"h+去除"+removedVol.toFixed(1)+"cm3/"+rem2.toFixed(1)+"cm3/min+孔附加工时"},
       {k:"刀具耗材",v:toolCost,basis:hours.toFixed(2)+"h x "+tr2+"元/h 摊销（独立核算，按材料分档）"},
       {k:"装夹准备",v:setupCost,basis:setupMin+"min x "+r.laborRate+"元/h 人工费率"},
       {k:"其他费用",v:0,basis:"本单无"},
@@ -246,7 +246,6 @@ function extractFields(sk){
     {k:"材料",v:m.name,src:"AI推测",conf:"低",assume:true,opts:Object.values(MATERIALS).map(x=>x.name)},
     {k:"包络尺寸",v:p.l+" x "+p.w+" x "+p.h+" mm",src:"STEP计算",conf:"确定",assume:false},
     {k:"体积",v:p.vol.toFixed(1)+" cm3",src:"STEP计算",conf:"确定",assume:false},
-    {k:"孔候选",v:(p.holes||0)+" 个",src:"STEP计算",conf:"确定",assume:false},
     {k:"单位",v:"mm（已换算）",src:"STEP计算",conf:"确定",assume:false},
     {k:"技术要求",v:SAMPLES[sk].techReq,src:"PDF文本层",conf:"高",assume:false},
     {k:"数量",v:"1",src:"人工",conf:"确定",assume:false},
@@ -261,7 +260,7 @@ function PART(){return CUR.real||SAMPLES[CUR.sample];}
 function M(k){return Object.assign({},MATERIALS[k],(S.matOverrides&&S.matOverrides[k])||{});}
 function EFFMAT(){const p=PART();return CUR.matKey||(p&&p.mat)||"al6061";}
 function MATKEY(name){const m={"6061铝合金":"al6061","7075铝合金":"al7075","45钢":"steel45","304不锈钢":"ss304"};return m[name]||null;}
-const FIELD_HINTS={"材料":"AI 从图纸/模型推测，务必人工确认；确认后所有报价按此材料重算","包络尺寸":"长 x 宽 x 高（mm），来自几何包围盒","体积":"成品体积（cm3），用于估算切削量","孔候选":"识别到的孔数量，参与工时估算","单位":"STEP 头声明的单位已统一换算为 mm","技术要求":"图纸文字提取；识别不出的需人工补录","数量":"报价件数，整数且 ≥1；影响总价与批量口径"};
+const FIELD_HINTS={"材料":"AI 从图纸/模型推测，务必人工确认；确认后所有报价按此材料重算","包络尺寸":"长 x 宽 x 高（mm），来自几何包围盒","体积":"成品体积（cm3），用于估算切削量","单位":"STEP 头声明的单位已统一换算为 mm","技术要求":"图纸文字提取；识别不出的需人工补录","数量":"报价件数，整数且 ≥1；影响总价与批量口径"};
 function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.innerHTML=x;return e;}
 function icon(n){return '<i data-lucide="'+n+'" style="width:15px;height:15px"></i>';}
 function money(n){return Math.round(n*100)/100;}
@@ -273,7 +272,7 @@ window.addEventListener("hashchange",route);
 function render(view){
   const root=$("#root");root.innerHTML="";
   const bar=h("div","topbar");const inb=h("div","topbar-in");
-  const brand=h("div","brand",'<span class="dot"></span>AI 智能机械零件报价系统 <small>DEMO V0.1</small>');
+  const brand=h("div","brand",'<span class="dot"></span>AI 智能机械零件报价系统 <small>DEMO V0.2</small>');
   brand.onclick=()=>location.hash="#/dashboard";
   const nv=h("nav");PAGES.forEach(p=>{const a=h("a",null,p[1]+" "+icon(p[2]));a.href="#/"+p[0];if(p[0]===view)a.className="on";nv.appendChild(a);});
   const rst=h("button","btn-ghost","重置演示数据");rst.onclick=()=>{localStorage.removeItem(LS_KEY);S=seed();save();toast("已恢复预置数据");location.hash="#/dashboard";route();};
@@ -398,7 +397,7 @@ function realUpload(file,w){
       body:JSON.stringify({part_name:name,quantity:1,file_ids:[up.file_id],material_grade:"6061-T6",region:"长三角",machine_type:"普通CNC车床"})})
       .then(function(t){return {up:up,task:t};});
   }).then(function(x){
-    ui.set(48,isStep?"几何解析中（OCP 内核，读包络/体积/孔候选）…":"OCR 与 AI 提取中…");
+    ui.set(48,isStep?"几何解析中（OCP 内核，读包络/体积）…":"OCR 与 AI 提取中…");
     return api("/quotation-tasks/"+x.task.id+"/parse",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"})
       .then(function(p){return {up:x.up,task:x.task,parse:p};});
   }).then(function(x){
@@ -442,7 +441,6 @@ function buildFields(real){
     {k:"材料",v:MATERIALS[real.mat].name,src:"AI推测",conf:"低",assume:true,opts:Object.values(MATERIALS).map(function(x){return x.name;})},
     {k:"包络尺寸",v:p.l+" x "+p.w+" x "+p.h+" mm",src:real.source,conf:"确定",assume:false},
     {k:"体积",v:(p.vol||0).toFixed(1)+" cm3",src:real.source,conf:"确定",assume:false},
-    {k:"孔候选",v:(p.holes||0)+" 个",src:real.source,conf:"确定",assume:false},
     {k:"单位",v:p.unit||"mm",src:real.source,conf:"确定",assume:false},
     {k:"技术要求",v:real.techReq,src:real.source,conf:"中",assume:false},
     {k:"数量",v:"1",src:"人工",conf:"确定",assume:false}
@@ -468,7 +466,7 @@ function startParse(w){
   const box=h("div","panel");box.style.marginTop="18px";
   box.appendChild(h("h3",null,icon("loader")+"解析中… "+PART().label));
   const pr=h("div","progress");const bar=h("div");pr.appendChild(bar);box.appendChild(pr);
-  box.appendChild(h("div",null,'<span class="basis">几何内核读取包络 / 体积 / 孔候选 · AI 模型提取材料与技术要求</span>'));
+  box.appendChild(h("div",null,'<span class="basis">几何内核读取包络 / 体积 · AI 模型提取材料与技术要求</span>'));
   w.appendChild(box);lucide.createIcons();
   let p=0;const iv=setInterval(()=>{p+=12+Math.random()*10;bar.style.width=Math.min(p,100)+"%";
     if(p>=100){clearInterval(iv);CUR.fields=CUR.real?CUR.real.fields:extractFields(CUR.sample);S.lastFile={part:PART().label,hash:PART().hash};save();route();}},240);
@@ -861,14 +859,14 @@ route();
 
   var FAQ = [
     ["探价|区间|多少|报价", "探价三步：1) 顶部进「探价模式」；2) 确认材料类别、包络尺寸、数量三项（已预填）；3) 点「快速算价」，出正负 20% 区间。区间不含底价与成本明细，适合先给客户一个范围；要正式报价就点「转正式报价」进多方案。"],
-    ["材料|待核|45钢|铝", "解析页的材料是 AI 推测项，标「待核」时要人工确认：点材料下拉选实际材料即可。注意演示版里这个确认只改标注状态，报价仍按预置样本材料算（正式版才联动重算）。"],
+    ["材料|待核|45钢|铝", "解析页的材料是 AI 推测项，标「待核」时点下拉选实际材料即可。确认后多方案、终审、报价单全部按确认的材料重算，材料价取费率表里的值——AI 只读图，不猜价格。"],
     ["终审|审核|闸门|改价", "终审是唯一人工闸门：上方核对假设项，下方逐行改价（材料/工时/刀具/装夹/其他五行可改），合计会实时重算，没问题点「确认报价」转正式价；不对就点「驳回重算」并填写原因。"],
-    ["费率|参数|版本|单价", "费率表在顶部导航「费率表」：核心 8 个参数（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）可直接改，保存后生成新版本，历史报价不回溯。材料单价、刀具分档这些演示版是只读展示。"],
+    ["费率|参数|版本|单价", "费率表在顶部导航「费率表」：核心 8 个参数（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）可直接改；下方材料 4 类的单价 / 刀具摊销 / 去除率也开放编辑（共 12 项）。保存生成新版本，历史报价不回溯。"],
     ["驳回", "驳回：在终审页点「驳回重算」，填原因后确认，任务会转成「已驳回」并留痕；之后从任务台点该任务可回到多方案重新改价。"],
     ["上传|图纸|STEP|PDF|文件", "演示版不支持真实上传，只能用页面上的三个预置样本说明流程；正式版才接 STEP 几何解析和图片/PDF 的 AI 提取，每项都会标来源与置信度。"],
     ["报价单|导出|打印|PDF", "报价单页点「打印导出」用浏览器打印，目标选「另存为 PDF」就是 PDF；每行都带计算依据。点「存入历史」会写进历史报价，不可覆盖。"],
     ["历史|补录|复制|旧单", "历史报价不可覆盖：点某一行看详情与修改时间线，可「复制为新报价」重新算，也可补录实际工时和实际成本，用来校准费率。"],
-    ["数量|批量|几件", "探价模式里可以填数量；正式流（多方案到终审）演示版按 1 件算，批量报价还没做。"],
+    ["数量|批量|几件", "解析结果里的「数量」一栏直接改（整数且 ≥1）；探价、多方案、终审、报价单都按件数算总价。"],
     ["客户|交期|有效期", "报价单里客户名先留空手填，有效期默认 15 天；演示版不承诺交期，这是有意的。"],
     ["多方案|A|B|C|方案", "A 是常规加工基准；B 优化工艺（一次装夹、去除率提升 40%、刀具摊销上浮 50%，工时更短）；C 是把材料换成 45 钢联动重算。三档都按本厂费率实时算，选定一档再进终审。"]
   ];
@@ -1053,12 +1051,12 @@ route();
 
   var HOWTO = {
     dashboard: "任务台三步：1 上方三个数字卡看量（报价任务、已确认报价、探价记录）；2 点「新建报价」开一单，或点「快速探价」先给区间；3 表格点行看任务。这里只做分派，不算价。",
-    upload: "上传解析三步：1 点一张预置样本卡（演示版不接真实文件）；2 等约 2 秒出 7 项结果，材料标「AI推测·待核」要点下拉改成实际材料；3 底部点「去报价」进多方案。",
+    upload: "上传解析三步：1 拖入 STEP / 图片 / PDF，或点预置样本；2 等解析出 7 项结果，材料标「AI推测·待核」，点下拉改成实际材料（确认后全链路重算）；3 底部点「去报价」进多方案。未连后端时自动走前端估算并明确标注。",
     probe: "探价三步：1 材料类别保持预填；2 包络尺寸按 长 x 宽 x 高 改，中间用英文小写 x；3 填数量点「快速算价」。出正负 20% 区间，不含底价与明细。",
     compare: "多方案三步：1 点 A、B、C 三张卡切换看合计（A 常规、B 优化工艺、C 换 45钢）；2 看下方六项成本与依据；3 点「选定方案 X，去终审」。",
     review: "终审三步：1 先看上方假设项是不是都确认过；2 下方前五行金额可直接改，合计实时重算；3 没问题点「确认报价，生成报价单」，不对就点「驳回重算」写原因。",
     quote: "报价单三步：1 核对编号、零件、材料、数量与六行依据；2 点「打印导出」，打印目标选另存为 PDF；3 点「存入历史」留档，历史不可覆盖。",
-    rates: "费率表三步：1 上半「核心参数」8 项直接改（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）；2 点「保存为新版本」；3 历史报价不回溯。材料单价演示版只读。",
+    rates: "费率表三步：1 上半「核心参数」8 项直接改（设备费率、人工费率、余量、准备工时、孔附加、利润率、探价宽度、损耗率）；2 点「保存为新版本」；3 历史报价不回溯。下方材料 4 类的单价 / 刀具摊销 / 去除率也可改，保存同样生成新版本。",
     history: "历史报价三步：1 用搜索框按编号或零件名过滤；2 点一行看修改时间线；3 可「复制为新报价」或补录实际工时与实际成本。"
   };
   function localAnswer(q) {

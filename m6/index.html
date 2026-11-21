@@ -1,43 +1,283 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 06 · M6 产品迭代 | AI 智能机械零件报价系统</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M6 产品迭代 · 迭代修改说明｜AI 智能机械零件报价系统</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
+  --bg:#f1efe8; --bg2:#e8e4d9; --card:#fbfaf6; --card2:#f3f0e8;
+  --ink:#1d2833; --dim:#57646e; --faint:#8b96a0;
+  --blue:#1f4e79; --blue2:#39709f; --accent:#d95f18; --accent2:#f2801e;
+  --line:rgba(29,40,51,.13); --line2:rgba(29,40,51,.22);
+  --ok:#2e7d54; --warn:#a8681a;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">06</div>
-<h1>M6 产品迭代</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>V0.2 修改对照表 · 回归验收清单<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.75;font-size:14.5px}
+.blueprint{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:linear-gradient(rgba(31,78,121,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(31,78,121,.10) 1px,transparent 1px);
+  background-size:28px 28px}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 22px 60px}
+header.site{position:sticky;top:0;z-index:50;background:rgba(241,239,232,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.site-in{max-width:1120px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:14px}
+.brand .dot{width:9px;height:9px;border-radius:2px;background:var(--blue);box-shadow:0 0 0 3px rgba(31,78,121,.15)}
+.brand small{color:var(--faint);font-weight:400;letter-spacing:.14em;font-size:11px}
+.stamp{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--accent);font-weight:700;border:1px dashed rgba(217,95,24,.5);border-radius:8px;padding:5px 12px;background:rgba(217,95,24,.06)}
+.stamp i{width:13px;height:13px}
+.kicker{font-size:11.5px;letter-spacing:.3em;color:var(--blue2);font-weight:700}
+h1.big{font-size:clamp(40px,7.5vw,84px);font-weight:900;line-height:1.08;margin:14px 0 6px;letter-spacing:.01em}
+h1.big .rev{color:transparent;-webkit-text-stroke:1.6px var(--blue)}
+h1.big .to{color:var(--accent)}
+.hero{padding:64px 0 34px}
+.hero-sub{max-width:820px;color:var(--dim);font-size:15px;margin-top:14px}
+.hero-sub b{color:var(--ink)}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.chip{font-size:12.5px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--card)}
+.chip b{color:var(--blue)}
+.rule{height:1px;background:var(--line2);margin:8px 0 34px;position:relative}
+.rule::after{content:"";position:absolute;left:0;top:-2px;width:64px;height:5px;background:var(--accent)}
+section{margin-bottom:46px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.sec-head .no{font-family:Georgia,serif;font-size:30px;font-weight:900;color:transparent;-webkit-text-stroke:1.2px var(--blue2)}
+.sec-head h2{font-size:22px;font-weight:800}
+.sec-head .en{font-size:11px;letter-spacing:.24em;color:var(--faint)}
+.sec-head .desc{width:100%;color:var(--dim);font-size:13px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 14px 34px -22px rgba(29,40,51,.25)}
+.panel h3{font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.panel h3 i{width:16px;height:16px;color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+@media(max-width:880px){.grid2{grid-template-columns:1fr}}
+ul.plain{list-style:none}
+ul.plain li{padding:7px 0 7px 24px;position:relative;border-top:1px dashed var(--line);font-size:13.5px;color:var(--dim)}
+ul.plain li:first-child{border-top:none}
+ul.plain li b{color:var(--ink)}
+ul.plain li::before{content:"";position:absolute;left:4px;top:15px;width:8px;height:8px;border:2px solid var(--blue2);border-radius:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:11.5px;letter-spacing:.08em;color:#f5f2ea;background:var(--blue);padding:9px 12px;white-space:nowrap}
+.tbl td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.tbl tr:hover td{background:rgba(31,78,121,.05)}
+.tbl .did{color:var(--ok);font-weight:700;white-space:nowrap}
+.tbl .key{font-weight:700;color:var(--blue)}
+.tbl-wrap{border:1px solid var(--line);border-radius:12px;overflow:auto;background:var(--card)}
+.num{font-family:Georgia,serif;font-weight:900}
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.stat .v{font-family:Georgia,serif;font-size:30px;font-weight:900;color:var(--blue)}
+.stat .v.orange{color:var(--accent)}
+.stat .l{font-size:11px;letter-spacing:.12em;color:var(--dim);margin-top:3px}
+.note{font-size:12px;color:var(--faint);margin-top:10px}
+.cmd{background:var(--card2);border:1px dashed var(--line2);border-radius:12px;padding:18px 20px;font-size:13.5px;color:var(--ink)}
+.cmd ol{margin-left:20px}
+.cmd li{margin:8px 0}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;letter-spacing:.05em}
+.tag.ok{background:rgba(46,125,84,.12);color:var(--ok)}
+.tag.warn{background:rgba(168,104,26,.12);color:var(--warn)}
+.tag.blue{background:rgba(31,78,121,.1);color:var(--blue)}
+.conflict{border-left:4px solid var(--accent);background:rgba(217,95,24,.05);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:14px}
+.conflict b{color:var(--accent)}
+.timeline{border-left:2px solid var(--blue2);margin:12px 0 0 8px;padding-left:18px}
+.timeline .te{position:relative;padding:5px 0;font-size:13px;color:var(--dim)}
+.timeline .te::before{content:"";position:absolute;left:-23.5px;top:13px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.timeline .te b{color:var(--ink)}
+footer{border-top:1px solid var(--line2);margin-top:40px;padding:26px 0 8px;text-align:center}
+footer .brandline{font-size:12.5px;color:var(--dim);letter-spacing:.08em}
+footer .sub{font-size:11px;color:var(--faint);margin-top:6px}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,.9,.32,1)}
+.reveal.on{opacity:1;transform:none}
+@media print{.blueprint,header.site{display:none}}
+</style>
+</head>
+<body>
+<div class="blueprint"></div>
+<header class="site"><div class="site-in">
+  <div class="brand"><span class="dot"></span>M6 产品迭代<small>REV ORDER · 图纸修订单</small></div>
+  <div class="stamp"><i data-lucide="stamp"></i>V0.1 到 V0.2 · 已发布</div>
+</div></header>
+
+<div class="wrap">
+
+<section class="hero">
+  <div class="kicker reveal">OPC 创业基础课 · 模块六 · AI 智能机械零件报价系统</div>
+  <h1 class="big reveal">迭代修改说明<br><span class="rev">V0.1</span> <span class="to">改到</span> <span class="rev">V0.2</span></h1>
+  <p class="hero-sub reveal">输入是 M5 测试报告的 <b>30 条需改项</b>与独立审核的 2 项自测发现。人对 29 条逐条拍板「改」，AI 分三批出方案、写代码、跑回归；价格口径向表哥的 300 元对齐，主流程断点全部焊上。本页就是这一夜的完整修订记录。</p>
+  <div class="meta reveal">
+    <span class="chip">拍板 <b>29 条改 · 1 条备案改判</b></span>
+    <span class="chip">回归 <b>497 项测试全绿</b></span>
+    <span class="chip">引擎 <b>PRICING-ENGINE-1.1.0</b></span>
+    <span class="chip">发布 <b>www.jixiangyi.cn 已上线 V0.2</b></span>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<div class="statrow reveal">
+  <div class="stat"><div class="v">29+1</div><div class="l">待决策条目全部处置</div></div>
+  <div class="stat"><div class="v">3 批</div><div class="l">价格模型 / 主流程 / 体验追溯</div></div>
+  <div class="stat"><div class="v orange">497</div><div class="l">后端测试 0 失败 0 跳过</div></div>
+  <div class="stat"><div class="v">13</div><div class="l">新增可选参数键（缺省不阻塞）</div></div>
+  <div class="stat"><div class="v orange">2</div><div class="l">审核发现：1 项修复 1 项纠偏</div></div>
+</div>
+
+<section>
+  <div class="sec-head reveal"><span class="no">01</span><h2>待决策清单与人的拍板</h2><span class="en">DECISION LIST</span>
+    <div class="desc">M6 的第一件事不是改代码，是人逐条拍板。AI 只列清单不带方案，改不改、改多少，全是人的决定。</div></div>
+  <div class="grid2">
+    <div class="panel reveal"><h3><i data-lucide="list-checks"></i>清单构成</h3>
+      <ul class="plain">
+        <li><b>M5 报告减号象限 30 条</b>：F-01 至 F-23（23 条）+ 人测试 H-8 / H-9 / H-10 / H-13（4 条）+ 审核自测 H-15 / H-16（2 条）+ 已撤回项 H-17（1 条，备案）。</li>
+        <li><b>拍板结果</b>：D-01 至 D-29 全部「改」；其中价格模型六条（D-18 至 D-23）优先成批，因为它们共同构成与表哥 300 元口径差 2.8 至 3.2 倍的根因。</li>
+        <li><b>执行铁律</b>：每批改动对应 M5 依据；每批独立回归；价格模型动参数前必须经表哥复测（目标区间 280 至 300 元）。</li>
+      </ul>
+    </div>
+    <div class="panel reveal"><h3><i data-lucide="git-branch"></i>批次划分</h3>
+      <ul class="plain">
+        <li><b>批 1 价格模型（6 条）</b>：特种工序、体积工时、起步价、设备档位、首件编程调机、装夹分摊展示。</li>
+        <li><b>批 2 主流程（7 条）</b>：材料参与计算、任务台分流、改价持久化、驳回强校验、数量入口、persist 修复、视觉通道复测。</li>
+        <li><b>批 3 体验与追溯（16 条）</b>：探价校验、记录命名、单卡替换、复制清空、首用向导、实时计数、操作人、撤回、字段提示、费率开放、版本快照等。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head reveal"><span class="no">02</span><h2>发现到修改对照表</h2><span class="en">BEFORE AFTER</span>
+    <div class="desc">三张表对应三个批次，全部完成。状态列的「已上线」指 www.jixiangyi.cn 线上已验证。</div></div>
+
+  <div class="panel reveal" style="margin-bottom:14px"><h3><i data-lucide="wrench"></i>批 1 · 价格模型（决定 300 元口径）</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>测试发现</th><th>优先级</th><th>V0.2 修改内容</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td class="key">F-23 成本模型无特种工序项，直角清角需电火花</td><td>高</td><td>新增特种工序成本行（电火花 / 线切割 / 清角）：候选标待确认不计入，人工确认后按费率乘工时乘数量计费，进入管理费基数</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-22 机加时间恒定 10 分钟，与几何无关</td><td>高</td><td>体积驱动工时模型：基础分钟 + 切除体积除以去除率 + 孔数乘单孔系数 + 表面积系数；人工补录与覆盖优先；缺数据回退恒定口径并警告</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-19 首件编程调机工时未建模</td><td>高</td><td>新增编程调机试切成本行，整批只计一次，独立行展示</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-21 无最小起订或起步价</td><td>中</td><td>新增单件起步价与最小起订量参数：建议单价取计算价与起步价的较大值，触发出依据警告；低于起订量仅提示</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-20 台时档位错配，铣件套车床 50 元</td><td>中高</td><td>任务声明设备类型时必须命中对应档位费率，缺档显式报错，禁止静默取通用 50 元</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-18 小件被装夹费主导（占 67%）</td><td>高</td><td>装夹行同时给出整批金额与单件分摊；配合档位与新成本项，占比结构可解释</td><td class="did">已上线</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">引擎版本升 PRICING-ENGINE-1.1.0；未启用新特性时与 1.0.0 同输入同输出，老基线不动。13 个新参数键全部可选：未登记时不启用对应特性、不阻塞报价。</div>
+  </div>
+
+  <div class="panel reveal" style="margin-bottom:14px"><h3><i data-lucide="workflow"></i>批 2 · 主流程断点与审核发现</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>测试发现</th><th>优先级</th><th>V0.2 修改内容</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td class="key">F-01 改 45 钢价格一分不变</td><td>高</td><td>材料确认写入任务并全链路重算：多方案、终审、报价单、探价预填全部按确认材料计价，确认即提示重算</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-02 任务台任意行点击跳历史</td><td>高</td><td>按状态分流：解析中进上传页、待终审进终审、已驳回进多方案、已确认与探价进历史</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-04 终审改价刷新即丢</td><td>高</td><td>改价、数量、方案、任务状态实时持久化，刷新后原样恢复</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-05 驳回原因未强校验</td><td>中</td><td>后端空原因返 422；前端原因 trim 后不足 5 个字拦截并提示当前字数</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-13 正式流无数量入口</td><td>中高</td><td>解析结果数量改输入框（整数且不小于 1），全链路按件数计总价</td><td class="did">已上线</td></tr>
+        <tr><td class="key">H-15 计算接口不落库模式必 500</td><td>高</td><td>计算标识允许为空；persist=false 正常返回六项成本不落库（真机复测 HTTP 200）</td><td class="did">已上线</td></tr>
+        <tr><td class="key">H-16 图片视觉通道配置错误（AUD-02）</td><td>中高</td><td>复核推翻审核诊断：失败实为 429 配额限流非配置错误，配置一字未改；额度恢复后两图纸复测通过（A 图 21 条 7 条双源互证，B 图直径与小数尺寸全部读回）</td><td class="did">已纠偏</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="panel reveal"><h3><i data-lucide="sparkles"></i>批 3 · 体验与追溯（16 条）</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>测试发现</th><th>V0.2 修改内容</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td class="key">F-06 负数出负价、星号出 NaN</td><td>分隔符 x / X / 乘号 / 星号统一归一化；三个数必须为正、数量整数校验，违规即时拦截提示</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-07 探价记录取样本名</td><td>新增零件名输入；不填按尺寸加材料自动拼名，不再用预置样本名</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-08 连续算价卡片堆叠</td><td>结果区单卡替换，连点只保留最新一张</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-12 复制历史带入错零件</td><td>复制即清空零件与文件信息并跳上传页，提示重新选样本或传图</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-15 无首次向导</td><td>首访三步向导弹窗，可跳过，本地记忆不再弹；顶栏常驻使用向导入口</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-16 假设项计数矛盾</td><td>计数按待核项实时计算，无待核显示 0，删除写死文案</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-17 审计人硬编码</td><td>操作人姓名可在费率页设置，全部留痕统一取该值；页脚标注演示数据仅存本机</td><td class="did">已上线</td></tr>
+        <tr><td class="key">H-8 无撤回与回退</td><td>已确认单 24 小时内可撤回：状态转已撤回、修改时间线留痕、可重新报价；超时按钮置灰并说明</td><td class="did">已上线</td></tr>
+        <tr><td class="key">H-10 打错字听不懂</td><td>输入容错加字段悬停说明加静态常见问题弹窗（不接对话模型）</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-09 费率表 8 项外只读</td><td>四类材料的单价、刀具摊销、去除率共 12 项开放编辑，保存升版本，历史不回溯</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-10 + H-9 版本说不清</td><td>存历史时快照参数版本与公式版本；历史详情显示核算口径行；旧单如实标未记录</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-11 补录单详情按钮失效</td><td>重写后补录与未补录两分支按钮均正常（线上渲染验证）</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-14 依据重复显示两次</td><td>报价单金额列只放金额，依据只在依据列出现一次</td><td class="did">已上线</td></tr>
+        <tr><td class="key">F-03 线上上传不可用</td><td>真实上传链路上线（拖拽上传、后端解析、边缘重试、离线降级前端估算），失败提示明确</td><td class="did">已上线</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">批 3 中 F-02 / F-03 由并行会话在真实上传功能中一并实现，经线上核验纳入本批。</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head reveal"><span class="no">03</span><h2>开发指令（替代口径）</h2><span class="en">DEV INSTRUCTIONS</span>
+    <div class="desc">本迭代涉及 FastAPI 后端与单文件前端工程，秒哒 / WorkBuddy 不适用，指令以开发窗口口径执行。以下为批 1 后端指令原文，已全部执行并通过回归。</div></div>
+  <div class="cmd reveal">
+    <p><b>请对当前报价后端做以下迭代修改：</b></p>
+    <ol>
+      <li>在成本引擎新增「编程调机试切」成本项，参数为 program_minutes_per_batch（默认 30 分钟每批），按设备费率整批计一次，作为独立成本行输出，并把公式版本升到 PRICING-ENGINE-1.1.0。</li>
+      <li>把机加时间从恒定值改为体积驱动估算：单件工时等于基础准备分钟加 k1 乘以切除体积除以材料去除率，加 k2 乘以表面积，加 k3 乘以孔数；系数写入参数库并带版本；界面展示工时构成，允许人工覆盖且覆盖优先。</li>
+      <li>增加起步价与最小起订量：建议单价取计算单价与起步价的较大值；触发起步价时输出依据行与警告；数量低于最小起订量时提示。</li>
+      <li>打通设备类型档位：建单增加设备类型选择；后端按区域与设备类型选择设备小时费率；缺少对应档位时明确报错，禁止静默取默认 50 元每小时。</li>
+      <li>新增特种工序成本项：支持电火花、线切割、清角三类；按特征触发候选（直角内角触发清角电火花）；识别依据不足时标记为候选待确认，人工确认后才计入报价。</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head reveal"><span class="no">04</span><h2>回归验收清单（含执行结果）</h2><span class="en">REGRESSION</span></div>
+  <div class="tbl-wrap reveal"><table class="tbl">
+    <thead><tr><th>验收项</th><th>方法</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>后端全量测试</td><td>pytest 全套（基线 475）</td><td class="did">497 通过 · 0 失败 0 跳过</td></tr>
+      <tr><td>数据库迁移</td><td>alembic 升级至 head（新增两列）</td><td class="did">c8f2a91d4e07 到位，落库验证通过</td></tr>
+      <tr><td>不落库模式复测</td><td>8010 真机 persist=false 调用</td><td class="did">HTTP 200，含成本明细，不落库</td></tr>
+      <tr><td>撤回路由</td><td>openapi 与接口测试</td><td class="did">withdraw 路由在线，24 小时窗口与留痕通过测试</td></tr>
+      <tr><td>视觉通道复测</td><td>生产链路跑两张真实图纸</td><td class="did">A 图 21 条（7 条双源互证），B 图 20 条（直径 5 / 11 / 3 与小数尺寸全部读回）</td></tr>
+      <tr><td>前端语法与渲染</td><td>node 语法校验 + 无头浏览器渲染</td><td class="did">语法通过；任务台 / 向导 / 导航正常，无脚本报错</td></tr>
+      <tr><td>线上核验</td><td>拉取线上页面比对 17 项标记</td><td class="did">14 条修复标记全数在线上</td></tr>
+      <tr><td>价格口径复测（表哥）</td><td>登记 13 个新参数企业值后复算 drawing-A</td><td><span class="tag warn">待办</span> 目标区间 280 至 300 元</td></tr>
+      <tr><td>前端真机点验</td><td>人工过一遍八页流程</td><td><span class="tag warn">待办</span> 建议白天完成后收口</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head reveal"><span class="no">05</span><h2>决策与冲突记录</h2><span class="en">LOG</span>
+    <div class="desc">M6 不只改了代码，还改了三个此前的判断。全过程留痕如下。</div></div>
+  <div class="grid2">
+    <div class="panel reveal"><h3><i data-lucide="message-square"></i>悬浮球：撤下，后恢复保留</h3>
+      <div class="timeline">
+        <div class="te"><b>M5</b>：负责人判定悬浮球内容不对，撤下并从发现中移除。</div>
+        <div class="te"><b>M6 拍板</b>：D-30 维持撤下。</div>
+        <div class="te"><b>并行会话</b>：迭代上传功能时恢复悬浮球并发布上线。</div>
+        <div class="te"><b>人最终拍板</b>：悬浮球保留。D-30 决策更新为「恢复保留」，线上以保留为准。</div>
+      </div>
+    </div>
+    <div class="panel reveal"><h3><i data-lucide="search-check"></i>另两处更正</h3>
+      <ul class="plain">
+        <li><b>AUD-02 误诊</b>：审核判定「视觉通道配置错误，应换标准端点与旧视觉模型」；实测证据为 429 错误码 1308（5 小时额度限流）。现有配置（glm-5.3-flash 与 coding 端点）正确，一字未改，复测通过。M5 原件不改，更正记入本模块。</li>
+        <li><b>批次表漏项</b>：初版批次表漏列 D-18（装夹分摊），当轮补入批 1，全程 29 条无一遗漏。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head reveal"><span class="no">06</span><h2>遗留与下一步</h2><span class="en">NEXT</span></div>
+  <div class="panel reveal">
+    <ul class="plain">
+      <li><b>参数登记与表哥复测</b>：13 个新参数键（编程调机、起步价、去除率、电火花费率等）待填企业实测值；登记后复算 drawing-A，目标把 105.78 元拉进表哥的 280 至 300 元区间，再定稿价格口径。</li>
+      <li><b>前端真机点验</b>：八页流程人工过一遍（改材料看价格变化、刷新看留痕、撤回与复制行为）。</li>
+      <li><b>发布状态</b>：V0.2 已上线 www.jixiangyi.cn（另一会话执行，本会话核验 17 项标记全数在线）。</li>
+      <li><b>下一模块</b>：M7 产品路演，输入为 HMW、产品任务书、M5 测试概要与本次迭代成果。</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="reveal">
+  <div class="brandline">AI 智能机械零件报价系统 · M6 产品迭代 · 戢祥毅 · 李茂槐 · 张博然</div>
+  <div class="sub">本页为自包含 HTML，如打开乱码请以 UTF-8 编码重新保存 · jixiangyi.cn</div>
+  <div class="sub" style="margin-top:10px">子谦国际 OPC 创业基础</div>
+</footer>
+
+</div>
+<script>
+lucide.createIcons();
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target);}});},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

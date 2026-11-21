@@ -177,7 +177,7 @@
             <tr><td class="mono">6</td><td><span class="b">规则化成本引擎</span></td><td>材料/工时/刀具摊销/装夹/其他/利润六项；纯函数，同输入同版本必同结果</td></tr>
             <tr><td class="mono">7</td><td><span class="b">探价模式</span></td><td>材料类别+包络尺寸+数量三项；30 秒内出正负 20% 区间；不给底价；打标入库</td></tr>
             <tr><td class="mono">8</td><td><span class="b">多方案报价</span></td><td>A 常规/B 优化参数档/C 换材料；三卡片对比；不承诺交期</td></tr>
-            <tr><td class="mono">9</td><td><span class="b">终审页</span></td><td>假设项集中呈现、逐行改价、修改留痕；确认后建议价转正式价；可驳回（填原因、留痕、回改后重新计算）</td></tr>
+            <tr><td class="mono">9</td><td><span class="b">终审页</span></td><td>假设项集中呈现、逐行改价、修改留痕；确认后建议价转正式价</td></tr>
             <tr><td class="mono">10</td><td><span class="b">报价单导出</span></td><td>打印样式页 + PDF 导出</td></tr>
             <tr><td class="mono">11</td><td><span class="b">历史报价</span></td><td>存档/按编号或零件名查询/复制为新报价/补录实际成本</td></tr>
           </tbody>
@@ -189,10 +189,10 @@
     <div class="reveal" style="margin-top:40px">
       <span class="pill">字段 4</span>
       <h3 style="font-size:18px;font-weight:900;margin-bottom:12px">业务流程</h3>
-      <div class="flow"><h4>探价流</h4><p>上传文件、选<b>快速探价</b>、确认预填三项（材料类别/包络尺寸/数量）、出价格区间（正负 20%，无底价无明细）、打标存档</p></div>
-      <div class="flow"><h4>正式流</h4><p>上传文件、自动解析提取（假设项标注）、成本引擎逐项核算、<b>A/B/C 三档参考价</b>、老板终审（处理假设项/改价）、确认、报价单导出、自动存档</p><p style="margin-top:6px"><b>驳回分支</b>：终审页点驳回、填写驳回原因（必填）、任务转已驳回并留痕、回到解析结果或参数修改、重新计算生成新版本</p></div>
-      <div class="flow"><h4>参数维护流</h4><p>首次向导或修改参数、生成<b>新版本</b>、历史报价锁定旧版本不受影响</p></div>
-      <div class="flow"><h4>历史流</h4><p>历史列表、按编号或零件名查询、详情与修改记录、复制为新报价、订单完成后<b>补录实际成本</b></p></div>
+      <div class="flow"><h4>探价流</h4><p>上传文件 → 选<b>快速探价</b> → 确认预填三项（材料类别/包络尺寸/数量）→ 出价格区间（正负 20%，无底价无明细）→ 打标存档</p></div>
+      <div class="flow"><h4>正式流</h4><p>上传文件 → 自动解析提取（假设项标注）→ 成本引擎逐项核算 → <b>A/B/C 三档参考价</b> → 老板终审（处理假设项/改价）→ 确认 → 报价单导出 → 自动存档</p></div>
+      <div class="flow"><h4>参数维护流</h4><p>首次向导或修改参数 → 生成<b>新版本</b> → 历史报价锁定旧版本不受影响</p></div>
+      <div class="flow"><h4>历史流</h4><p>历史列表 → 按编号或零件名查询 → 详情与修改记录 → 复制为新报价 → 订单完成后<b>补录实际成本</b></p></div>
     </div>
 
     <div class="reveal" style="margin-top:40px">
@@ -225,7 +225,7 @@
     <div class="reveal">
       <span class="pill">字段 7</span>
       <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">非功能性需求</h3>
-      <p class="dim" style="font-size:14.5px;line-height:2.1;margin-bottom:26px">加载：解析走异步任务不阻塞；静态资源 CDN；列表分页。兼容：Chrome/Edge 现代浏览器，桌面端优先。安全：费率数据不出系统；图纸外发 AI API 前评估供应商数据政策；密钥走环境变量；上传校验；操作留痕不可删。鉴权（AI 推荐，可改）：V0.1 演示版无登录；正式版建议账号+角色（老板/报价员），费率仅老板可见。精度：金额全程 Decimal，杜绝浮点误差。可维护：报价引擎保持纯函数；321 项自动化测试全回归通过才可上线；参数版本化。可用性：老板 3 分钟完成一次终审；探价 30 秒内出结果。</p>
+      <p class="dim" style="font-size:14.5px;line-height:2.1;margin-bottom:26px">加载：解析走异步任务不阻塞；静态资源 CDN；列表分页。兼容：Chrome/Edge 现代浏览器，桌面端优先。安全：费率数据不出系统；图纸外发 AI API 前评估供应商数据政策；密钥走环境变量；上传校验；操作留痕不可删。精度：金额全程 Decimal，杜绝浮点误差。可维护：报价引擎保持纯函数；321 项自动化测试全回归通过才可上线；参数版本化。可用性：老板 3 分钟完成一次终审；探价 30 秒内出结果。</p>
     </div>
 
     <div class="reveal">
@@ -238,11 +238,10 @@
             <tr><td><span class="b">上传</span></td><td>三类文件可传；错误类型明确提示；同文件再传自动提示历史</td></tr>
             <tr><td><span class="b">STEP 解析</span></td><td>测试样本的包络/体积/表面积与 CAD 软件读数一致（允许误差标准由业务样本确认后设定，不预设）</td></tr>
             <tr><td><span class="b">提取</span></td><td>每项可见置信度与原文引用；AI 推测项显著标注；老板可当场改</td></tr>
-            <tr><td><span class="b">费率表</span></td><td>首次向导 5 分钟完成六大类预置；每条可改并生成新版本；历史报价不受新版本影响</td></tr>
             <tr><td><span class="b">引擎</span></td><td>同输入+同参数版本重算结果完全一致；每行成本可展开看依据</td></tr>
             <tr><td><span class="b">探价</span></td><td>三项确认后 30 秒内出区间；区间与底价独立计算；记录带探价标记</td></tr>
             <tr><td><span class="b">多方案</span></td><td>A/B/C 均由本厂参数实时算出；页面可见差异说明</td></tr>
-            <tr><td><span class="b">终审</span></td><td>假设项集中列出；改价后总价实时重算；留痕完整；正式单只含确认数据；驳回必填原因、任务转已驳回并留痕，回改重算生成新版本</td></tr>
+            <tr><td><span class="b">终审</span></td><td>假设项集中列出；改价后总价实时重算；留痕完整；正式单只含确认数据</td></tr>
             <tr><td><span class="b">导出</span></td><td>打印页与 PDF 均含依据明细</td></tr>
             <tr><td><span class="b">历史</span></td><td>不可覆盖；修改生成新版本；可补录实际成本</td></tr>
           </tbody>
@@ -271,7 +270,7 @@
 
   <section class="section reveal" id="miaoda">
     <div class="sec-head"><span class="sec-no">P1</span><h2>秒哒生成提示词</h2><span class="en">MIAODA PROMPT</span></div>
-    <p class="sec-note"><i data-lucide="clipboard-copy"></i>整段纯文本，已由 AI 通过浏览器控制直接提交至秒哒平台（项目 app-fwz7ssajx1c1；后经人决策最终演示版另行安排、未采用秒哒路径，见审核报告 M4-R-03）；预置数据取自技术底座真实值（6061 单价 28.5 元每公斤来自参数登记示例；三轴铣 80 元每小时来自行业访谈；样本零件来自测试数据集）。品质宣言为固定文案，置于最后。</p>
+    <p class="sec-note"><i data-lucide="clipboard-copy"></i>整段纯文本，已由 AI 通过浏览器控制直接提交至秒哒平台（项目 app-fwz7ssajx1c1）；预置数据取自技术底座真实值（6061 单价 28.5 元每公斤来自参数登记示例；三轴铣 80 元每小时来自行业访谈；样本零件来自测试数据集）。品质宣言为固定文案，置于最后。</p>
     <div class="promptbox"><pre>【产品是什么】
 产品名称：AI 智能机械零件报价系统。一句话定位：帮小型机加工厂老板在客户发图催价时，几十秒出参考价、几分钟整理出可核对的报价依据。形态：网站（桌面端优先）。
 
@@ -321,7 +320,7 @@
 桌面端适配；空态/加载态/错误态齐全；直接可用无需补页。
 
 【边界】
-不做登录注册、不做支付、不做后台管理、不做三维在线预览、不做工单生产管理；不做装配图/手绘草图识别、不做公差计价、不做超三轴工艺计算。
+不做登录注册、不做支付、不做后台管理、不做三维在线预览、不做工单生产管理。
 
 【品质宣言】
 设计标准（双锚点）：可用性对标一线互联网产品（Keep/小红书/大众点评）的移动端界面品质，达到"专业设计团队打磨"的水准；视觉体验对标 Awwwards 顶级数字作品的完成度，绝不呈现套模板的粗糙感。
@@ -332,7 +331,7 @@
 
   <section class="section reveal" id="wb">
     <div class="sec-head"><span class="sec-no">P2</span><h2>WorkBuddy 提示词</h2><span class="en">WORKBUDDY PROMPT</span></div>
-    <p class="sec-note"><i data-lucide="zap"></i>简化演示版：无登录、无数据库、3 个核心功能可跑通可演示。用法：新建任务、代码开发、网站、粘贴、发送。秒哒与 WorkBuddy 可一起跑或选其一：秒哒出正式产品，WorkBuddy 出原型快、先验证主流程。</p>
+    <p class="sec-note"><i data-lucide="zap"></i>简化演示版：无登录、无数据库、3 个核心功能可跑通可演示。用法：新建任务 → 代码开发 → 网站 → 粘贴 → 发送。秒哒与 WorkBuddy 可一起跑或选其一：秒哒出正式产品，WorkBuddy 出原型快、先验证主流程。</p>
     <div class="promptbox"><pre>请开发一个网页，产品名《AI 智能机械零件报价系统》。这是一个演示版原型：无需登录注册，不使用数据库，数据全部预置在页面中，打开即可直接操作。
 目标用户：3-10 人小型机加工厂的老板和接单报价人员。
 请实现以下 3 个核心功能，每个功能必须能完整跑通并现场演示：

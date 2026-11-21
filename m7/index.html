@@ -1,43 +1,153 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPC 07 · M7 产品路演 | AI 智能机械零件报价系统</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 智能机械零件报价系统 · 路演</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f5f3ee; --card:#fff; --ink:#182225; --dim:#5c6d72; --faint:#8b98a5;
-  --accent:#0d6a7c; --accent-2:#d97b3f; --line:rgba(24,34,37,.10);
-  --shadow:0 1px 2px rgba(24,34,37,.04),0 16px 44px rgba(24,34,37,.10);
+  --bg:#0f1419; --ink:#eef2f6; --dim:#9fb0bd; --accent:#e5822d; --accent2:#7cb3d8;
+  --line:rgba(238,242,246,.14); --accent-soft:rgba(229,130,45,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;line-height:1.85;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 6%,rgba(13,106,124,.07),transparent 42%),radial-gradient(circle at 86% 16%,rgba(217,123,63,.06),transparent 44%)}
-.box{position:relative;max-width:600px;width:calc(100% - 48px);margin:24px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:54px 50px 44px;text-align:center;box-shadow:var(--shadow)}
-.no{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:76px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(13,106,124,.65)}
-h1{font-family:"Noto Serif SC",Georgia,"STZhongsong","SimSun",serif;font-size:27px;font-weight:900;margin:20px 0 4px;letter-spacing:.01em}
-.sub{font-size:13px;color:var(--faint);letter-spacing:.2em;margin-bottom:14px}
-p{color:var(--dim);font-size:14.5px;margin-top:10px}
-.tag{display:inline-flex;align-items:center;gap:7px;margin-top:24px;font-size:12px;font-weight:700;color:#8a6d1f;background:rgba(217,123,63,.08);border:1px solid rgba(217,123,63,.3);border-radius:999px;padding:6px 18px}
-.tag i{width:6px;height:6px;border-radius:50%;background:#d97b3f;animation:pulse 2.2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,123,63,.4)}50%{box-shadow:0 0 0 6px rgba(217,123,63,0)}}
-.progress{margin-top:30px;display:flex;justify-content:center;gap:6px}
-.progress span{width:26px;height:4px;border-radius:99px;background:rgba(24,34,37,.1)}
-.progress span.on{background:var(--accent)}
-a.back{display:inline-block;margin-top:30px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 20px;transition:border-color .3s}
-a.back:hover{border-color:var(--accent)}
-.foot{margin-top:26px;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
-</style></head>
-<body><div class="box">
-<div class="no">07</div>
-<h1>M7 产品路演</h1>
-<div class="sub">OPC · JIXIANGYI.CN</div>
-<p>8 页路演 HTML PPT · 演讲稿底稿<br>模块完成后，全过程 HTML 档案将在本页上线。</p>
-<div class="tag"><i></i>模块进行中 · 敬请期待</div>
-<div class="progress"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
-<a class="back" href="https://www.jixiangyi.cn">← 返回课程档案主页</a>
-<div class="foot">JIIXIANGYI.CN · OPC COURSE ARCHIVE · 2026</div>
-</div></body></html>
+html,body{height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif}
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 20% 0%,var(--accent-soft),transparent 55%),var(--bg)}
+.stage{width:1280px;height:720px;position:relative;flex:0 0 auto;transform-origin:center}
+.slide{position:absolute;inset:0;display:none;padding:64px 84px;flex-direction:column;justify-content:center}
+.slide.active{display:flex}
+.slide .no{position:absolute;top:28px;left:40px;font-size:14px;letter-spacing:2px;color:var(--dim)}
+.slide .tag{color:var(--accent);font-size:15px;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
+.slide h1{font-size:clamp(40px,6vw,84px);line-height:1.1;font-weight:800}
+.slide h2{font-size:clamp(30px,4.4vw,54px);line-height:1.15;font-weight:800;margin-bottom:22px}
+.slide p{font-size:clamp(18px,1.9vw,26px);line-height:1.7;color:var(--dim);max-width:1100px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px}
+.card{background:var(--accent-soft);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
+.card b{display:block;color:var(--accent2);margin-bottom:8px;font-size:18px}
+.card span{font-size:15px;color:var(--dim);line-height:1.6}
+.nav{position:fixed;top:50%;transform:translateY(-50%);z-index:20;width:52px;height:52px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--ink);font-size:26px;cursor:pointer}
+.nav:hover{background:var(--accent);color:#000}
+.nav.prev{left:22px}
+.nav.next{right:22px}
+.pager{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:20;font-size:15px;letter-spacing:1px;color:var(--dim)}
+.fs{position:fixed;top:22px;right:24px;z-index:20;padding:9px 16px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(0,0,0,.35);color:var(--ink);font-size:14px;cursor:pointer;display:flex;gap:6px;align-items:center}
+.fs:hover{background:var(--accent);color:#000}
+.dots{position:fixed;bottom:22px;right:30px;z-index:20;display:flex;gap:8px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer}
+.dots i.on{background:var(--accent);transform:scale(1.3)}
+.footer{position:fixed;bottom:22px;left:30px;z-index:20;font-size:12px;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage" id="stage">
+    <section class="slide active">
+      <div class="no">01</div>
+      <div class="tag">OPC 结课路演</div>
+      <h1>AI 智能机械零件报价系统</h1>
+      <p>让 AI 读懂机械图纸，让每一份报价都有依据。几何内核读 STEP，视觉模型读图纸，用工厂自己的费率算成本，人只做最后一道终审。</p>
+    </section>
+    <section class="slide">
+      <div class="no">02</div>
+      <div class="tag">真实问题</div>
+      <h2>报慢了，单就没了</h2>
+      <p>3 到 10 人小型 CNC 加工厂，老板兼报价员。客户微信发图催价「今天能回价吗」，老板放大看尺寸、翻材料价、问师傅工时——报高丢单，报低赔钱。如何帮他在催价时，更快整理出材料、工时、成本可核对的报价依据？</p>
+    </section>
+    <section class="slide">
+      <div class="no">03</div>
+      <div class="tag">解决方案</div>
+      <h2>图纸进去，可核对的报价依据出来</h2>
+      <div class="cards">
+        <div class="card"><b>智能图纸解析</b><span>STEP 走几何内核，图片 PDF 走视觉模型，双路径互证；每项标来源与置信度，人工只核低置信项</span></div>
+        <div class="card"><b>双速报价</b><span>探价 30 秒出区间、不给底价；正式报价六项成本逐行可改，A B C 三档全由本厂参数实时算</span></div>
+        <div class="card"><b>企业成本数据库</b><span>六大类费率版本化，历史单锁定旧版本，补录实际成本反哺费率</span></div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="no">04</div>
+      <div class="tag">产品演示</div>
+      <h2>现场 LIVE：www.jixiangyi.cn（V0.2）</h2>
+      <p>四步：传真实 STEP 看逐项来源与置信度；改材料看全链路重算；改一行价看实时合计与版本保存；历史页看核算口径与修改时间线。演示前先点「重置演示数据」；备用方案为提前录好的 V0.2 操作视频。</p>
+    </section>
+    <section class="slide">
+      <div class="no">05</div>
+      <div class="tag">创新价值</div>
+      <h2>可解释报价 · 双速分诊 · 企业自己的价</h2>
+      <p>六项成本逐行给公式与参数出处，M5 测试六组画像零质疑；探价拿不到底价，真客户拿三档方案谈；A B C 全用本厂参数实时算，不做模板价。同类产品比覆盖与订阅费，我们比的是：让工厂不仅知道报多少，还知道为什么是这个价。</p>
+    </section>
+    <section class="slide">
+      <div class="no">06</div>
+      <div class="tag">迭代计划</div>
+      <h2>先把价格口径做实，再把数据变成资产</h2>
+      <p>第一步，13 个参数键填企业实测值，把 105 元的口径拉进表哥的 280 至 300 元区间；第二步，每家厂一套费率与历史，加保密账号与角色；远期移动端进车间。参数不准，报价就不准。</p>
+    </section>
+    <section class="slide">
+      <div class="no">07</div>
+      <div class="tag">资源诉求</div>
+      <h2>需要四件事：试点、数据、指导、渠道</h2>
+      <p>我有的：模具厂做工艺管理的表哥、机械设计专业老师、已上线的 V0.2 与 497 项全绿回归。合作方获得：分散的费率与老师傅经验，沉淀成企业自己的数据资产。给我一到两张真实图纸，还你一套算得清的报价依据。</p>
+    </section>
+    <section class="slide">
+      <div class="no">08</div>
+      <div class="tag">感谢</div>
+      <h2>AI 智能机械零件报价系统</h2>
+      <p>让 AI 读懂图纸，让经验沉淀为数据，让每一次报价都有依据。欢迎带一件真实零件来试。项目地址 www.jixiangyi.cn</p>
+    </section>
+  </div>
+
+  <button class="nav prev" id="prev" title="上一页">&lsaquo;</button>
+  <button class="nav next" id="next" title="下一页">&rsaquo;</button>
+  <div class="dots" id="dots"></div>
+  <div class="pager" id="pager"></div>
+  <button class="fs" id="fsBtn"><i data-lucide="maximize"></i> 全屏</button>
+  <div class="footer">子谦国际 OPC 创业基础</div>
+</div>
+
+<script>
+var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+var dotsBox = document.getElementById('dots');
+var pager = document.getElementById('pager');
+var cur = 0;
+slides.forEach(function(s,i){
+  var d = document.createElement('i');
+  d.title = '第' + (i+1) + '页';
+  d.onclick = function(){ goTo(i); };
+  dotsBox.appendChild(d);
+});
+function updateDots(){
+  var ds = dotsBox.children;
+  for(var i=0;i<ds.length;i++){ ds[i].className = (i===cur) ? 'on' : ''; }
+  pager.textContent = (cur+1) + ' / ' + slides.length;
+}
+function goTo(i){
+  if(i<0 || i>=slides.length){ return; }
+  slides[cur].className = 'slide';
+  slides[i].className = 'slide active';
+  cur = i;
+  updateDots();
+}
+function go(dir){ goTo(cur+dir); }
+document.getElementById('prev').onclick = function(){ go(-1); };
+document.getElementById('next').onclick = function(){ go(1); };
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ e.preventDefault(); go(1); }
+  else if(e.key==='ArrowLeft' || e.key==='PageUp'){ e.preventDefault(); go(-1); }
+});
+function fit(){
+  var s = Math.min(window.innerWidth/1280, window.innerHeight/720);
+  document.getElementById('stage').style.transform = 'scale(' + s + ')';
+}
+window.addEventListener('resize', fit);
+fit();
+document.getElementById('fsBtn').onclick = function(){
+  if(document.fullscreenElement){ document.exitFullscreen(); }
+  else if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); }
+};
+if(window.lucide){ lucide.createIcons(); }
+</script>
+</body>
+</html>
